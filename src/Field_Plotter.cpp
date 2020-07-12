@@ -4,6 +4,13 @@
 #include "Field_Plotter.h"
 #include "gui/MainWindow.h"
 
+#include "gui/GraphicsCanvas.h"
+
+#include <QtCore>
+
+#include <iostream>
+
+#define NUM_THREADS 1
 
 //Entry point for the program
 int main(int argc, char** argv) {
