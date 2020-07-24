@@ -5,17 +5,19 @@
 #include <vector>
 #include <stdio.h>
 #include <string>
+#include <fstream>
+#include <sstream>
 
 
 namespace Util {
 
 	//Given a path, load model from first argument into two arrays this is fed
-	bool loadModel(const char* path, std::vector<vec3>& out_vertices, std::vector<UINT>& out_indices) {
+	bool loadModel(const char* path, std::vector<vec3>& out_vertices, std::vector<unsigned int>& out_indices) {
 		std::vector< glm::vec3 > temp_vertices/*, temp_normals*/;
 		FILE* file;
 		errno_t err;
 		if ((err = fopen_s(&file, path, "r")) != 0) {
-			OutputDebugString(L"Failed to load model!");
+			//OutputDebugString(L"Failed to load model!");
 			return false;
 		}
 
@@ -28,6 +30,9 @@ namespace Util {
 				vec3 vertex;
 				fscanf_s(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
 				out_vertices.push_back(vertex);
+				
+				printf("Outputting vertex: %f %f %f", vertex.x, vertex.y, vertex.z);	
+
 			}
 			else if (strcmp(lineHeader, "f") == 0) {
 				std::string vertex1, vertex2, vertex3;
@@ -50,47 +55,18 @@ namespace Util {
 		return true;
 	}
 
-	//compile shaders, return ProgramID
-	//https://www.opengl-tutorial.org/beginners-tutorials/tutorial-2-the-first-triangle/
-	GLuint loadShaders(const char* vertex_file_path, const char* fragment_file_path) {
 
+	GLuint loadShadersFromSource(std::string vertex_source, std::string fragment_source) {
 		// Create the shaders
 		GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 		GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
-		// Read the Vertex Shader code from the file
-		std::string VertexShaderCode;
-		std::ifstream VertexShaderStream(vertex_file_path, std::ios::in);
-		//std::ifstream VertexShaderStream;
-
-		if (VertexShaderStream.is_open()) {
-			std::stringstream sstr;
-			sstr << VertexShaderStream.rdbuf();
-			VertexShaderCode = sstr.str();
-			VertexShaderStream.close();
-		}
-		else {
-			//throw some exception
-			getchar();
-			return 0;
-		}
-
-		// Read the Fragment Shader code from the file
-		std::string FragmentShaderCode;
-		std::ifstream FragmentShaderStream(fragment_file_path, std::ios::in);
-		if (FragmentShaderStream.is_open()) {
-			std::stringstream sstr;
-			sstr << FragmentShaderStream.rdbuf();
-			FragmentShaderCode = sstr.str();
-			FragmentShaderStream.close();
-		}
 
 		GLint Result = GL_FALSE;
 		int InfoLogLength;
 
 		// Compile Vertex Shader
-		printf("Compiling shader : %s\n", vertex_file_path);
-		char const* VertexSourcePointer = VertexShaderCode.c_str();
+		char const* VertexSourcePointer = vertex_source.c_str();
 		glShaderSource(VertexShaderID, 1, &VertexSourcePointer, NULL);
 		glCompileShader(VertexShaderID);
 
@@ -104,8 +80,7 @@ namespace Util {
 		}
 
 		// Compile Fragment Shader
-		printf("Compiling shader : %s\n", fragment_file_path);
-		char const* FragmentSourcePointer = FragmentShaderCode.c_str();
+		char const* FragmentSourcePointer = fragment_source.c_str();
 		glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer, NULL);
 		glCompileShader(FragmentShaderID);
 
@@ -142,5 +117,44 @@ namespace Util {
 		glDeleteShader(FragmentShaderID);
 
 		return ProgramID;
+	}
+
+
+	//compile shaders, return ProgramID
+	//https://www.opengl-tutorial.org/beginners-tutorials/tutorial-2-the-first-triangle/
+	GLuint loadShaders(const char* vertex_file_path, const char* fragment_file_path) {
+
+		// Create the shaders
+		GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+		GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+
+		// Read the Vertex Shader code from the file
+		std::string VertexShaderCode;
+		std::ifstream VertexShaderStream(vertex_file_path, std::ios::in);
+		//std::ifstream VertexShaderStream;
+
+		if (VertexShaderStream.is_open()) {
+			std::stringstream sstr;
+			sstr << VertexShaderStream.rdbuf();
+			VertexShaderCode = sstr.str();
+			VertexShaderStream.close();
+		}
+		else {
+			//throw some exception
+			getchar();
+			return 0;
+		}
+
+		// Read the Fragment Shader code from the file
+		std::string FragmentShaderCode;
+		std::ifstream FragmentShaderStream(fragment_file_path, std::ios::in);
+		if (FragmentShaderStream.is_open()) {
+			std::stringstream sstr;
+			sstr << FragmentShaderStream.rdbuf();
+			FragmentShaderCode = sstr.str();
+			FragmentShaderStream.close();
+		}
+
+		return loadShadersFromSource(VertexShaderCode, FragmentShaderCode);
 	}
 }

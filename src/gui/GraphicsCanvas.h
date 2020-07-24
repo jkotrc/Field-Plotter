@@ -21,7 +21,10 @@ namespace Ui {
 		Camera* camera;
 		mat4 prevModel;
 		mat4 prevView;
+
 		
+
+		//void update() override;
 		//~Canvas();
 	protected:
 		void initializeGL() override;
@@ -31,6 +34,5 @@ namespace Ui {
 		void mousePressEvent(QMouseEvent* event) override;
 		void mouseReleaseEvent(QMouseEvent* event) override;
 		void mouseMoveEvent(QMouseEvent* event) override;
-
 	};
 }

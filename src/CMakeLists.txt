@@ -14,6 +14,8 @@ set (CMAKE_PREFIX_PATH "C:\\Qt\\5.15.0\\msvc2019_64")
 #Not adding the header file might break this
 
 set(FIELDPLOTTER_SOURCES Field_Plotter.cpp)
+
+
 add_executable (Field_Plotter ${FIELDPLOTTER_SOURCES})
 
 add_subdirectory(computation)

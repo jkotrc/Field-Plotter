@@ -6,13 +6,17 @@
 //For debugging purposes
 #include <iostream>
 
-#include <qtimer.h>
 #include <qevent.h>
 
 using namespace Ui;
 
 
 #define ROLLSPEED 0.1F	//later set this in preferences
+
+
+//last time 800 by 500 worked
+#define DEBUGWIDTH 1000
+#define DEBUGHEIGHT 1000
 
 //call super constructor QOpenGLWidget(parent)
 Canvas::Canvas(QWidget* parent)
@@ -21,7 +25,7 @@ Canvas::Canvas(QWidget* parent)
 	this->renderer = new Renderer();
 
 	//this->camera = new Camera(parent->width(), parent->height(), ROLLSPEED, true, true);
-	this->camera = new Camera(800, 500, ROLLSPEED, true, true);
+	this->camera = new Camera(DEBUGWIDTH, DEBUGHEIGHT, ROLLSPEED, true, true);
 }
 
 void Canvas::initializeGL() {
@@ -40,11 +44,15 @@ void Canvas::initializeGL() {
 	glEnable(GL_LIGHTING);
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
+	renderer->initGL();
 
-	QTimer* aTimer = new QTimer();
-	connect(aTimer, SIGNAL(timeout()), SLOT(update()));
-	aTimer->start(30);
+	//Why would the rendering and GUI go on different threads? That's stupid
+	//QTimer* aTimer = new QTimer();
+	//connect(aTimer, SIGNAL(timeout()), SLOT(update()));
+	//aTimer->start(30);
 }
+
+
 void Canvas::resizeGL(int w, int h) {
 	std::cout << "Not yet implemented!\n";
 }
@@ -76,11 +84,13 @@ void Ui::Canvas::mousePressEvent(QMouseEvent* event)
 	print(prevView);
 
 	camera->setPrevPos(camera->toScreenCoord(x, y));
+	update();
 }
 
 void Ui::Canvas::mouseReleaseEvent(QMouseEvent* event)
 {
 	camera->setPrevPos(camera->getCurrentPos());
+	update();
 }
 
 void Ui::Canvas::mouseMoveEvent(QMouseEvent* event)
@@ -96,7 +106,7 @@ void Ui::Canvas::mouseMoveEvent(QMouseEvent* event)
 
 	renderer->setModel(model);
 	renderer->setView(view);
-
+	update();
 }
 
 
