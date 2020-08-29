@@ -28,6 +28,7 @@ typedef struct Vector {
 /*
  * A vector field class that creates a N*N*N dimensional cube of vectors, each separated by a certain spatial distance
 */
+//TODO: Should maybe be a struct to ensure compatibility with Fortran or even CUDA, should I choose to use it to compute the vector field
 class VectorField {
 	private:
 		//TODO: Convert spatial and visible separations to a single "separation" value, calculated by the user-inputted scale
@@ -43,5 +44,4 @@ class VectorField {
 		void setVector(Vector v);
 		void setVectorAt(Point p, double i, double j, double k);
 		int getCubicDim();
-
 };

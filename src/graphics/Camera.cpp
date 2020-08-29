@@ -1,80 +1,90 @@
 #include "Camera.h"
 
+#include "../Debug.h"
 
 #define min(a,b) !(b<a)?a:b
 
-Camera::Camera(int window_width, int window_height, GLfloat roll_speed, bool x_axis, bool y_axis) {
-    this->windowWidth = window_width;
-    this->windowHeight = window_height;
+using namespace glm;
+Camera::Camera(int window_width, int window_height, GLfloat roll_speed)
+    :
+    currentPos(vec3(1, 0, 0)),
+    prevPos(vec3(1, 0, 0)),
+    sphericalCoord(vec2(0,0)),
+    origin(vec3(0,0,0)),
+    angle(0.0f),
+    rotAxis(vec2(1.0f,0.0f)),
+    viewMat(lookAt(currentPos, origin, vec3(0,1,0)))
+{}
 
-    this->rollSpeed = roll_speed;
-    this->angle = 0.0f;
-    this->camAxis = glm::vec3(0.0f, 1.0f, 0.0f);
-
-    this->xAxis = x_axis;
-    this->yAxis = y_axis;
-
-    this->currentPos = vec3(0, 0, 0);
-    this->prevPos = currentPos;
+vec3 Camera::getPos() {
+    return this->currentPos;
 }
 
-
-vec3 Camera::toScreenCoord(double x, double y) {
+/*vec3 toScreenCoord(double x, double y, int windowWidth, int windowHeight) {
     vec3 coord(0.0f);
-    if (xAxis) {
-        coord.x = (2 * x - windowWidth) / windowWidth;
-        
-    }
-    if (yAxis) {
-        coord.y = -(2 * y - windowHeight) / windowHeight;
-        
-    }
+    coord.x = (2 * x - windowWidth) / windowWidth;
+    coord.y = -(2 * y - windowHeight) / windowHeight;
 
-    /* Clamp it to border of the windows, comment these codes to allow rotation when cursor is not over window */
-    coord.x = glm::clamp(coord.x, -1.0f, 1.0f);
-    coord.y = glm::clamp(coord.y, -1.0f, 1.0f);
-
+    //coord.x = glm::clamp(coord.x, -1.0f, 1.0f);
+    //coord.y = glm::clamp(coord.y, -1.0f, 1.0f);
 
     float length_squared = coord.x * coord.x + coord.y * coord.y;
     if (length_squared <= 1.0)
         coord.z = sqrt(1.0 - length_squared);
     else
         coord = glm::normalize(coord);
-
     return coord;
-}
+}*/
 
 
-#include <stdio.h>
 void Camera::updateVars() {
-    angle = acos(min(1.0f, glm::dot(prevPos, currentPos)));
-    camAxis = glm::cross(prevPos, currentPos);
+    //angle = acos(min(1.0f, glm::dot(prevPos, currentPos)));
+    //camAxis = glm::cross(prevPos, currentPos);
 }
 
-//
-/**
- * Create rotation matrix within the camera coordinate,
- * multiply this matrix with view matrix to rotate the camera
- */
-glm::mat4 Camera::createViewRotationMatrix() {
-    updateVars();
-    return glm::rotate(mat4(1.0f),glm::degrees(angle) * rollSpeed, camAxis);
+
+void Camera::grabCamera(int x, int y) {
+    this->screenCoord = vec2(x, y);
 }
 
-/**
- * Create rotation matrix within the world coordinate,
- * multiply this matrix with model matrix to rotate the object
- */
-glm::mat4 Camera::createModelRotationMatrix(glm::mat4& view_matrix) {
-    updateVars();
-    glm::vec3 axis = glm::inverse(glm::mat3(view_matrix)) * camAxis;
-    return glm::rotate(mat4(1.0f),glm::degrees(angle) * rollSpeed, axis);
+
+float clock = 0.0f;
+#include <iostream>
+#define SENSITIVITY 0.001f
+using namespace std;
+void Camera::moveCamera(int newX, int newY) {
+
+    float deltaX = SENSITIVITY*(newX - screenCoord.x);
+    float deltaY = SENSITIVITY*(newY - screenCoord.y);
+
+
+    angle = prevAngle + deltaX;
+    rotAxis[0] = cos(angle);
+    rotAxis[1] = sin(angle);
+
+    currentPos = rotateY(prevPos, deltaX);
+    
+    
+
+    const vec4 rotation =rotate(deltaY, vec3(rotAxis[0], 0, rotAxis[1]))*vec4(currentPos.x,currentPos.y,currentPos.z,1);
+
+    currentPos = vec3(rotation.x, rotation.y, rotation.z);
+    
+
+    //currentPos = vec3(prevPos.x + changeX, prevPos.y + changeY, prevPos.z + changeZ);
+    viewMat = lookAt(currentPos, origin, vec3(0, 1, 0));
+
+    clock += 0.01f;
 }
 
-void Camera::setPrevPos(vec3 pos) {
-    this->prevPos = pos;
+void Camera::releaseCamera() {
+    prevPos = currentPos;
+    prevAngle = angle;
+
 }
-void Camera::setCurrentPos(vec3 pos) {
-    this->currentPos = pos;
+
+mat4 Camera::getViewMatrix() {
+    return viewMat;
 }
-vec3 Camera::getCurrentPos() { return this->currentPos; }
+
+

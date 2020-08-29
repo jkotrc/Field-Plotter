@@ -1,5 +1,6 @@
-﻿// Field_Plotter.h : Include file for standard system include files,
-// or project specific include files.
+﻿
+
+//INCLUDE ORDER: HEADER OF THE SOURCE FILE -> C SYSTEM FILES -> C++ SYSTEM FILES -> PLATFORM SPECIFIC -> QT -> OWN
 
 #pragma once
 #include <iostream>

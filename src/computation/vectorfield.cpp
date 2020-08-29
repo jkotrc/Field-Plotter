@@ -1,20 +1,5 @@
 #include "vectorfield.h"
 
-//class VectorField {
-//private:
-//	double spatial_separation;
-//	int cubic_dimension;
-//	Vector vectors[];
-//	void makeEmptyLattice();
-//
-//public:
-//	VectorField(double spatial_seperation, int cubic_dimension);
-//	Vector getVectorAt(Point p);
-//	void setVector(Vector v);
-//	void setVectorAt(Point p, double i, double j, double k);
-//
-//};
-
 
 /*
 	Sweep x, then y, then z
@@ -26,10 +11,13 @@
 #define INDEX(i,j,k) i+cubic_dimension*(j+cubic_dimension*k)
 
 VectorField::VectorField(double spatial_separation, int cubic_dimension, double visible_separation)		//make the default vector field just a radial vector field F = -P (i,j,k)
-	: spatial_separation(spatial_separation), dimension(cubic_dimension), visible_separation(visible_separation)
+	: 
+	spatial_separation(spatial_separation), 
+	dimension(cubic_dimension), 
+	visible_separation(visible_separation)
 {
 	const int dimension = cubic_dimension * cubic_dimension * cubic_dimension;
-	this->vectors = new Vector[dimension];	//vectors[x,y,z] = vectors[i+cubic_dimension*(y+cubic_dimension*z)]
+	this->vectors = new Vector[dimension];
 	
 	//The coordinates of the corner-most vector in the cube. The loop goes from it to the other edge; chosen such that the cube is centered at (0,0,0)
 	const double cornerVectorCoords = -spatial_separation * ((double)cubic_dimension - 1) / 2;	

@@ -7,7 +7,6 @@
 ********************************************************************************/
 
 #include "MainWindow.h"
-
 #include "GraphicsCanvas.h"
 
 #include <iostream>

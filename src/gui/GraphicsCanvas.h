@@ -9,8 +9,9 @@
 #include <glm/glm.hpp>
 #include <glm/matrix.hpp>
 
-class Renderer;
-class Camera;
+#include "../graphics/Renderer.h"
+#include "../graphics/Camera.h"
+
 
 namespace Ui {
 	using namespace glm;
@@ -21,11 +22,6 @@ namespace Ui {
 		Camera* camera;
 		mat4 prevModel;
 		mat4 prevView;
-
-		
-
-		//void update() override;
-		//~Canvas();
 	protected:
 		void initializeGL() override;
 		void resizeGL(int w, int h) override;

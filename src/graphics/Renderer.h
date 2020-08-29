@@ -1,35 +1,28 @@
 #pragma once
+//#include "Arrow.h"
+#include "Shaders.h"
+#include "Camera.h"
+#include "../computation/vectorfield.h"
 
-
-//class Simulation;
-#include <GL/glew.h>
-
+#include <vector>
+//#include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/matrix.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-#include <vector>
-
-#include "../computation/vectorfield.h"
-//#include "computation/vectorfield.h"
-
-using namespace glm;
-
-//Model of the arrow's cone
-typedef struct Model {
-	std::vector<vec3> vertices;
-	std::vector<unsigned int> indices;
-} Model;
-
-mat4 vectorToModelMatrix(Vector v);
+#include "Assets.h"
 
 
-//The renderer's render function may only be used if a valid OpenGL context already exists!
+
+
 class Renderer {
 	private:
+		Camera* camera;
 		GLuint vertexbuffer;
 		GLuint elementbuffer;
+		GLuint normalbuffer;
 		
+		GLuint vao;
 		GLuint programID;
 		GLuint mvpID;
 
@@ -37,28 +30,18 @@ class Renderer {
 		bool drawFieldLines;
 		bool drawEquipotentials;
 
-		mat4 projectionMat;
-		mat4 modelMat;
-		mat4 viewMat;
+		glm::mat4 projectionMat;
+		glm::mat4 debugModel;
+		glm::mat4 viewMat;
 
 		Model* arrowModel;
-		void drawAxes();
-		void drawArrow(Vector v);
-		
 
+		inline void initGL();
+		inline void drawAxes();
+		inline void drawArrow(Vector v);
 
 	public:
-		
-
 		Renderer();
-		void tempRender();
-		
-		void initGL();
-
-		void multModel(mat4 matrix, bool fromRight);
-		void multView(mat4 view, bool fromRight);
-		mat4* getModel();
-		mat4* getView();
-		void setModel(mat4 model);
-		void setView(mat4 view);
+		void render();
+		Camera* getCamera();
 };

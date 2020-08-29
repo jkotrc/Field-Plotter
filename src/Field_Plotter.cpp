@@ -4,10 +4,7 @@
 #include "Field_Plotter.h"
 #include "gui/MainWindow.h"
 
-#include "gui/GraphicsCanvas.h"
-
 #include <QtCore>
-
 #include <iostream>
 
 #define NUM_THREADS 1
