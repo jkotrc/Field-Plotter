@@ -1,11 +1,14 @@
 #pragma once
 
+//define this to enable debug
+#define FIELDPLOTTER_DEBUG
+
+
 #include <stdio.h>
 #include <string>
 #include <glm/glm.hpp>
 
-#include "computation/vectorfield.h"
-#include "graphics/Assets.h"
+#include "fieldplotter.h"
 
 #define TAG(t) "["+t+"] "
 
@@ -38,3 +41,4 @@ namespace Debug {
 		printf("\n");
 	}
 }
+

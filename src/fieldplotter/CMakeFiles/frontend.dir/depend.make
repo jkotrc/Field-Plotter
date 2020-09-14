@@ -4,12 +4,7 @@
 src/fieldplotter/CMakeFiles/frontend.dir/main.cpp.o: src/fieldplotter/main.cpp
 src/fieldplotter/CMakeFiles/frontend.dir/main.cpp.o: include/GL/glew.h
 src/fieldplotter/CMakeFiles/frontend.dir/main.cpp.o: include/GLFW/glfw3.h
-src/fieldplotter/CMakeFiles/frontend.dir/main.cpp.o: include/fieldplotter/computation/vectorfield.h
 src/fieldplotter/CMakeFiles/frontend.dir/main.cpp.o: include/fieldplotter/fieldplotter.h
-src/fieldplotter/CMakeFiles/frontend.dir/main.cpp.o: include/fieldplotter/graphics/Assets.h
-src/fieldplotter/CMakeFiles/frontend.dir/main.cpp.o: include/fieldplotter/graphics/Camera.h
-src/fieldplotter/CMakeFiles/frontend.dir/main.cpp.o: include/fieldplotter/graphics/Renderer.h
-src/fieldplotter/CMakeFiles/frontend.dir/main.cpp.o: include/fieldplotter/graphics/Shaders.h
 src/fieldplotter/CMakeFiles/frontend.dir/main.cpp.o: include/glm/common.hpp
 src/fieldplotter/CMakeFiles/frontend.dir/main.cpp.o: include/glm/detail/_fixes.hpp
 src/fieldplotter/CMakeFiles/frontend.dir/main.cpp.o: include/glm/detail/_swizzle.hpp

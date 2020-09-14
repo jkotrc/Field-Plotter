@@ -13,11 +13,17 @@ uniform mat4 uProjectionMatrix;
 uniform mat4 uModelviewMatrix;
 uniform vec2 uZRange;
 
-in vec3 ivPosition;
-in vec3 ivNormal;
+layout (location = 0) in vec3 ivPosition;
+layout (location = 1) in vec3 ivNormal;
 
-uniform vec3 ivInstanceOffset;
-uniform vec3 ivInstanceDirection;
+//vec3 ivInstanceOffset=vec3(0,0,0);
+//vec3 ivInstanceDirection=vec3(-1,1,1);
+layout (location = 2) in vec3 ivInstanceOffset;
+layout (location = 3) in vec3 ivInstanceDirection;
+
+//making these non-uniform
+//uniform vec3 ivInstanceOffset;
+//uniform vec3 ivInstanceDirection;
 
 out vec3 vfPosition;
 out vec3 vfNormal;

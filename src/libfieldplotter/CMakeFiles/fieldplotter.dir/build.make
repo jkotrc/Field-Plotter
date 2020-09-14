@@ -70,22 +70,9 @@ src/libfieldplotter/CMakeFiles/fieldplotter.dir/computation/vectorfield.cpp.s: c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/fieldplotter.dir/computation/vectorfield.cpp.s"
 	cd /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/computation/vectorfield.cpp -o CMakeFiles/fieldplotter.dir/computation/vectorfield.cpp.s
 
-src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.o: src/libfieldplotter/CMakeFiles/fieldplotter.dir/flags.make
-src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.o: src/libfieldplotter/graphics/Assets.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/john/Desktop/Field-Plotter-GLFW/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.o"
-	cd /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.o -c /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Assets.cpp
-
-src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.i"
-	cd /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Assets.cpp > CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.i
-
-src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.s"
-	cd /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Assets.cpp -o CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.s
-
 src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.o: src/libfieldplotter/CMakeFiles/fieldplotter.dir/flags.make
 src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.o: src/libfieldplotter/graphics/Camera.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/john/Desktop/Field-Plotter-GLFW/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/john/Desktop/Field-Plotter-GLFW/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.o"
 	cd /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.o -c /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Camera.cpp
 
 src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.i: cmake_force
@@ -96,22 +83,9 @@ src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.s: cmake_for
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.s"
 	cd /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Camera.cpp -o CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.s
 
-src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Options.cpp.o: src/libfieldplotter/CMakeFiles/fieldplotter.dir/flags.make
-src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Options.cpp.o: src/libfieldplotter/graphics/Options.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/john/Desktop/Field-Plotter-GLFW/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Options.cpp.o"
-	cd /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fieldplotter.dir/graphics/Options.cpp.o -c /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Options.cpp
-
-src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Options.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/fieldplotter.dir/graphics/Options.cpp.i"
-	cd /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Options.cpp > CMakeFiles/fieldplotter.dir/graphics/Options.cpp.i
-
-src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Options.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/fieldplotter.dir/graphics/Options.cpp.s"
-	cd /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Options.cpp -o CMakeFiles/fieldplotter.dir/graphics/Options.cpp.s
-
 src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Renderer.cpp.o: src/libfieldplotter/CMakeFiles/fieldplotter.dir/flags.make
 src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Renderer.cpp.o: src/libfieldplotter/graphics/Renderer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/john/Desktop/Field-Plotter-GLFW/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Renderer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/john/Desktop/Field-Plotter-GLFW/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Renderer.cpp.o"
 	cd /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fieldplotter.dir/graphics/Renderer.cpp.o -c /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Renderer.cpp
 
 src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Renderer.cpp.i: cmake_force
@@ -125,22 +99,18 @@ src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Renderer.cpp.s: cmake_f
 # Object files for target fieldplotter
 fieldplotter_OBJECTS = \
 "CMakeFiles/fieldplotter.dir/computation/vectorfield.cpp.o" \
-"CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.o" \
 "CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.o" \
-"CMakeFiles/fieldplotter.dir/graphics/Options.cpp.o" \
 "CMakeFiles/fieldplotter.dir/graphics/Renderer.cpp.o"
 
 # External object files for target fieldplotter
 fieldplotter_EXTERNAL_OBJECTS =
 
 out/libs/libfieldplotter.a: src/libfieldplotter/CMakeFiles/fieldplotter.dir/computation/vectorfield.cpp.o
-out/libs/libfieldplotter.a: src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.o
 out/libs/libfieldplotter.a: src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.o
-out/libs/libfieldplotter.a: src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Options.cpp.o
 out/libs/libfieldplotter.a: src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Renderer.cpp.o
 out/libs/libfieldplotter.a: src/libfieldplotter/CMakeFiles/fieldplotter.dir/build.make
 out/libs/libfieldplotter.a: src/libfieldplotter/CMakeFiles/fieldplotter.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/john/Desktop/Field-Plotter-GLFW/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX static library ../../out/libs/libfieldplotter.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/john/Desktop/Field-Plotter-GLFW/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library ../../out/libs/libfieldplotter.a"
 	cd /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter && $(CMAKE_COMMAND) -P CMakeFiles/fieldplotter.dir/cmake_clean_target.cmake
 	cd /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/fieldplotter.dir/link.txt --verbose=$(VERBOSE)
 

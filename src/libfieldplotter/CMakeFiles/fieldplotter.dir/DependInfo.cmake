@@ -5,9 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/computation/vectorfield.cpp" "/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/CMakeFiles/fieldplotter.dir/computation/vectorfield.cpp.o"
-  "/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Assets.cpp" "/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.o"
   "/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Camera.cpp" "/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.o"
-  "/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Options.cpp" "/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Options.cpp.o"
   "/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Renderer.cpp" "/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Renderer.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

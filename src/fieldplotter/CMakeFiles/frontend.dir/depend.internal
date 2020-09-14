@@ -5,12 +5,7 @@ src/fieldplotter/CMakeFiles/frontend.dir/main.cpp.o
  /home/john/Desktop/Field-Plotter-GLFW/src/fieldplotter/main.cpp
  include/GL/glew.h
  include/GLFW/glfw3.h
- include/fieldplotter/computation/vectorfield.h
  include/fieldplotter/fieldplotter.h
- include/fieldplotter/graphics/Assets.h
- include/fieldplotter/graphics/Camera.h
- include/fieldplotter/graphics/Renderer.h
- include/fieldplotter/graphics/Shaders.h
  include/glm/common.hpp
  include/glm/detail/_fixes.hpp
  include/glm/detail/_swizzle.hpp

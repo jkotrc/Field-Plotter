@@ -2,9 +2,7 @@ file(REMOVE_RECURSE
   "../../out/libs/libfieldplotter.a"
   "../../out/libs/libfieldplotter.pdb"
   "CMakeFiles/fieldplotter.dir/computation/vectorfield.cpp.o"
-  "CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.o"
   "CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.o"
-  "CMakeFiles/fieldplotter.dir/graphics/Options.cpp.o"
   "CMakeFiles/fieldplotter.dir/graphics/Renderer.cpp.o"
 )
 

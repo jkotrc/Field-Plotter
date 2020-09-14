@@ -152,33 +152,6 @@ computation/vectorfield.cpp.s:
 	cd /home/john/Desktop/Field-Plotter-GLFW && $(MAKE) -f src/libfieldplotter/CMakeFiles/fieldplotter.dir/build.make src/libfieldplotter/CMakeFiles/fieldplotter.dir/computation/vectorfield.cpp.s
 .PHONY : computation/vectorfield.cpp.s
 
-graphics/Assets.o: graphics/Assets.cpp.o
-
-.PHONY : graphics/Assets.o
-
-# target to build an object file
-graphics/Assets.cpp.o:
-	cd /home/john/Desktop/Field-Plotter-GLFW && $(MAKE) -f src/libfieldplotter/CMakeFiles/fieldplotter.dir/build.make src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.o
-.PHONY : graphics/Assets.cpp.o
-
-graphics/Assets.i: graphics/Assets.cpp.i
-
-.PHONY : graphics/Assets.i
-
-# target to preprocess a source file
-graphics/Assets.cpp.i:
-	cd /home/john/Desktop/Field-Plotter-GLFW && $(MAKE) -f src/libfieldplotter/CMakeFiles/fieldplotter.dir/build.make src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.i
-.PHONY : graphics/Assets.cpp.i
-
-graphics/Assets.s: graphics/Assets.cpp.s
-
-.PHONY : graphics/Assets.s
-
-# target to generate assembly for a file
-graphics/Assets.cpp.s:
-	cd /home/john/Desktop/Field-Plotter-GLFW && $(MAKE) -f src/libfieldplotter/CMakeFiles/fieldplotter.dir/build.make src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Assets.cpp.s
-.PHONY : graphics/Assets.cpp.s
-
 graphics/Camera.o: graphics/Camera.cpp.o
 
 .PHONY : graphics/Camera.o
@@ -205,33 +178,6 @@ graphics/Camera.s: graphics/Camera.cpp.s
 graphics/Camera.cpp.s:
 	cd /home/john/Desktop/Field-Plotter-GLFW && $(MAKE) -f src/libfieldplotter/CMakeFiles/fieldplotter.dir/build.make src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.s
 .PHONY : graphics/Camera.cpp.s
-
-graphics/Options.o: graphics/Options.cpp.o
-
-.PHONY : graphics/Options.o
-
-# target to build an object file
-graphics/Options.cpp.o:
-	cd /home/john/Desktop/Field-Plotter-GLFW && $(MAKE) -f src/libfieldplotter/CMakeFiles/fieldplotter.dir/build.make src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Options.cpp.o
-.PHONY : graphics/Options.cpp.o
-
-graphics/Options.i: graphics/Options.cpp.i
-
-.PHONY : graphics/Options.i
-
-# target to preprocess a source file
-graphics/Options.cpp.i:
-	cd /home/john/Desktop/Field-Plotter-GLFW && $(MAKE) -f src/libfieldplotter/CMakeFiles/fieldplotter.dir/build.make src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Options.cpp.i
-.PHONY : graphics/Options.cpp.i
-
-graphics/Options.s: graphics/Options.cpp.s
-
-.PHONY : graphics/Options.s
-
-# target to generate assembly for a file
-graphics/Options.cpp.s:
-	cd /home/john/Desktop/Field-Plotter-GLFW && $(MAKE) -f src/libfieldplotter/CMakeFiles/fieldplotter.dir/build.make src/libfieldplotter/CMakeFiles/fieldplotter.dir/graphics/Options.cpp.s
-.PHONY : graphics/Options.cpp.s
 
 graphics/Renderer.o: graphics/Renderer.cpp.o
 
@@ -272,15 +218,9 @@ help:
 	@echo "... computation/vectorfield.o"
 	@echo "... computation/vectorfield.i"
 	@echo "... computation/vectorfield.s"
-	@echo "... graphics/Assets.o"
-	@echo "... graphics/Assets.i"
-	@echo "... graphics/Assets.s"
 	@echo "... graphics/Camera.o"
 	@echo "... graphics/Camera.i"
 	@echo "... graphics/Camera.s"
-	@echo "... graphics/Options.o"
-	@echo "... graphics/Options.i"
-	@echo "... graphics/Options.s"
 	@echo "... graphics/Renderer.o"
 	@echo "... graphics/Renderer.i"
 	@echo "... graphics/Renderer.s"
