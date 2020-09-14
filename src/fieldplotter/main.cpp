@@ -19,10 +19,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             renderer->getCamera()->moveLinear(-0.1f,-0.0f,0.0f);
             break;
             case(GLFW_KEY_A):
-            renderer->getCamera()->moveLinear(0.0f,0.0f,0.1f);
+            renderer->getCamera()->moveLinear(0.0f,0.0f,-0.1f);
             break;
             case(GLFW_KEY_D):
-            renderer->getCamera()->moveLinear(0.0f,0.0f,-0.1f);
+            renderer->getCamera()->moveLinear(0.0f,0.0f,0.1f);
             break;
             case(GLFW_KEY_R):
             renderer->getCamera()->moveLinear(0.0f,-0.1f,0.0f);
@@ -58,6 +58,11 @@ void cursor_position_callback(GLFWwindow * window, double xpos, double ypos)
   renderer->getCamera()->moveCamera((int)xpos,(int)ypos);
 }
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
 
 
 #define FP_MAINMETHOD
@@ -85,6 +90,7 @@ int main() {
     glfwSetScrollCallback(window, scroll_callback);
     glfwSetCursorPosCallback(window, cursor_position_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwMakeContextCurrent(window);
     glewExperimental=GL_TRUE;
     GLenum glewinitialized = glewInit();
@@ -92,7 +98,7 @@ int main() {
         cout << "GLEW FAILED TO INITIALIZE!\n";
     }
     cout << "GLEW initialized.. Instantiating renderer\n";
-    debug_vectorfield = new VectorField(0.5f,10);//separation,dimension
+    debug_vectorfield = new VectorField(0.2f,4);//separation,dimension
     cout << "Making renderer\n";
     renderer = new Renderer(debug_vectorfield);
     cout << "Beginning render loop\n";

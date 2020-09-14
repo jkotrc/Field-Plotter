@@ -23,6 +23,8 @@ fieldplotter.h
 /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/Debug.h
 stdio.h
 -
+cmath
+-
 
 /home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/fieldplotter.h
 GL/glew.h
@@ -46,6 +48,34 @@ glm/gtc/matrix_transform.hpp
 glm/gtx/rotate_vector.hpp
 -
 glm/gtc/matrix_inverse.hpp
+-
+
+/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Arrow.h
+glm/glm.hpp
+-
+
+/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Camera.cpp
+../fieldplotter.h
+/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/fieldplotter.h
+../Debug.h
+/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/Debug.h
+iostream
+-
+
+/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Renderer.cpp
+../fieldplotter.h
+/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/fieldplotter.h
+../Debug.h
+/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/Debug.h
+Arrow.h
+/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Arrow.h
+Shaders.h
+/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Shaders.h
+stdio.h
+-
+
+/home/john/Desktop/Field-Plotter-GLFW/src/libfieldplotter/graphics/Shaders.h
+string
 -
 
 include/GL/glew.h

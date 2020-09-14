@@ -47,7 +47,7 @@ typedef struct Vector {
 /*
  * A vector field class that creates a N*N*N dimensional cube of vectors, each separated by a certain spatial distance
 */
-//TODO: Should maybe be a struct to ensure compatibility with Fortran or even CUDA, should I choose to use it to compute the vector field
+//TODO: Integrate this with computational code
 class VectorField {
 	private:
 		//TODO: Convert spatial and visible separations to a single "separation" value, calculated by the user-inputted scale
@@ -63,9 +63,10 @@ class VectorField {
 		void setVector(Vector v);
 		void setVectorAt(Point p, float i, float j, float k);
 		int getDimension();
+		int getAmount();
+
 		void getVectorComponentBuffer(GLuint* tag, int attribute_index);
 		void getVectorPositionBuffer(GLuint* tag, int attribute_index);
-
 };
 
 class Camera {
@@ -111,6 +112,7 @@ class Renderer {
 		
 		GLuint vao;
 		GLuint programID;
+		GLuint axisProgramID;
 		GLuint mvpID;
 
 		bool glInitialized;

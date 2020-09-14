@@ -2,10 +2,7 @@
 
 #include <string>
 
-
 namespace Shaders {
-	
-	
 const std::string ARROW_VERTEXSHADER =
 R"LITERAL(
 #version 400 core
@@ -15,15 +12,8 @@ uniform vec2 uZRange;
 
 layout (location = 0) in vec3 ivPosition;
 layout (location = 1) in vec3 ivNormal;
-
-//vec3 ivInstanceOffset=vec3(0,0,0);
-//vec3 ivInstanceDirection=vec3(-1,1,1);
 layout (location = 2) in vec3 ivInstanceOffset;
 layout (location = 3) in vec3 ivInstanceDirection;
-
-//making these non-uniform
-//uniform vec3 ivInstanceOffset;
-//uniform vec3 ivInstanceDirection;
 
 out vec3 vfPosition;
 out vec3 vfNormal;
@@ -51,14 +41,16 @@ mat3 matrixFromDirection(vec3 direction) {
 }
 
 vec3 colormap(vec3 direction) {
-     vec3 color_down = vec3(0.0, 0.0, 1.0);
-     vec3 color_up = vec3(1.0, 0.0, 0.0);
-     return mix(color_down, color_up, normalize(direction).z*0.5+0.5);
+    vec3 color_small = vec3(0.0,0.0,1.0);
+    vec3 color_big = vec3(1.0,0.0,0.0);
+    //right now between 3 and 15
+    return mix(color_small, color_big, (length(direction)-1.4));
 }
 
 void main(void) {
     float direction_length = length(ivInstanceDirection);
-    vfColor = colormap(normalize(ivInstanceDirection));
+    //vfColor = colormap(normalize(ivInstanceDirection));
+    vfColor = colormap(ivInstanceDirection);
     mat3 instanceMatrix = 1 * matrixFromDirection(ivInstanceDirection/direction_length);
     vfNormal = (uModelviewMatrix * vec4(instanceMatrix*ivNormal, 0.0)).xyz;
     vfPosition = (uModelviewMatrix * vec4(instanceMatrix*ivPosition+ivInstanceOffset, 1.0)).xyz;
@@ -88,24 +80,27 @@ void main(void) {
 }
 )LITERAL";
 
-const std::string EMPTY_VERTEXSHADER =
+const std::string AXES_VERTEXSHADER =
 R"LITERAL(
 #version 400 core
 uniform mat4 MVP;
-layout(location=0) in vec3 vfPosition;
+
+in vec4 pos;
 
 void main(void) {
-  gl_Position =  MVP * vec4(vfPosition,1);
+  gl_Position =  MVP * pos;
 }
 )LITERAL";
 
-const std::string EMPTY_FRAGMENTSHADER =
+const std::string AXES_FRAGMENTSHADER =
 R"LITERAL(
 #version 400 core
-out vec3 color;
+
+in vec3 color;
+//out vec3 color;
 
 void main(void) {
-  color = vec3(1,0,0);
+  gl_Color = color;
 }
 )LITERAL";
 }
