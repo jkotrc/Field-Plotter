@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../out/libs/libfieldplotter.a  CMakeFiles/fieldplotter.dir/computation/vectorfield.cpp.o CMakeFiles/fieldplotter.dir/graphics/Camera.cpp.o CMakeFiles/fieldplotter.dir/graphics/Renderer.cpp.o
+/usr/bin/ranlib ../../out/libs/libfieldplotter.a
