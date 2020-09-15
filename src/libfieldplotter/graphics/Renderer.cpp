@@ -13,17 +13,25 @@ const vec4 axis_vectors[3] = { vec4(1.0,0.0,0.0,1.0),vec4(0.0,1.0,0.0,1.0), vec4
 //TODO: Make this configurable in the preferences
 #define ROLLSPEED 0.5F
 
-Renderer::Renderer(VectorField* vf) :
+Renderer::Renderer(VectorField* vf, int w, int h) :
 	projectionMat(glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f)),
 	debugModel(mat4(1.0f)),
 	viewMat(rotate(mat4(1.0f), 1.0f, vec3(1.0, 0.0, 0.0))),
 	camera(new Camera(ROLLSPEED)),
 	arrowModel(new Model),
-	vectorfield(vf)
+	vectorfield(vf),
+	height(h),
+	width(w)
 {
 	DEBUGSTRING("Renderer", "starting constructor");
 	loadArrowModel(arrowModel->vertices, arrowModel->normals, arrowModel->indices);
 	this->initGL();
+}
+
+void Renderer::resizeViewport(int w, int h) {
+	width=w;
+	height=h;
+	glViewport(0, 0, width, height);
 }
 
 inline void Renderer::initGL() {

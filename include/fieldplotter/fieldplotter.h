@@ -113,6 +113,8 @@ class Renderer {
 		glm::mat4 projectionMat;
 		glm::mat4 debugModel;
 		glm::mat4 viewMat;
+		int width;
+		int height;
 
 		Model* arrowModel;
 
@@ -121,11 +123,12 @@ class Renderer {
 		inline void drawAxes();
 
 	public:
-		Renderer(VectorField* vf);
+		Renderer(VectorField* vf, int w, int h);
 		~Renderer();
 		void render();
 		void updateVectorField(VectorField* newVectorField);
 		void debugRenderLattice();
+		void resizeViewport(int w, int h);
 		Camera* getCamera();
 };
 

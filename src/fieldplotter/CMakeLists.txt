@@ -8,6 +8,10 @@ set(FIELDPLOTTER_MODULES .)
 
 add_executable (frontend main.cpp)
 
+#find_package(glfw3 REQUIRED)
 
-find_package(glfw3 REQUIRED)
-target_link_libraries(frontend libGLEW.a GL glfw fieldplotter)
+IF(WIN32)
+target_link_libraries(frontend glew32s.lib glfw3.lib fieldplotter)
+ELSE()
+target_link_libraries(frontend libGLEW.a glfw fieldplotter)
+ENDIF()

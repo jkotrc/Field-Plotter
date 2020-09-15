@@ -76,7 +76,8 @@ void cursor_position_callback(GLFWwindow * window, double xpos, double ypos)
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    glViewport(0, 0, width, height);
+	renderer->resizeViewport(width,height);
+    //glViewport(0, 0, width, height);
 }
 
 
@@ -116,7 +117,7 @@ int main() {
     cout << "GLEW initialized.. Instantiating renderer\n";
     debug_vectorfield = new VectorField(0.15f,5);//separation,dimension
     cout << "Making renderer\n";
-    renderer = new Renderer(debug_vectorfield);
+    renderer = new Renderer(debug_vectorfield,800,600);
     cout << "Beginning render loop\n";
     while(!glfwWindowShouldClose(window)){
         renderer->render();

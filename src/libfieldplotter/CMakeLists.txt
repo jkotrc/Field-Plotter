@@ -17,6 +17,10 @@ message("OUTPUT WILL BE PUT IN ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
 add_library (fieldplotter ${LIBFIELDPLOTTER_SOURCES})
 
-find_package(glfw3 REQUIRED)
+#find_package(glfw3 REQUIRED)
 
+if(WIN32)
+target_link_libraries(fieldplotter glew32s.lib glfw3.lib opengl32)
+ELSE()
 target_link_libraries(fieldplotter libGLEW.a GL glfw)
+ENDIF()
