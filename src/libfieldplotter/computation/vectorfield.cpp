@@ -1,4 +1,4 @@
-#include "../fieldplotter.h"
+#include <fieldplotter/fieldplotter.h>
 #include "../Debug.h"
 
 #include <stdio.h>
@@ -26,9 +26,9 @@ VectorField::VectorField(float spatial_separation, int dimension)
 		for (int j = 0; j < 3*dimension; j+=3) {
 			for (int i = 0; i < 3*dimension; i+=3) {
 				const int index = i+dimension*(j+dimension*k);
-				vectors[index] = -x*5.5;
-				vectors[index+1]= -y*5.5;
-				vectors[index+2] = -z*5.5;
+				vectors[index] = x*5.5;
+				vectors[index+1]= y*5.5;
+				vectors[index+2] = z*5.5;
 				positions[index]=x;
 				positions[index+1]=y;
 				positions[index+2]=z;

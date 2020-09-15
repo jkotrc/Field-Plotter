@@ -1,4 +1,4 @@
-#include "../fieldplotter.h"
+#include <fieldplotter/fieldplotter.h>
 #include "../Debug.h"
 #include "Arrow.h"
 #include "Shaders.h"

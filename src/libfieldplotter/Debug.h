@@ -1,13 +1,13 @@
 #pragma once
 
 #define FIELDPLOTTER_DEBUG
+#include <fieldplotter/fieldplotter.h>
 
 
 #include <stdio.h>
 #include <string>
 #include <glm/glm.hpp>
 
-#include "fieldplotter.h"
 
 #define TAG(t) "["+t+"] "
 

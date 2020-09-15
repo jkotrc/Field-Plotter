@@ -1,6 +1,4 @@
-//#include "Camera.h"
-
-#include "../fieldplotter.h"
+#include <fieldplotter/fieldplotter.h>
 #include "../Debug.h"
 
 

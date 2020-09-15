@@ -98,7 +98,7 @@ int main() {
         cout << "GLEW FAILED TO INITIALIZE!\n";
     }
     cout << "GLEW initialized.. Instantiating renderer\n";
-    debug_vectorfield = new VectorField(0.2f,4);//separation,dimension
+    debug_vectorfield = new VectorField(0.15f,5);//separation,dimension
     cout << "Making renderer\n";
     renderer = new Renderer(debug_vectorfield);
     cout << "Beginning render loop\n";

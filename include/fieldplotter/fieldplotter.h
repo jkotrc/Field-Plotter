@@ -58,6 +58,7 @@ class VectorField {
 		float* positions; //positions of the lattice
 	public:
 		VectorField(float separation, int cubic_dimension);
+		~VectorField();
 		Vector getVector(Point p);	//Return vector at Point p
 		Vector getVector(int index);	//Return vector at index of an array
 		void setVector(Vector v);
@@ -131,7 +132,9 @@ class Renderer {
 
 	public:
 		Renderer(VectorField* vf);
+		~Renderer();
 		void render();
+		void updateVectorField(VectorField* newVectorField);
 		void debugRenderLattice();
 		Camera* getCamera();
 };
