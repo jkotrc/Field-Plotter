@@ -37,10 +37,18 @@ typedef struct PointCharge {
 	PointCharge(float x, float y, float z, float charge) : p(Point(x, y, z)), charge(charge) {}
 } PointCharge;
 
+//a wrapper struct with pointers to the point and components of some vector
+#define SQUARE(A) (A)*(A)
 typedef struct Vector {
-	float i, j, k;	//vector components
-	Vector() : i(0), j(0), k(0) {}
-	Vector(float i, float j, float k) : i(i), j(j), k(k) {}
+	float* pos;
+	float* component;
+	Vector(float* pos, float* component) : pos(pos),component(component) {}
+	float magnitude() {
+		const float x = component[0];
+		const float y = component[1];
+		const float z = component[2];
+		return (float)sqrt(x*x+y*y+z*z);
+	}
 } Vector;
 
 
@@ -54,18 +62,26 @@ class VectorField {
 		float spatial_separation;
 		int dimension;
 		int N;
+		
 		float* vectors;	//array of vectors
 		float* positions; //positions of the lattice
+		float lowerBound;
+		float upperBound;
+
 	public:
 		VectorField(float separation, int cubic_dimension);
 		~VectorField();
 		Vector getVector(Point p);	//Return vector at Point p
-		Vector getVector(int index);	//Return vector at index of an array
-		Point indexCoords(int i, int j, int k);
+		Vector getVector(int index);	//Return vector pointer at index of an array
+		Point* getPoint(int index);
 		void setVector(Vector v);
 		void setVectorAt(Point p, float i, float j, float k);
 		int getDimension();
 		int getAmount();
+		float getUpperBound();
+		float getLowerBound();
+		void setUpperBound(float ub);
+		void setLowerBound(float lb);
 		void getVectorComponentBuffer(GLuint* tag, int attribute_index);
 		void getVectorPositionBuffer(GLuint* tag, int attribute_index);
 };

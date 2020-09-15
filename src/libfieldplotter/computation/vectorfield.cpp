@@ -27,17 +27,17 @@ VectorField::VectorField(float spatial_separation, int dimension)
 			for (int i = 0; i < 3*dimension; i+=3) {
 				const int index = i+dimension*(j+dimension*k);
 
-				vectors[index] = x*5.5;
-				vectors[index+1]= y*5.5;
-				vectors[index+2] = z*5.5;
+				//vectors[index] = x*5.5;
+				//vectors[index+1]= y*5.5;
+				//vectors[index+2] = z*5.5;
+
+				vectors[index] = 0;
+				vectors[index + 1] = 1;
+				vectors[index + 2] = 0;
 
 				positions[index]=x;
 				positions[index+1]=y;
 				positions[index+2]=z;
-				printf("doing vector number %u... that is indicies (%u,%u,%u)\n",index/3,index,index+1,index+2);
-				printf("component vector: (%f,%f,%f)\n",vectors[index],vectors[index+1],vectors[index+2]);
-				printf("position vector: (%f,%f,%f)\n",positions[index],positions[index+1],positions[index+2]);
-				printf("magnitude: %f\n",((vectors[index]*vectors[index]+vectors[index+1]*vectors[index+1]+vectors[index+2]*vectors[index+2])-1.5f)/10.0f);
 				x += spatial_separation;
 			}
 			x = cornerVectorCoords;
@@ -54,8 +54,26 @@ VectorField::~VectorField() {
 	delete vectors;
 	delete positions;
 }
-Point indexCoords(int i, int j, int k) {
-	return Point(0,0,0);
+
+
+//broken
+Point* VectorField::getPoint(int idx) {
+	const float cornerVectorCoords = -spatial_separation * ((float)dimension - 1) / 2;
+	Point ret = Point(cornerVectorCoords, cornerVectorCoords, cornerVectorCoords);
+	
+	//converts a linear index that goes from 0...N^3 into a cubic index (k,j,i)
+	int index = idx;
+	const int div = dimension;
+	int k = index / (dimension * dimension);
+	index = index % (dimension * dimension);
+	int j = index / dimension;
+	int i = index % dimension;
+	//then uses it to find x,y,z based on spatial separation
+
+	ret.x += spatial_separation * i;
+	ret.y += spatial_separation * j;
+	ret.z += spatial_separation * k;
+	return &ret;
 }
 
 void VectorField::getVectorComponentBuffer(GLuint* tag, int attribute_index) {
@@ -89,9 +107,22 @@ int VectorField::getAmount() {
 }
 
 Vector VectorField::getVector(int index) {
-	return Vector(vectors[index],vectors[index+1],vectors[index+2]);
+	return Vector(&positions[3*index],&vectors[3*index]);
 }
 Vector VectorField::getVector(Point p) {
 	//TODO: Implement this properly
-	return Vector(0.0f,0.0f,0.0f);
+	return Vector(0,0);
+	//return Vector();
+}
+float VectorField::getUpperBound() {
+	return upperBound;
+}
+float VectorField::getLowerBound() {
+	return lowerBound;
+}
+void VectorField::setUpperBound(float ub) {
+	upperBound = ub;
+}
+void VectorField::setLowerBound(float lb) {
+	lowerBound = lb;
 }

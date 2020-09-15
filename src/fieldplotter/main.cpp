@@ -13,6 +13,14 @@ float yHistory;
 
 #define SCROLL_SENSITIVITY -0.1f
 
+/*DELETE*/
+typedef struct {
+    PointCharge* charges;
+    int n_charges;
+} PhysicsConfiguration;
+extern void compute_electric_field(VectorField* vf, PhysicsConfiguration configuration);
+
+
 template <typename T> float sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
@@ -98,11 +106,18 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 
 
+
+
+
 #define FP_MAINMETHOD
 #ifndef FP_MAINMETHOD
 
 #else
 int main() {
+
+
+
+
     cout << "Starting...\n";
     
     cout << "VectorField made\n";
@@ -131,9 +146,19 @@ int main() {
         cout << "GLEW FAILED TO INITIALIZE!\n";
     }
     cout << "GLEW initialized.. Instantiating renderer\n";
-    debug_vectorfield = new VectorField(0.15f,5);//separation,dimension
+
+    debug_vectorfield = new VectorField(0.15f,7);//separation,dimension
+    PhysicsConfiguration c;
+    PointCharge singlecharge[2] = { PointCharge(Point(0.0f, 0.0f, 0.0f), -1),PointCharge(Point(0.0f, 0.4f, 0.0f), 1) };
+    c.charges = singlecharge;
+    c.n_charges = 2;
+    compute_electric_field(debug_vectorfield, c);
+    printf("bounds: (%f,%f)\n", debug_vectorfield->getLowerBound(), debug_vectorfield->getUpperBound());
     cout << "Making renderer\n";
     renderer = new Renderer(debug_vectorfield,800,600);
+
+    
+    
     cout << "Beginning render loop\n";
     while(!glfwWindowShouldClose(window)){
         renderer->render();

@@ -10,6 +10,9 @@ uniform mat4 uProjectionMatrix;
 uniform mat4 uModelviewMatrix;
 uniform vec2 uZRange;
 
+uniform float lowerBound;
+uniform float upperBound;
+
 layout (location = 0) in vec3 ivPosition;
 layout (location = 1) in vec3 ivNormal;
 layout (location = 2) in vec3 ivInstanceOffset;
@@ -44,7 +47,7 @@ vec3 colormap(vec3 direction) {
     vec3 color_small = vec3(0.0,0.0,1.0);
     vec3 color_big = vec3(1.0,0.0,0.0);
     //right now between 3 and 15
-    return mix(color_small, color_big, (length(direction)-1.4));
+    return mix(color_small, color_big, (length(direction)-lowerBound)/(upperBound-lowerBound));
 }
 
 void main(void) {

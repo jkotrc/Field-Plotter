@@ -85,6 +85,9 @@ void Renderer::render() {
 	glUniformMatrix4fv(glGetUniformLocation(programID, "uProjectionMatrix"), 1, false, glm::value_ptr(projectionMat));
 	glUniformMatrix4fv(glGetUniformLocation(programID, "uModelviewMatrix"), 1, false, glm::value_ptr(model_view_matrix));
 	glUniform3f(glGetUniformLocation(programID, "uLightPosition"), light_position[0], light_position[1], light_position[2]);
+	//lowerBound, upperBound
+	glUniform1f(glGetUniformLocation(programID, "lowerBound"), vectorfield->getLowerBound());
+	glUniform1f(glGetUniformLocation(programID, "upperBound"), vectorfield->getUpperBound());
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 	glDrawElementsInstanced(GL_TRIANGLES,arrowModel->indices.size(),GL_UNSIGNED_INT,(void*)0,vectorfield->getAmount());

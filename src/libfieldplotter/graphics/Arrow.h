@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 
-#define SCALE 1
+#define SCALE 0.6
 #define LEVEL_OF_DETAIL 10
 #define Z_OFFSET (CYLINDER_HEIGHT - CONE_HEIGHT) / 2
 #define CONE_HEIGHT 0.06*SCALE
