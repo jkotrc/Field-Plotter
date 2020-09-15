@@ -6,11 +6,14 @@ using namespace std;
 GLFWwindow* window;
 Renderer* renderer;
 VectorField* debug_vectorfield;
+bool lmbPressed = false;
+float xHistory;
+float yHistory;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     //if (key == GLFW_KEY_E && action == GLFW_PRESS)
-    if(action == GLFW_PRESS) {
+    //if(action == GLFW_REPEAT || action == GLFW_PRESS) {
         switch(key) {
             case(GLFW_KEY_W):
             renderer->getCamera()->moveLinear(0.1f,0.0f,0.0f);
@@ -30,10 +33,22 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             case(GLFW_KEY_F):
             renderer->getCamera()->moveLinear(0.0f,0.1f,0.0f);
             break;
+            case(GLFW_KEY_UP):
+            renderer->getCamera()->moveCamera(0.0f,0.1f);
+            break;
+            case(GLFW_KEY_DOWN):
+            renderer->getCamera()->moveCamera(0.0f,-0.1f);
+            break;
+            case(GLFW_KEY_LEFT):
+            renderer->getCamera()->moveCamera(0.1f,0.0f);
+            break;
+            case(GLFW_KEY_RIGHT):
+            renderer->getCamera()->moveCamera(-0.1f,0.0f);
+            break;
             default:
             break;
         }
-    }
+    //}
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
@@ -42,20 +57,21 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        double xpos,ypos;
-        glfwGetCursorPos(window,&xpos,&ypos);
-        renderer->getCamera()->grabCamera((int)xpos,(int)ypos);
+        lmbPressed=true;
     } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-        renderer->getCamera()->releaseCamera();
+        lmbPressed=false;
     }
 }
-
+#define SENSITIVITY 0.01f
 void cursor_position_callback(GLFWwindow * window, double xpos, double ypos)  
 {
-  if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
-     return;
-  }
-  renderer->getCamera()->moveCamera((int)xpos,(int)ypos);
+    if (lmbPressed) {
+        const float dx = SENSITIVITY*((float)xpos-xHistory);
+        const float dy = SENSITIVITY*((float)ypos-yHistory);
+    renderer->getCamera()->moveCamera(-dx,dy);
+    }
+    xHistory=(float)xpos;
+    yHistory=(float)ypos;
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)

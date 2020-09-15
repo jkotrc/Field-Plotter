@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 
 #define SCALE 1
-#define LEVEL_OF_DETAIL 6
+#define LEVEL_OF_DETAIL 10
 #define Z_OFFSET (CYLINDER_HEIGHT - CONE_HEIGHT) / 2
 #define CONE_HEIGHT 0.06*SCALE
 #define CYLINDER_HEIGHT 0.08*SCALE

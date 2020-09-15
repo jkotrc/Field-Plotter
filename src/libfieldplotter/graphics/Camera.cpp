@@ -5,47 +5,27 @@
 using namespace glm;
 Camera::Camera(GLfloat roll_speed)
     :
-    currentPos(vec3(1, 0, 0)),
-    prevPos(vec3(1, 0, 0)),
+    cameraPosition(vec3(1, 0, 0)),
     sphericalCoord(vec2(0,0)),
     origin(vec3(0,0,0)),
     angle(0.0f),
-    rotAxis(vec2(1.0f,0.0f)),
-    viewMat(lookAt(currentPos, origin, vec3(0,1,0)))
+    phi(0.0f),
+    up(vec3(0,1,0)),
+    viewMat(lookAt(cameraPosition+origin, origin, vec3(0,1,0)))
 {}
 
 vec3 Camera::getPos() {
-    return this->currentPos;
+    return this->cameraPosition;
 }
 
-void Camera::grabCamera(int x, int y) {
-    this->screenCoord = vec2(x, y);
-}
-
-
-#include <iostream>
-#define SENSITIVITY 0.001f
-using namespace std;
-void Camera::moveCamera(int newX, int newY) {
-
-    float deltaX = SENSITIVITY*(newX - screenCoord.x);
-    float deltaY = SENSITIVITY*(newY - screenCoord.y);
-
-
-    angle = prevAngle + deltaX;
-    rotAxis[0] = cos(angle);
-    rotAxis[1] = sin(angle);
-    currentPos = rotateY(prevPos, deltaX);
-    const vec4 rotation =glm::rotate(deltaY, vec3(rotAxis[0], 0, rotAxis[1]))*vec4(currentPos.x,currentPos.y,currentPos.z,1);
-    currentPos = vec3(rotation.x, rotation.y, rotation.z);
-    //currentPos = vec3(prevPos.x + changeX, prevPos.y + changeY, prevPos.z + changeZ);
-    viewMat = lookAt(currentPos, origin, vec3(0, 1, 0));
-}
-
-void Camera::releaseCamera() {
-    prevPos = currentPos;
-    prevAngle = angle;
-
+void Camera::moveCamera(float dtheta, float dphi) {
+    angle+=dtheta;
+    phi+=dphi;
+    cameraPosition=rotateY(cameraPosition, dtheta);
+    vec3 axis_of_rotation = vec3(sin(angle),0,cos(angle));
+    up = vec3(0,cos(phi),0);
+    cameraPosition = glm::rotate(cameraPosition,dphi,axis_of_rotation);
+    viewMat=lookAt(cameraPosition+origin,origin,up);
 }
 
 mat4 Camera::getViewMatrix() {
@@ -53,11 +33,8 @@ mat4 Camera::getViewMatrix() {
 }
 
 void Camera::moveLinear(float x, float y, float z) {
-    viewMat=translate(viewMat,vec3(x,y,z));
+    origin.x+=x;
+    origin.y+=y;
+    origin.z+=z;
+    viewMat=lookAt(cameraPosition+origin,origin,up);
 }
-void Camera::rotate(float x, float y, float z) {
-    //vec3 axis = vec3(x,y,z);
-    //axis=glm::normalize(axis);
-    //viewMat=rotate(viewMat, 1,axis);
-}
-

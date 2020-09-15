@@ -74,32 +74,22 @@ class Camera {
 	private:
 		float prevAngle;
 		float angle;
-		glm::vec2 rotAxis;
-		
-		glm::vec3 currentPos;
-		glm::vec3 prevPos;
+		float phi;
+		glm::vec3 up;
+
+		glm::vec3 cameraPosition;
 		glm::vec3 origin;
-		
 		
 		glm::vec2 screenCoord;
 		glm::vec2 sphericalCoord;
 
-		//TODO: Make a container for these
 		glm::mat4 viewMat;
-		//glm::mat4 prevViewMat;
-
 	public:
 	Camera(GLfloat roll_speed);
-
 	glm::mat4 getViewMatrix();
 	glm::vec3 getPos();
-
 	void moveLinear(float x, float y, float z);
-	void rotate(float x, float y, float z);
-
-	void grabCamera(int x, int y);
-	void moveCamera(int x, int y);
-	void releaseCamera();
+	void moveCamera(float dtheta, float dphi);
 };
 
 class Renderer {
