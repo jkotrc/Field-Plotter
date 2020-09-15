@@ -1,13 +1,2 @@
 build/
 out/
-CMakeFiles/
-CMakeCache.txt
-CMakeSettings.json
-Makefile
-*.cmake
-*.vcxproj
-*.user
-*.filters
-x64/
-*.sln
-.vs
