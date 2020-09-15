@@ -5,8 +5,8 @@
 using namespace glm;
 Camera::Camera(GLfloat roll_speed)
     :
-    cameraPosition(vec3(1, 0, 0)),
-    sphericalCoord(vec2(0,0)),
+    cameraPosition(vec3(4, 0, 0)),
+    radius(0.0f),
     origin(vec3(0,0,0)),
     angle(0.0f),
     phi(0.0f),
@@ -16,6 +16,15 @@ Camera::Camera(GLfloat roll_speed)
 
 vec3 Camera::getPos() {
     return this->cameraPosition;
+}
+
+void Camera::scroll(float amount) {
+    radius += amount;    
+    const float dx = cameraPosition.x * amount;
+    const float dy = cameraPosition.y * amount;
+    const float dz = cameraPosition.z * amount;
+    cameraPosition += vec3(dx,dy,dz);
+    viewMat = lookAt(cameraPosition+origin, origin, up);
 }
 
 void Camera::moveCamera(float dtheta, float dphi) {

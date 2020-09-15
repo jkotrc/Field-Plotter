@@ -14,7 +14,7 @@ const vec4 axis_vectors[3] = { vec4(1.0,0.0,0.0,1.0),vec4(0.0,1.0,0.0,1.0), vec4
 #define ROLLSPEED 0.5F
 
 Renderer::Renderer(VectorField* vf, int w, int h) :
-	projectionMat(glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f)),
+	projectionMat(glm::perspective(glm::radians(45.0f), (float)w/h, 0.1f, 100.0f)),
 	debugModel(mat4(1.0f)),
 	viewMat(rotate(mat4(1.0f), 1.0f, vec3(1.0, 0.0, 0.0))),
 	camera(new Camera(ROLLSPEED)),
@@ -31,6 +31,7 @@ Renderer::Renderer(VectorField* vf, int w, int h) :
 void Renderer::resizeViewport(int w, int h) {
 	width=w;
 	height=h;
+	projectionMat = glm::perspective(glm::radians(45.0f), (float)w / h, 0.1f, 100.0f);
 	glViewport(0, 0, width, height);
 }
 

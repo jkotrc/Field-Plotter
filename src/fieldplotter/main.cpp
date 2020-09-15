@@ -7,13 +7,32 @@ GLFWwindow* window;
 Renderer* renderer;
 VectorField* debug_vectorfield;
 bool lmbPressed = false;
+bool altPressed = false;
 float xHistory;
 float yHistory;
 
+#define SCROLL_SENSITIVITY -0.1f
+
+template <typename T> float sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+
+    renderer->getCamera()->scroll(sgn(yoffset)*SCROLL_SENSITIVITY);
+}
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    //if (key == GLFW_KEY_E && action == GLFW_PRESS)
-    //if(action == GLFW_REPEAT || action == GLFW_PRESS) {
+        
+    if (key == GLFW_KEY_LEFT_ALT) {
+        if (GLFW_PRESS) {
+            altPressed = true;
+        }
+        else if (GLFW_RELEASE) {
+            altPressed = false;
+        }
+    }
         switch(key) {
             case(GLFW_KEY_W):
             renderer->getCamera()->moveLinear(0.1f,0.0f,0.0f);
@@ -48,12 +67,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             default:
             break;
         }
-    //}
 }
 
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-}
+
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
@@ -68,7 +84,7 @@ void cursor_position_callback(GLFWwindow * window, double xpos, double ypos)
     if (lmbPressed) {
         const float dx = SENSITIVITY*((float)xpos-xHistory);
         const float dy = SENSITIVITY*((float)ypos-yHistory);
-    renderer->getCamera()->moveCamera(-dx,dy);
+        renderer->getCamera()->moveCamera(-dx,dy);
     }
     xHistory=(float)xpos;
     yHistory=(float)ypos;

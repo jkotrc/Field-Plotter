@@ -61,34 +61,30 @@ class VectorField {
 		~VectorField();
 		Vector getVector(Point p);	//Return vector at Point p
 		Vector getVector(int index);	//Return vector at index of an array
+		Point indexCoords(int i, int j, int k);
 		void setVector(Vector v);
 		void setVectorAt(Point p, float i, float j, float k);
 		int getDimension();
 		int getAmount();
-
 		void getVectorComponentBuffer(GLuint* tag, int attribute_index);
 		void getVectorPositionBuffer(GLuint* tag, int attribute_index);
 };
 
 class Camera {
 	private:
-		float prevAngle;
 		float angle;
 		float phi;
+		float radius;
 		glm::vec3 up;
-
 		glm::vec3 cameraPosition;
 		glm::vec3 origin;
-		
-		glm::vec2 screenCoord;
-		glm::vec2 sphericalCoord;
-
 		glm::mat4 viewMat;
 	public:
 	Camera(GLfloat roll_speed);
 	glm::mat4 getViewMatrix();
 	glm::vec3 getPos();
 	void moveLinear(float x, float y, float z);
+	void scroll(float amount);
 	void moveCamera(float dtheta, float dphi);
 };
 
