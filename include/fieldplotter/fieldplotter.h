@@ -2,6 +2,7 @@
 #include <fieldplotter/commonheaders.h>
 #include <fieldplotter/graphics.h>
 #include <fieldplotter/vectors.h>
+#include <fieldplotter/computation.h>
 
 //this is an edit
 /**

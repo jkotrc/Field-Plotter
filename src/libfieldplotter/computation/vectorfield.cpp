@@ -47,6 +47,8 @@ VectorField::VectorField(float spatial_separation, int dimension)
 	}
 	Debug::debugString("VectorField","VF initialized");
 	//this->initGL();
+	lowerBound=0.0f;
+	upperBound=1.0f;
 }
 
 VectorField::~VectorField() {

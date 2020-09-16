@@ -11,6 +11,7 @@ bool lmbPressed = false;
 bool altPressed = false;
 float xHistory;
 float yHistory;
+PhysicsConfiguration c;
 
 #define SCROLL_SENSITIVITY -0.1f
 
@@ -105,7 +106,6 @@ void cursor_position_callback(GLFWwindow * window, double xpos, double ypos)
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	renderer->resizeViewport(width,height);
-    //glViewport(0, 0, width, height);
 }
 
 
@@ -146,15 +146,17 @@ int main() {
     }
     cout << "GLEW initialized.. Instantiating renderer\n";
 
-    debug_vectorfield = new VectorField(0.2f,10);//separation,dimension
-    //PhysicsConfiguration c;
-
     singlecharge = new PointCharge[N];
     singlecharge[0] = PointCharge(Point(0.0f, 0.0f, 0.4f), -1);
     singlecharge[1] = PointCharge(Point(0.4f, 0.0f, 0.0f), -1);
     singlecharge[2] = PointCharge(Point(0.0f, 0.0f, 0.0f), 1);
-    //c.charges=singlecharge;
-    //c.n_charges = N;
+    c.charges=singlecharge;
+    c.n_charges = N;
+    debug_vectorfield = new VectorField(0.2f,10);//separation,dimension
+    compute_electric_field(debug_vectorfield, c);
+    //PhysicsConfiguration c;
+
+    
 
     
 
