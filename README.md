@@ -9,7 +9,7 @@
 
 ## About Project
 ---
-Field Plotter is a learning tool for AP and IB Physics made as my computer science IA. It plots a customizable interactive 3D plot of the electric field around any user-specified static point charges. The project is divided into two sub-modules: a statically linked library, `libfieldplotter`, and a frontend that uses the library. `libfieldplotter` is platform independent, potentially useful outside the scope of the program and `frontend` will depend on whatever GUI library is used (e.g. Qt, GTK+,...).
+Field Plotter is a learning tool for AP and IB Physics made as my computer science IA. It plots a customizable interactive 3D plot of the electric field around any user-specified static point charges. The project is divided into two sub-modules: a statically linked library, `libfieldplotter`, and a frontend that uses the library. `libfieldplotter` is platform independent, potentially useful outside the scope of the program and `frontend` will depend on whatever GUI library is used (e.g. Qt, GTK+,...). So far, `frontend` is nothing but a GLFW window for debugging purposes.
 	
 ## Technologies
 ---
@@ -31,5 +31,5 @@ in the root directory of this repo.
 
 ### Usage
 ---
-The prototype frontend currently displays a hard-coded vector 4x4 vector field that can be adjusted in the `vectorfield.cpp` source file within `libfieldplotter`. It won't be like this for too long
-![Screenshot](https://i.imgur.com/zoY4jxU.png)
+The prototype frontend currently displays a hard-coded electric field around two point charges that can be adjusted in the `main.cpp` source file within `fieldplotter`. It won't be like this for too long as these parameters will later be changeable by the user.
+![Screenshot](https://imgur.com/a/wwyx66W)
