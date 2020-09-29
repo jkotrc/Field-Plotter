@@ -1,5 +1,4 @@
 #include <fieldplotter/fieldplotter.h>
-#include "../Debug.h"
 
 
 using namespace glm;

@@ -114,7 +114,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 #else
 
-const int N = 3;
+const int N = 2;
 PointCharge* singlecharge;
 int main() {
     cout << "Starting...\n";
@@ -147,9 +147,9 @@ int main() {
     cout << "GLEW initialized.. Instantiating renderer\n";
 
     singlecharge = new PointCharge[N];
-    singlecharge[0] = PointCharge(Point(0.0f, 0.0f, 0.4f), -1);
-    singlecharge[1] = PointCharge(Point(0.4f, 0.0f, 0.0f), -1);
-    singlecharge[2] = PointCharge(Point(0.0f, 0.0f, 0.0f), 1);
+    singlecharge[0] = PointCharge(Point(0.0f, 0.0f, 0.5f), -1);
+    singlecharge[1] = PointCharge(Point(0.0f, 0.0f, -0.5f), 1);
+    //singlecharge[2] = PointCharge(Point(0.0f, 0.0f, 0.0f), 1);
     c.charges=singlecharge;
     c.n_charges = N;
     debug_vectorfield = new VectorField(0.2f,10);//separation,dimension

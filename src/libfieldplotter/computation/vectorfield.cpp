@@ -1,6 +1,5 @@
 #include <fieldplotter/fieldplotter.h>
 
-#include "../Debug.h"
 #include "../graphics/Shaders.h"
 #include <stdio.h>
 #include <cmath>
@@ -10,16 +9,18 @@
 
 	So the origin is actually only present at even-dimensional vector fields at x,y,z = (N/2, N/2, N/2)
 */
+
+using namespace glm;
 VectorField::VectorField(float spatial_separation, int dimension)
 	:
+	Plottable(loadArrowModel()),
 	spatial_separation(spatial_separation),
 	dimension(dimension),
-	N(dimension*dimension*dimension),
-	arrowModel(new Model)
+	N(dimension*dimension*dimension)
 {
 	vectors = new float[3*N];
 	positions = new float[3*N];
-
+	
 	//The coordinates of the corner-most vector in the cube. The loop goes from it to the other edge; chosen such that the cube is centered at (0,0,0)
 	const float cornerVectorCoords = -spatial_separation * ((float)dimension - 1) / 2;	
 	float x = cornerVectorCoords, y=x, z=x;
@@ -28,7 +29,6 @@ VectorField::VectorField(float spatial_separation, int dimension)
 		for (int j = 0; j < 3*dimension; j+=3) {
 			for (int i = 0; i < 3*dimension; i+=3) {
 				const int index = i+dimension*(j+dimension*k);
-
 				vectors[index] = 0;
 				vectors[index + 1] = 1;
 				vectors[index + 2] = 0;
@@ -45,60 +45,42 @@ VectorField::VectorField(float spatial_separation, int dimension)
 		y = cornerVectorCoords;
 		z += spatial_separation;
 	}
-	Debug::debugString("VectorField","VF initialized");
-	//this->initGL();
 	lowerBound=0.0f;
 	upperBound=1.0f;
+
 }
 
 VectorField::~VectorField() {
-	Debug::debugString("VectorField", "destroying vector field");
 	delete vectors;
 	delete positions;
 }
 
-void VectorField::setParent(Scene* parent) {
-	this->parent=parent;
-	initGL();
-}
 
-void VectorField::initGL() {
-	n_buffers=4;
-    buffers = new GLuint[n_buffers];
+
+void VectorField::initGraphics() {
+	Plottable::initGraphics();
+	assert(buffers.size() == size_t(3));
     modelMatrix=mat4(1.0f);
 
-    loadArrowModel(arrowModel->vertices, arrowModel->normals, arrowModel->indices);
+	//there must be a more elegant way of doing this smh
+	buffers.push_back(0);
+	buffers.push_back(0);
 
-    glGenBuffers(1, &buffers[FP_VERTICES]);
-	glBindBuffer(GL_ARRAY_BUFFER, buffers[FP_VERTICES]);
-	glEnableVertexAttribArray(FP_VERTICES);
-	glVertexAttribPointer(FP_VERTICES, 3, GL_FLOAT, false, 0, nullptr);
-	glBufferData(GL_ARRAY_BUFFER, arrowModel->vertices.size() * sizeof(vec3), &arrowModel->vertices[0], GL_STATIC_DRAW);
-
-	glGenBuffers(1, &buffers[FP_NORMALS]);
-	glBindBuffer(GL_ARRAY_BUFFER, buffers[FP_NORMALS]);
-	glEnableVertexAttribArray(FP_NORMALS);
-	glVertexAttribPointer(FP_NORMALS, 3, GL_FLOAT, false, 0, nullptr);
-	glBufferData(GL_ARRAY_BUFFER, arrowModel->normals.size() * sizeof(vec3), &arrowModel->normals[0], GL_STATIC_DRAW);
-
-    glGenBuffers(1, &buffers[FP_ELEMENTS]);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[FP_ELEMENTS]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, arrowModel->indices.size() * sizeof(unsigned int), &arrowModel->indices[0], GL_STATIC_DRAW);
-
-	glGenBuffers(1, &buffers[FP_COMPONENTS]);
-	glBindBuffer(GL_ARRAY_BUFFER, buffers[FP_COMPONENTS]);
-	glEnableVertexAttribArray(FP_COMPONENTS);
-	glVertexAttribPointer(FP_COMPONENTS, 3, GL_FLOAT, false, 0, nullptr);
-	glVertexAttribDivisor(FP_COMPONENTS,1);
-	glBufferData(GL_ARRAY_BUFFER, N * sizeof(float)*3, vectors, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &buffers[FP_POSITION]);
-	glBindBuffer(GL_ARRAY_BUFFER, buffers[FP_POSITION]);
-	glEnableVertexAttribArray(FP_POSITION);
-	glVertexAttribPointer(FP_POSITION, 3, GL_FLOAT, false, 0, nullptr);
-	glVertexAttribDivisor(FP_POSITION,1);
+	glGenBuffers(1, &buffers[VectorField::FP_POSITION]);
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[VectorField::FP_POSITION]);
+	glEnableVertexAttribArray(VectorField::FP_POSITION);
+	glVertexAttribPointer(VectorField::FP_POSITION, 3, GL_FLOAT, false, 0, nullptr);
+	glVertexAttribDivisor(VectorField::FP_POSITION,1);
 	glBufferData(GL_ARRAY_BUFFER, N * sizeof(float)*3, positions, GL_STATIC_DRAW);
 
+	glGenBuffers(1, &buffers[VectorField::FP_COMPONENT]);
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[VectorField::FP_COMPONENT]);
+	glEnableVertexAttribArray(VectorField::FP_COMPONENT);
+	glVertexAttribPointer(VectorField::FP_COMPONENT, 3, GL_FLOAT, false, 0, nullptr);
+	glVertexAttribDivisor(VectorField::FP_COMPONENT,1);
+	glBufferData(GL_ARRAY_BUFFER, N * sizeof(float)*3, vectors, GL_STATIC_DRAW);
+
+	assert(buffers.size() == size_t(5));
 
     programID = loadShadersFromSource(Shaders::ARROW_VERTEXSHADER, Shaders::ARROW_FRAGMENTSHADER);
 	glUseProgram(programID);
@@ -109,16 +91,20 @@ void VectorField::initGL() {
 	glUniform1f(glGetUniformLocation(programID, "lowerBound"), lowerBound);
 	glUniform1f(glGetUniformLocation(programID, "upperBound"), upperBound);
 	printf("VectorField GL initialized!\n");
+	for (int i = 0; i < buffers.size(); i++) {
+		printf("BUFFERS%d:::%u\n",i,buffers[i]);
+	}
 }
 
 inline void VectorField::draw() {
+
 	glUseProgram(programID);
 	glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "SceneMatrices"), 0);
 	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"),1,false,glm::value_ptr(modelMatrix)); //TODO: Check this if fail
 	glUniform1f(glGetUniformLocation(programID, "lowerBound"), lowerBound);
 	glUniform1f(glGetUniformLocation(programID, "upperBound"), upperBound);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[FP_ELEMENTS]);
-	glDrawElementsInstanced(GL_TRIANGLES,arrowModel->indices.size(),GL_UNSIGNED_INT,(void*)0,N);
+	glDrawElementsInstanced(GL_TRIANGLES,model.indices.size(),GL_UNSIGNED_INT,(void*)0,N);
 }
 
 int VectorField::getDimension() {
