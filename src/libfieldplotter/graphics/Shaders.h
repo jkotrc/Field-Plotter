@@ -78,63 +78,6 @@ void main(void) {
     gl_Position = projectionMat * vec4(vfPosition, 1.0);
 }
 )LITERAL";
-
-const std::string CHARGE_VERTEXSHADER =
-R"LITERAL(
-#version 400 core
-layout (std140) uniform Matrices {
-  mat4 projectionMat;
-  mat4 viewMat;
-  vec3 cameraPosition;  //TODO: extract this from viewMat instead
-};
-
-layout (location = 0) in vec3 vertex;
-layout (location = 1) in vec3 normal
-layout (location = 3) in vec3 instance_position;
-
-uniform mat4 modelMat;
-//out vec3 sphereColor;
-
-void main(void) {
-  
-  mat4 uModelviewMatrix = viewMat*modelMat;
-  lightPosition = (uModelviewMatrix * vec4(cameraPosition, 1.0)).xyz;
-  float scale = 1.0f;
-
-  chargeNormal = (uModelviewMatrix * vec4(ivNormal, 0.0)).xyz;
-  chargePosition = (uModelviewMatrix * vec4(vertex+instance_position, 1.0)).xyz;
-
-  gl_Position = projectionMat * vec4(chargePosition, 1.0);
-}
-)LITERAL";
-const std::string CHARGE_FRAGMENTSHADER =
-R"LITERAL(
-#version 400 core
-
-//V this should come from the vertex shader
-//vec3 lightposition = model_view_matrix * glm::vec4(camera_position, 1.0);
-
-
-out vec4 fo_FragColor;
-in vec3 lightPosition;
-//uniform vec3 uLightPosition;
-in vec3 vfPosition;
-in vec3 vfNormal;
-in vec3 vfColor;
-
-void main() {
-  vec3 normal = normalize(vfNormal);
-  vec3 lightDirection = normalize(lightPosition-vfPosition);
-  vec3 reflectionDirection = normalize(reflect(lightDirection, normal));
-  float specular = 0.2*pow(max(0.0, -reflectionDirection.z), 8.0);
-  float diffuse = 0.7*max(0.0, dot(normal, lightDirection));
-  float ambient = 0.2;
-  fo_FragColor = vec4((ambient+diffuse)*vfColor + specular*vec3(1, 1, 1), 1.0);
-}
-
-)LITERAL";
-
-
 const std::string ARROW_FRAGMENTSHADER =
 R"LITERAL(
 #version 400 core
@@ -160,5 +103,58 @@ void main(void) {
   fo_FragColor = vec4((ambient+diffuse)*vfColor + specular*vec3(1, 1, 1), 1.0);
 }
 )LITERAL";
+
+
+const std::string CHARGE_VERTEXSHADER =
+R"LITERAL(
+#version 400 core
+layout (std140) uniform Matrices {
+  mat4 projectionMat;
+  mat4 viewMat;
+  vec3 cameraPosition;  //TODO: extract this from viewMat instead
+};
+
+layout (location = 0) in vec3 vertex;
+layout (location = 1) in vec3 normal;
+layout (location = 3) in vec3 instance_position;
+out vec3 lightPosition;
+out vec3 Position;
+out vec3 Normal;
+uniform mat4 modelMat;
+
+void main(void) {
+  mat4 uModelviewMatrix = viewMat*modelMat;
+  lightPosition = (uModelviewMatrix * vec4(cameraPosition, 1.0)).xyz;
+  float scale = 1.0f;
+  Normal = (uModelviewMatrix * vec4(normal, 0.0)).xyz;
+  Position = (uModelviewMatrix * vec4(vertex+instance_position, 1.0)).xyz;
+
+  gl_Position = projectionMat * vec4(Position, 1.0);
+}
+)LITERAL";
+
+const std::string CHARGE_FRAGMENTSHADER =
+R"LITERAL(
+#version 400 core
+out vec4 fo_FragColor;
+in vec3 lightPosition;
+in vec3 Position;
+in vec3 Normal;
+
+void main() {
+  vec3 Color=vec3(1,0,0);
+  vec3 normal = normalize(Normal);
+  vec3 lightDirection = normalize(lightPosition-Position);
+  vec3 reflectionDirection = normalize(reflect(lightDirection, normal));
+  float specular = 0.2*pow(max(0.0, -reflectionDirection.z), 8.0);
+  float diffuse = 0.7*max(0.0, dot(normal, lightDirection));
+  float ambient = 0.2;
+  fo_FragColor = vec4((ambient+diffuse)*Color + specular*vec3(1, 1, 1), 1.0);
+}
+
+)LITERAL";
+
+
+
 
 }

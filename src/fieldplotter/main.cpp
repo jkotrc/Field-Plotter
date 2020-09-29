@@ -11,7 +11,6 @@ bool lmbPressed = false;
 bool altPressed = false;
 float xHistory;
 float yHistory;
-PhysicsConfiguration c;
 
 #define SCROLL_SENSITIVITY -0.1f
 
@@ -149,24 +148,18 @@ int main() {
     singlecharge = new PointCharge[N];
     singlecharge[0] = PointCharge(Point(0.0f, 0.0f, 0.5f), -1);
     singlecharge[1] = PointCharge(Point(0.0f, 0.0f, -0.5f), 1);
-    //singlecharge[2] = PointCharge(Point(0.0f, 0.0f, 0.0f), 1);
-    c.charges=singlecharge;
-    c.n_charges = N;
+    
+    ChargeSystem* testSphere = new ChargeSystem(N, singlecharge);
     debug_vectorfield = new VectorField(0.2f,10);//separation,dimension
-    compute_electric_field(debug_vectorfield, c);
-    //PhysicsConfiguration c;
 
-    
+    compute_electric_field(*debug_vectorfield, *testSphere);
 
-    
-
-    //compute_electric_field(debug_vectorfield, c);
-    
     printf("bounds: (%f,%f)\n", debug_vectorfield->getLowerBound(), debug_vectorfield->getUpperBound());
     cout << "Making Scene\n";
 
     renderer = new Scene(800,600);
     renderer->addPlottable(debug_vectorfield);
+    renderer->addPlottable(testSphere);
     
     cout << "Beginning render loop\n";
     while(!glfwWindowShouldClose(window)){

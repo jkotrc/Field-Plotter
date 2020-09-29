@@ -9,7 +9,6 @@
 
 	So the origin is actually only present at even-dimensional vector fields at x,y,z = (N/2, N/2, N/2)
 */
-
 using namespace glm;
 VectorField::VectorField(float spatial_separation, int dimension)
 	:
@@ -62,9 +61,7 @@ void VectorField::initGraphics() {
 	assert(buffers.size() == size_t(3));
     modelMatrix=mat4(1.0f);
 
-	//there must be a more elegant way of doing this smh
-	buffers.push_back(0);
-	buffers.push_back(0);
+	buffers.resize(buffers.size()+2);
 
 	glGenBuffers(1, &buffers[VectorField::FP_POSITION]);
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[VectorField::FP_POSITION]);
@@ -87,24 +84,32 @@ void VectorField::initGraphics() {
 
 	glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "Matrices"), 0);
 	glBindBufferBase(GL_UNIFORM_BUFFER,0,parent->getSceneMatrices());
-	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"),1,false,glm::value_ptr(modelMatrix)); //TODO: Check this if fail
+	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"),1,false,glm::value_ptr(modelMatrix));
 	glUniform1f(glGetUniformLocation(programID, "lowerBound"), lowerBound);
 	glUniform1f(glGetUniformLocation(programID, "upperBound"), upperBound);
-	printf("VectorField GL initialized!\n");
-	for (int i = 0; i < buffers.size(); i++) {
-		printf("BUFFERS%d:::%u\n",i,buffers[i]);
-	}
 }
 
 inline void VectorField::draw() {
-
 	glUseProgram(programID);
-	glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "SceneMatrices"), 0);
-	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"),1,false,glm::value_ptr(modelMatrix)); //TODO: Check this if fail
+	glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "Matrices"), 0);
+	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"),1,false,glm::value_ptr(modelMatrix));
 	glUniform1f(glGetUniformLocation(programID, "lowerBound"), lowerBound);
 	glUniform1f(glGetUniformLocation(programID, "upperBound"), upperBound);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[FP_ELEMENTS]);
-	glDrawElementsInstanced(GL_TRIANGLES,model.indices.size(),GL_UNSIGNED_INT,(void*)0,N);
+
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[FP_VERTICES]);
+	glVertexAttribPointer(FP_VERTICES, 3, GL_FLOAT, false, 0, nullptr);
+
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[FP_NORMALS]);
+	glVertexAttribPointer(FP_NORMALS, 3, GL_FLOAT, false, 0, nullptr);
+
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[VectorField::FP_POSITION]);
+	glVertexAttribPointer(VectorField::FP_POSITION, 3, GL_FLOAT, false, 0, nullptr);
+
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[VectorField::FP_COMPONENT]);
+	glVertexAttribPointer(VectorField::FP_COMPONENT, 3, GL_FLOAT, false, 0, nullptr);
+
+	glDrawElementsInstanced(GL_TRIANGLES,model.indices.size(),GL_UNSIGNED_INT,(void*)0,N);	
 }
 
 int VectorField::getDimension() {
