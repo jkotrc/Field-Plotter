@@ -14,6 +14,7 @@ class Plottable {
 		bool visible;
     public:
 		Plottable(Model mdl);
+		Plottable(){}
 		virtual void draw(){}//TODO: maybe don't make this abstract
 		virtual void initGraphics();
 		void setParent(Scene* parent);

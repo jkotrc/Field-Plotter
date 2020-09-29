@@ -120,12 +120,9 @@ int VectorField::getAmount() {
 }
 
 Vector VectorField::getVector(int index) {
-	return Vector(&positions[3*index],&vectors[3*index]);
+	return Vector((Point*)&positions[3*index],(Point*)&vectors[3*index]);
 }
-Vector VectorField::getVector(Point p) {
-	//TODO: Implement this properly
-	return Vector(0,0);
-}
+
 float VectorField::getUpperBound() {
 	return upperBound;
 }

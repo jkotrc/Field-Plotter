@@ -3,19 +3,20 @@
 #include <string>
 
 namespace Shaders {
-const std::string ARROW_VERTEXSHADER =
+
+
+const std::string VERTEX_HEADER=
 R"LITERAL(
 #version 400 core
-
-//uniform mat4 uProjectionMatrix;
-//uniform mat4 uModelviewMatrix;
-
 layout (std140) uniform Matrices {
   mat4 projectionMat;
   mat4 viewMat;
   vec3 cameraPosition;  //TODO: extract this from viewMat instead
 };
+)LITERAL";
 
+const std::string ARROW_VERTEXSHADER =
+VERTEX_HEADER+R"LITERAL(
 uniform mat4 modelMat;
 uniform float lowerBound;
 uniform float upperBound;
@@ -70,10 +71,6 @@ void main(void) {
     mat3 instanceMatrix = scale * matrixFromDirection(ivInstanceDirection/direction_length);
     vfNormal = (uModelviewMatrix * vec4(instanceMatrix*ivNormal, 0.0)).xyz;
     vfPosition = (uModelviewMatrix * vec4(instanceMatrix*ivPosition+ivInstanceOffset, 1.0)).xyz;
-    
-
-    //vfPosition=vfPosition;
-    //vfNormal=vfNormal;
 
     gl_Position = projectionMat * vec4(vfPosition, 1.0);
 }
@@ -88,7 +85,6 @@ R"LITERAL(
 
 out vec4 fo_FragColor;
 in vec3 lightPosition;
-//uniform vec3 uLightPosition;
 in vec3 vfPosition;
 in vec3 vfNormal;
 in vec3 vfColor;
@@ -100,20 +96,14 @@ void main(void) {
   float specular = 0.2*pow(max(0.0, -reflectionDirection.z), 8.0);
   float diffuse = 0.7*max(0.0, dot(normal, lightDirection));
   float ambient = 0.2;
+  
   fo_FragColor = vec4((ambient+diffuse)*vfColor + specular*vec3(1, 1, 1), 1.0);
 }
 )LITERAL";
 
 
 const std::string CHARGE_VERTEXSHADER =
-R"LITERAL(
-#version 400 core
-layout (std140) uniform Matrices {
-  mat4 projectionMat;
-  mat4 viewMat;
-  vec3 cameraPosition;  //TODO: extract this from viewMat instead
-};
-
+VERTEX_HEADER+R"LITERAL(
 layout (location = 0) in vec3 vertex;
 layout (location = 1) in vec3 normal;
 layout (location = 3) in vec3 instance_position;
@@ -125,7 +115,6 @@ uniform mat4 modelMat;
 void main(void) {
   mat4 uModelviewMatrix = viewMat*modelMat;
   lightPosition = (uModelviewMatrix * vec4(cameraPosition, 1.0)).xyz;
-  float scale = 1.0f;
   Normal = (uModelviewMatrix * vec4(normal, 0.0)).xyz;
   Position = (uModelviewMatrix * vec4(vertex+instance_position, 1.0)).xyz;
 
@@ -153,8 +142,4 @@ void main() {
 }
 
 )LITERAL";
-
-
-
-
 }

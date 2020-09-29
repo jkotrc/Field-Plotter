@@ -6,6 +6,7 @@
 #include <fieldplotter/computation.h>
 #include <fieldplotter/plottable.h>
 #include <fieldplotter/scene.h>
+#include <fieldplotter/fieldlines.h>
 
 #include <assert.h>
 
