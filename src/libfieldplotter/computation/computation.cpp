@@ -5,7 +5,7 @@
 const float factor = 1/(4 * PI * PERMITTIVITY);
 
 bool isOutOfBounds(Point point, float range) {
-    return (fabsf(point.x) <= range || fabsf(point.y) <= range || fabsf(point.z) <= range);
+    return (fabsf(point.x) >= range || fabsf(point.y) >= range || fabsf(point.z) >= range);
 }
 
 //This will break if it is called more than once

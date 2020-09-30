@@ -152,14 +152,16 @@ int main() {
     ChargeSystem* testSphere = new ChargeSystem(N, singlecharge);
     debug_vectorfield = new VectorField(0.2f,10);//separation,dimension
 
+    FieldLines* testLine = new FieldLines(1.0f,0.1f,1);
     compute_electric_field(*debug_vectorfield, *testSphere);
+    compute_field_lines(*testLine, *testSphere);
 
     printf("bounds: (%f,%f)\n", debug_vectorfield->getLowerBound(), debug_vectorfield->getUpperBound());
     cout << "Making Scene\n";
-
     renderer = new Scene(800,600);
     renderer->addPlottable(debug_vectorfield);
     renderer->addPlottable(testSphere);
+    //renderer->addPlottable(testLine);
     
     cout << "Beginning render loop\n";
     while(!glfwWindowShouldClose(window)){

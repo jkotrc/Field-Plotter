@@ -142,4 +142,23 @@ void main() {
 }
 
 )LITERAL";
+
+const std::string LINES_VERTEXSHADER=VERTEX_HEADER+
+R"LITERAL(
+layout (location = 0) in vec3 vertex;
+uniform mat4 modelMat;
+void main() {
+  mat4 mvp = projectionMat * viewMat * modelMat;
+  gl_Position = mvp*vec4(vertex,1.0);
+}
+
+)LITERAL";
+const std::string LINES_FRAGMENTSHADER=
+R"LITERAL(
+#version 400 core
+out vec4 color;
+void main() {
+  color = vec4(1.0,1.0,1.0,1.0);
+}
+)LITERAL";
 }

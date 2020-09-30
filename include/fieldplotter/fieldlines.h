@@ -16,4 +16,6 @@ class FieldLines : public Plottable {
         float getLineStep();
         int getLineDensity();
         std::vector<Point>& getVertices();
+        void draw() override;
+        void initGraphics() override;
 };
