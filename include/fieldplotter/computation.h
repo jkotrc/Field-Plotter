@@ -5,24 +5,7 @@ struct Point {
 	float x, y, z;
 	Point() : x(0), y(0), z(0) {}
 	Point(float x, float y, float z) : x(x), y(y), z(z) {}
-<<<<<<< HEAD
 	
-	
-	Point operator+(const Point& b) {
-		return Point(this->x+b.x,this->y+b.y,this->z+b.z);
-	}
-	Point operator-(const Point&b) {
-		return Point(this->x-b.x,this->y-b.y,this->z-b.z);
-	}
-	const Point operator*(const float c) {
-		return Point(c*this->x, c*this->y, c*this->z);
-	}
-	Point operator/(const float c) {
-		return Point(c/this->x, c/this->y, c/this->z);
-	}
-=======
-
->>>>>>> added refactored Point
 	const float mag() {
 		return x*x+y*y+z*z;
 	}
