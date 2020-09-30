@@ -5,11 +5,10 @@
 using namespace glm;
 
 Plottable::Plottable(Model mdl):model(mdl),visible(true) {}
+Plottable::Plottable() : visible(true) {}
 
 void Plottable::initGraphics() {
     buffers.resize(3);
-    assert(buffers.size() == size_t(3));
-    assert(model.vertices.size() != size_t(0));
 
     glGenBuffers(1, &buffers[FP_VERTICES]);
     glBindBuffer(GL_ARRAY_BUFFER, buffers[FP_VERTICES]);
