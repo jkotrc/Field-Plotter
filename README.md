@@ -33,3 +33,4 @@ in the root directory of this repo.
 ---
 The prototype frontend currently displays a hard-coded electric field around two point charges that can be adjusted in the `main.cpp` source file within `fieldplotter`. It won't be like this for too long as these parameters will later be changeable by the user.
 ![Screenshot](https://i.imgur.com/ALwgeFy.png)
+![Screenshot2](https://i.imgur.com/vSQkmAr.png)

@@ -112,14 +112,10 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 const int N = 2;
 PointCharge* singlecharge;
 int main() {
-    cout << "Starting...\n";
-
-    cout << "VectorField made\n";
     if (!glfwInit()) {
         cout << "GLFW FAILED TO INITIALIZE\n";
         exit(-1);
     }
-    cout << "GLFW Initialized\n";
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -127,7 +123,6 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     GLFWwindow* window = glfwCreateWindow(800, 600, "Test", NULL, NULL);
-    cout << "window made\n";
     glfwSetKeyCallback(window, key_callback);
     glfwSetScrollCallback(window, scroll_callback);
     glfwSetCursorPosCallback(window, cursor_position_callback);
@@ -139,27 +134,25 @@ int main() {
     if (glewinitialized != GLEW_OK) {
         cout << "GLEW FAILED TO INITIALIZE!\n";
     }
-    cout << "GLEW initialized.. Instantiating renderer\n";
 
     singlecharge = new PointCharge[N];
-    singlecharge[0] = PointCharge(Point(0.0f, 0.0f, 0.5f), -1);
-    singlecharge[1] = PointCharge(Point(0.0f, 0.0f, -0.5f), 1);
+    singlecharge[0] = PointCharge(Point(0.0f, 0.0f, 0.5f), 0.1f);
+    singlecharge[1] = PointCharge(Point(0.0f, 0.0f, -0.5f), -0.1f);
 
     ChargeSystem* testSphere = new ChargeSystem(N, singlecharge);
     debug_vectorfield = new VectorField(0.2f, 10);//separation,dimension
 
-    FieldLines* testLine = new FieldLines(1.0f, 0.1f, 1);
-    compute_electric_field(*debug_vectorfield, *testSphere);
+    FieldLines* testLine = new FieldLines(5.0f, 0.8f, 6);
+    //compute_electric_field(*debug_vectorfield, *testSphere);
     compute_field_lines(*testLine, *testSphere);
+    //make_hedgehog(*testLine, *testSphere);
 
     printf("bounds: (%f,%f)\n", debug_vectorfield->getLowerBound(), debug_vectorfield->getUpperBound());
-    cout << "Making Scene\n";
     renderer = new Scene(800, 600);
-    renderer->addPlottable(debug_vectorfield);
+    //renderer->addPlottable(debug_vectorfield);
     renderer->addPlottable(testSphere);
     renderer->addPlottable(testLine);
 
-    cout << "Beginning render loop\n";
     while (!glfwWindowShouldClose(window)) {
         renderer->render();
         glfwSwapBuffers(window);

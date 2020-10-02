@@ -5,21 +5,22 @@
 const float factor = 1/(4 * PI * PERMITTIVITY);
 
 bool isOutOfBounds(Point point, float range) {
-    return (fabsf(point.x) >= range || fabsf(point.y) >= range || fabsf(point.z) >= range);
+    return (point.mag() >= range);
 }
 
 //This will break if it is called more than once
 //test this!
-void compute_field_lines(FieldLines& lines, ChargeSystem& system){
+#ifndef NDEBUG //this has to go out in the release mode
+void make_hedgehog(FieldLines& lines, ChargeSystem& system) {
     float line_density = lines.getLineDensity();    
     const float radius = 0.1f;
-    const float delta_theta = 2 * PI / (4.0f*line_density);
-	const float delta_phi = PI / (4.0f*line_density);
+    const float delta_theta = 2 * PI / (line_density);
+	const float delta_phi = PI / (line_density);
     const float range = lines.getRange();
     const float ds = lines.getLineStep();
 
     PointCharge* charges = system.getCharges();
-    std::vector<Point> vertices = lines.getVertices();
+    std::vector<Point>& vertices = lines.getVertices();
     std::vector<Point> sources;
     std::vector<Point> sinks;
     for (int i = 0; i < system.getN(); i++) {
@@ -31,7 +32,8 @@ void compute_field_lines(FieldLines& lines, ChargeSystem& system){
     }
 
     for (const Point& source : sources) {
-        for (float theta=0.0f; theta <= 2*PI; theta+=delta_theta) {
+        
+        for (float theta=0.0f; theta <= 2*PI; theta+=delta_theta) { //TODO: Check if this produces too many field lines
             for (float phi=0.0f; phi <= PI; phi+=delta_phi) {
                 Point origin = Point 
                 (
@@ -40,22 +42,79 @@ void compute_field_lines(FieldLines& lines, ChargeSystem& system){
                     radius*cosf(phi)
                 );
                 vertices.push_back(origin);
+                
+            }
+        }
+        
+
+
+    }
+}
+#endif
+
+void compute_field_lines(FieldLines& lines, ChargeSystem& system){
+    float line_density = lines.getLineDensity();    
+    const float radius = 0.1f;
+    const float delta_theta = 2 * PI / (line_density);
+	const float delta_phi = PI / (line_density);
+    const float range = lines.getRange();
+    const float ds = lines.getLineStep();
+
+    //RK4 needs a small step for accuracy but we don't need that many vertices as it makes no visible difference
+    const float ds_visible = 1.0f;
+
+    PointCharge* charges = system.getCharges();
+    std::vector<Point>& vertices = lines.getVertices();
+    std::vector<Point> sources;
+    std::vector<Point> sinks;
+    for (int i = 0; i < system.getN(); i++) {
+        if (charges[i].charge > 0.0f) {
+            sources.push_back(charges[i].p);
+        } else {
+            sinks.push_back(charges[i].p);
+        }
+    }
+
+    for (const Point& source : sources) {
+        for (float theta=0.0f; theta <= 2*PI; theta+=delta_theta) { //TODO: Check if this produces too many field lines
+            for (float phi=0.0f; phi <= PI; phi+=delta_phi) {
+                Point origin = Point 
+                (
+                    (radius)*sinf(phi)*cosf(theta)+source.x,
+                    (radius)*sinf(phi)*sinf(theta)+source.y, //OpenGL's y and z are switched!
+                    (radius)*cosf(phi)+source.z
+                );
+                
+                int count=1;
                 while(true) {
-                    for(const Point& sink : sinks) {
-                        if((origin-sink).mag()<=0.1f)break;
-                    }
-                    if(isOutOfBounds(origin,range)) break;
-                    Point dF1 = electrical_force_at(origin,system)*ds;
-                    Point dF2 = electrical_force_at(origin+Point(ds*dF1.x/2,ds*dF1.y/2,ds*dF1.z/2),system)*ds;
-                    Point dF3 = electrical_force_at(origin+Point(ds*dF2.x/2,ds*dF2.y/2,ds*dF2.z/2),system)*ds;
-                    Point dF4 = electrical_force_at(origin+Point(ds*dF3.x,ds*dF3.y,ds*dF3.z),system)*ds;
-                    origin = origin + (dF1+dF2*2+dF3*2+dF4)/6;
                     vertices.push_back(origin);
+                    Point dF1 = electrical_force_at(origin,system)*ds;
+                    Point dF2 = electrical_force_at(origin+dF1*(ds/2),system)*ds;
+                    Point dF3 = electrical_force_at(origin+dF2*(ds/2),system)*ds;
+                    Point dF4 = electrical_force_at(origin+dF3*(ds),system)*ds;
+                    Point dF = dF1+2*dF2+2*dF3+dF4;
+                    dF*=ds;
+                    dF/=6.0f;
+                    origin +=dF;
+
+                    for(const Point& sink : sinks) {
+                        if((origin-sink).mag()<=radius){
+                            if(vertices.size() % 2 != 0){vertices.push_back(origin);}
+                            break;
+                        };
+                    }
+                    if(isOutOfBounds(origin,range)) {
+                        if(vertices.size() % 2 != 0){vertices.push_back(origin);}
+                        break;
+                    };
+                    vertices.push_back(origin);
+
+                    count++;
                 }
-                vertices.push_back(vertices[vertices.size()-1]);//terminate the line when it ends
             }
         }
     }
+    printf("aight;\n");
 }
     
 
@@ -66,9 +125,9 @@ Point electrical_force_at(Point r,ChargeSystem& system) {
             const float charge_q = charges[i].charge;
             Point pos_difference = r-charges[i].p;
             const float magcubed = pos_difference.mag()*pos_difference.magsq();
-            forceVector = forceVector + pos_difference*(charge_q/magcubed);
+            forceVector += (charge_q/magcubed)*pos_difference;
         }
-        forceVector=forceVector*factor;
+        forceVector*=factor;
     return forceVector;
 }
 

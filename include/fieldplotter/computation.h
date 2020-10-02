@@ -6,16 +6,17 @@ struct Point {
 	Point() : x(0), y(0), z(0) {}
 	Point(float x, float y, float z) : x(x), y(y), z(z) {}
 	
-	const float mag() {
+	const float magsq() {
 		return x*x+y*y+z*z;
 	}
-	const float magsq() {
+	const float mag() {
 		return sqrtf(x*x+y*y+z*z);	//sqrtf32 does not compile on Windows.
 	}
-	Point& operator+=(Point const& v);	//reference to const Point
-	Point& operator-=(Point const& v);
-	Point& operator*=(float scalar);
-	Point& operator/=(float scalar);
+	void operator+=(Point const& v);	//reference to const Point
+	void operator-=(Point const& v);
+	void operator*=(float scalar);
+	void operator/=(float scalar);
+	void operator=(Point const& c);
 };
 Point operator+(Point const& a, Point const& b);
 Point operator-(Point const& a, Point const& b);
@@ -49,3 +50,4 @@ typedef struct {	//TODO: Refactor this into ChargeSystem
 void compute_electric_field(VectorField& vf, ChargeSystem& system);
 void compute_field_lines(FieldLines& lines, ChargeSystem& system);
 Point electrical_force_at(Point r,ChargeSystem& system);
+void make_hedgehog(FieldLines& lines, ChargeSystem& system);
