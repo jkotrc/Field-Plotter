@@ -4,8 +4,8 @@
 
 using namespace glm;
 
-Plottable::Plottable(Model mdl):model(mdl),visible(true) {}
-Plottable::Plottable() : visible(true) {}
+Plottable::Plottable(Model mdl):model(mdl),visible(true),thread_bufferoffset(size_t(0)),thread_buffersize(size_t(0)) {}
+Plottable::Plottable() : visible(true),thread_bufferoffset(size_t(0)),thread_buffersize(size_t(0)) {}
 
 void Plottable::initGraphics() {
     buffers.resize(3);
@@ -26,6 +26,7 @@ void Plottable::initGraphics() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[FP_ELEMENTS]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(unsigned int), &model.indices[0], GL_STATIC_DRAW);
 }
+
 void Plottable::setVisible(bool visible) {
     this->visible=visible;
 }

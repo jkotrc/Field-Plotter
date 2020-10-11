@@ -144,14 +144,26 @@ int main() {
 
     FieldLines* testLine = new FieldLines(5.0f, 0.8f, 6);
     //compute_electric_field(*debug_vectorfield, *testSphere);
-    compute_field_lines(*testLine, *testSphere);
-    //make_hedgehog(*testLine, *testSphere);
+    
+    Computation<FieldLines> comp(*testLine,*testSphere,compute_field_lines);
+    std::thread computationThread = comp.spawnThread();
+    //TODO: replace this join by a temporary render loop
 
-    printf("bounds: (%f,%f)\n", debug_vectorfield->getLowerBound(), debug_vectorfield->getUpperBound());
     renderer = new Scene(800, 600);
     //renderer->addPlottable(debug_vectorfield);
     renderer->addPlottable(testSphere);
     renderer->addPlottable(testLine);
+
+    while(!glfwWindowShouldClose(window) && !comp.isComplete()) {
+        testLine->updateBuffer();
+        renderer->render();
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+    testLine->updateBuffer();
+
+//    printf("bounds: (%f,%f)\n", debug_vectorfield->getLowerBound(), debug_vectorfield->getUpperBound());
+
 
     while (!glfwWindowShouldClose(window)) {
         renderer->render();
