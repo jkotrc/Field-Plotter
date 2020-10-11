@@ -1,5 +1,4 @@
-#include <fieldplotter/fieldplotter.h>
-
+#include <fieldplotter/graphics.h>
 
 using namespace glm;
 //www.songho.ca/opengl/gl_sphere.html

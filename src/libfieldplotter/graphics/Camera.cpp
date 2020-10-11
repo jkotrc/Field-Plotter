@@ -1,8 +1,8 @@
-#include <fieldplotter/fieldplotter.h>
-
+#include <fieldplotter/commonheaders.h>
+#include <fieldplotter/scene.h>
 
 using namespace glm;
-Camera::Camera(GLfloat roll_speed)
+Camera::Camera()
     :
     cameraPosition(vec3(4, 0, 0)),
     radius(0.0f),

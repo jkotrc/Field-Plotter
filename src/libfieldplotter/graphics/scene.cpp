@@ -1,28 +1,13 @@
-#include <fieldplotter/fieldplotter.h>
+#include <fieldplotter/commonheaders.h>
+#include <fieldplotter/scene.h>
+#include <fieldplotter/plottable.h>
+
 #include "Shaders.h"
 #include <stdio.h>
 
 
 using namespace glm;
 
-//TODO: Make this configurable in the preferences
-#define ROLLSPEED 0.5F
-
-/*
-A scene within the Renderer may be composed of:
-Vector fields
-Axes/grid lines
-Field lines
-Equipotential surfaces
-Point charges
-
-User will: specify charges, change some sort of rendering mode
-
-The renderer will: build and execute a rendering method based on the rendering mode
-It will do so out of inline methods in: VectorFieldGraphic, EquipotentialSurfaceGraphic, FieldLineGraphic, PointChargeGraphic
-
-Restructuring:
-*/
 
 /*
 std140 specification:
@@ -50,7 +35,7 @@ Scene::Scene(int width, int height)
 width(width),
 projectionMat(glm::perspective(glm::radians(45.0f), (float)width/height, 0.1f, 100.0f)),
 viewMat(rotate(mat4(1.0f), 1.0f, vec3(1.0, 0.0, 0.0))),
-camera(new Camera(ROLLSPEED))
+camera(new Camera())
 {
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
@@ -62,7 +47,6 @@ camera(new Camera(ROLLSPEED))
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 	
-
 	glGenBuffers(1, &sceneMatrices);
 	glBindBuffer(GL_UNIFORM_BUFFER, sceneMatrices);
 	glBufferData(GL_UNIFORM_BUFFER, 2*sizeof(mat4)+sizeof(vec3),NULL,GL_STATIC_DRAW);
@@ -83,6 +67,7 @@ void Scene::addPlottable(Plottable* plottable) {
 void Scene::resizeViewport(int w, int h) {
 	width=w;
 	height=h;
+	//TODO: Make this orthographic when the user wants a 2D-like view
 	projectionMat = glm::perspective(glm::radians(45.0f), (float)w / h, 0.1f, 100.0f);
 	glBindBuffer(GL_UNIFORM_BUFFER, sceneMatrices);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(mat4), glm::value_ptr(projectionMat));

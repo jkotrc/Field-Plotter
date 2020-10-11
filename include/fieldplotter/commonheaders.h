@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <assert.h>
 #include <glm/glm.hpp>
 #include <glm/matrix.hpp>
 #include <glm/gtc/quaternion.hpp>

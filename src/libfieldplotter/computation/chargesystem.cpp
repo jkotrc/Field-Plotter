@@ -1,6 +1,16 @@
-#include <fieldplotter/fieldplotter.h>
+#include <fieldplotter/chargesystem.h>
+#include <fieldplotter/plottable.h>
+#include <fieldplotter/scene.h>
+
+#include <fieldplotter/computation.h>
+
+#include <fieldplotter/commonheaders.h>
+
 #include "../graphics/Shaders.h"
+
+#include <vector>
 #include <stdlib.h>
+
 using namespace glm;
 
 ChargeSystem::ChargeSystem(int N, PointCharge* charges) : Plottable(loadSphereModel()) {

@@ -1,4 +1,5 @@
-#include <fieldplotter/fieldplotter.h>
+#include <fieldplotter/plottable.h>
+#include <fieldplotter/scene.h>
 #include <fieldplotter/graphics.h>
 #include <assert.h>
 

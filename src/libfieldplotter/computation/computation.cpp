@@ -1,6 +1,13 @@
 #include <fieldplotter/computation.h>
-#include <fieldplotter/fieldplotter.h>
+
 #include <fieldplotter/plottable.h>
+#include <fieldplotter/chargesystem.h>
+#include <fieldplotter/vectorfield.h>
+#include <fieldplotter/fieldlines.h>
+
+#include <vector>
+#include <cmath>
+
 using namespace std;
 
 #define PERMITTIVITY 8.8541878128f

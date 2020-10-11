@@ -1,4 +1,8 @@
-#include <fieldplotter/fieldplotter.h>
+#include <fieldplotter/vectorfield.h>
+#include <fieldplotter/scene.h>
+#include <fieldplotter/plottable.h>
+
+#include <fieldplotter/commonheaders.h>
 
 #include "../graphics/Shaders.h"
 #include <stdio.h>

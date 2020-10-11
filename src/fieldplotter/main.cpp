@@ -1,4 +1,8 @@
-#include <fieldplotter/fieldplotter.h>
+#include <fieldplotter/vectorfield.h>
+#include <fieldplotter/chargesystem.h>
+#include <fieldplotter/fieldlines.h>
+#include <fieldplotter/scene.h>
+
 
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -12,23 +16,16 @@ bool altPressed = false;
 float xHistory;
 float yHistory;
 
+//TODO: Set this in the preferences
 #define SCROLL_SENSITIVITY -0.1f
 
 template <typename T> float sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
-
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 
     renderer->getCamera()->scroll(sgn(yoffset) * SCROLL_SENSITIVITY);
 }
-
-float debmove = 0.01f;
-/*
-    singlecharge[0] = PointCharge(Point(0.0f, 0.0f, 0.4f), -1);
-    singlecharge[1] = PointCharge(Point(0.4f, 0.0f, 0.0f), -1);
-    singlecharge[2] = PointCharge(Point(0.0f, 0.1f, 0.0f), 1);
-*/
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 
@@ -71,11 +68,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     case(GLFW_KEY_RIGHT):
         renderer->getCamera()->moveCamera(-0.1f, 0.0f);
         break;
-        // case(GLFW_KEY_P):
-        // c.charges[2].p.y+=debmove;
-        // compute_electric_field(debug_vectorfield, c);
-        // renderer->updateVectorField();
-        // break;
     default:
         break;
     }
@@ -138,12 +130,11 @@ int main() {
     singlecharge = new PointCharge[N];
     singlecharge[0] = PointCharge(Point(0.0f, 0.0f, 0.5f), -0.1f);
     singlecharge[1] = PointCharge(Point(0.0f, 0.0f, -0.5f), 0.1f);
-//    singlecharge[2] = PointCharge(Point(0.0f, 0.5f, 0.0f), -0.01f);
 
     ChargeSystem* testSphere = new ChargeSystem(N, singlecharge);
     debug_vectorfield = new VectorField(0.2f, 10);//separation,dimension
 
-    FieldLines* testLine = new FieldLines(5.0f, 0.4f, 6);
+    FieldLines* testLine = new FieldLines(5.0f, 0.2f, 6);
     
     Computation<FieldLines> comp(*testLine,*testSphere,compute_field_lines);
     std::thread computationThread = comp.spawnThread();

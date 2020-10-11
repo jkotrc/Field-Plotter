@@ -11,7 +11,7 @@ class Camera {
 		glm::vec3 origin;
 		glm::mat4 viewMat;
 	public:
-	Camera(GLfloat roll_speed);
+	Camera();
 	glm::mat4 getViewMatrix();
 	glm::vec3 getPos();
 	void moveLinear(float x, float y, float z);
