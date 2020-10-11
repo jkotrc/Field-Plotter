@@ -1,6 +1,6 @@
 #pragma once
 #include <fieldplotter/commonheaders.h>
-
+#include <thread>
 struct Point {
 	float x, y, z;
 	Point() : x(0), y(0), z(0) {}
@@ -26,9 +26,6 @@ Point operator/(Point const& a, float scalar);
 Point operator/(float scalar, Point const& a);
 #include "point_operators.inl"
 
-
-
-
 class Plottable;
 struct PointCharge {
 	Point p;
@@ -45,6 +42,23 @@ typedef struct {	//TODO: Refactor this into ChargeSystem
 	PointCharge* charges;
 	int n_charges;
 } PhysicsConfiguration;
+
+
+//A wrapper for any ol' generic computation threa
+template <typename T>
+class Computation {
+	private:
+		T& plottable;
+		ChargeSystem& charge_system;
+		bool completed;
+		void (*compute_function)(T& object, ChargeSystem& system);
+		void run();
+	public:
+		Computation(T& plottable,ChargeSystem& charge_system, void (*func)(T& object, ChargeSystem& system));
+		std::thread spawnThread();
+		bool isComplete(){return completed;}
+};
+
 
 //compute functions not contained within the classes because of the intention of things like VectorField to be applicable to other physical systems
 void compute_electric_field(VectorField& vf, ChargeSystem& system);

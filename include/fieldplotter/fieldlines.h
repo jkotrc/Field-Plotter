@@ -18,4 +18,5 @@ class FieldLines : public Plottable {
         std::vector<Point>& getVertices();
         void draw() override;
         void initGraphics() override;
+        void updateBuffer() override;
 };

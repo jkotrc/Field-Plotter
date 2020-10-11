@@ -1,5 +1,8 @@
 #include <fieldplotter/computation.h>
 #include <fieldplotter/fieldplotter.h>
+#include <fieldplotter/plottable.h>
+using namespace std;
+
 #define PERMITTIVITY 8.8541878128f
 #define PI 3.141592653f
 const float factor = 1/(4 * PI * PERMITTIVITY);
@@ -45,9 +48,6 @@ void make_hedgehog(FieldLines& lines, ChargeSystem& system) {
                 
             }
         }
-        
-
-
     }
 }
 #endif
@@ -60,11 +60,11 @@ void compute_field_lines(FieldLines& lines, ChargeSystem& system){
     const float range = lines.getRange();
     const float ds = lines.getLineStep();
 
-    //RK4 needs a small step for accuracy but we don't need that many vertices as it makes no visible difference
+    //TODO: RK4 needs a small step for accuracy but we don't need that many vertices as it makes no visible difference
     const float ds_visible = 1.0f;
 
     PointCharge* charges = system.getCharges();
-    std::vector<Point>& vertices = lines.getVertices();
+    std::vector<Point>& vertices = lines.getVertices();//TODO: make this <std:vector<Point>&>&
     std::vector<Point> sources;
     std::vector<Point> sinks;
     for (int i = 0; i < system.getN(); i++) {
@@ -151,4 +151,29 @@ void compute_electric_field(VectorField& vf, ChargeSystem& system) {
     }
     vf.setUpperBound(upperbound/30);
     vf.setLowerBound(lowerbound);
+}
+
+template <typename T>
+Computation<T>::Computation(
+T& plottable,
+ChargeSystem& charge_system,
+void (*func)(T& object, ChargeSystem& system))
+:completed(false),plottable(plottable),compute_function(func),charge_system(charge_system) 
+{
+
+}
+//https://stackoverflow.com/questions/8752837/undefined-reference-to-template-class-constructor
+template class Computation<FieldLines>;
+template class Computation<VectorField>;
+
+template <typename T>
+void Computation<T>::run() {
+    compute_function(plottable,charge_system);
+    completed=true;
+}
+
+template <typename T>
+thread Computation<T>::spawnThread() {
+    return thread(&Computation<T>::run,this);
+    //return thread(compute_function, std::ref(plottable), std::ref(charge_system));
 }
