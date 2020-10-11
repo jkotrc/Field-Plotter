@@ -76,7 +76,7 @@ void compute_field_lines(FieldLines& lines, ChargeSystem& system){
     }
 
     for (const Point& source : sources) {
-        for (float theta=0.0f; theta <= 2*PI; theta+=delta_theta) { //TODO: Check if this produces too many field lines
+        for (float theta=0.0f; theta <= 2*PI; theta+=delta_theta) {
             for (float phi=0.0f; phi <= PI; phi+=delta_phi) {
                 Point origin = Point 
                 (
@@ -97,16 +97,20 @@ void compute_field_lines(FieldLines& lines, ChargeSystem& system){
                     dF/=6.0f;
                     origin +=dF;
 
+                    bool lineEnded=false;
                     for(const Point& sink : sinks) {
                         if((origin-sink).mag()<=radius){
-                            if(vertices.size() % 2 != 0){vertices.push_back(origin);}
-                            break;
+                            lineEnded=true;
                         };
                     }
-                    if(isOutOfBounds(origin,range)) {
+                    if(isOutOfBounds(origin,range) || (dF.mag() < 1e-9f)) {
+                        lineEnded=true;
+                    };
+                    if(lineEnded) {
                         if(vertices.size() % 2 != 0){vertices.push_back(origin);}
                         break;
-                    };
+                    }
+
                     vertices.push_back(origin);
 
                     count++;
@@ -162,6 +166,7 @@ void (*func)(T& object, ChargeSystem& system))
 {
 
 }
+
 //https://stackoverflow.com/questions/8752837/undefined-reference-to-template-class-constructor
 template class Computation<FieldLines>;
 template class Computation<VectorField>;
