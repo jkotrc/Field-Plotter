@@ -136,21 +136,19 @@ int main() {
     }
 
     singlecharge = new PointCharge[N];
-    singlecharge[0] = PointCharge(Point(0.0f, 0.0f, 0.5f), 0.1f);
-    singlecharge[1] = PointCharge(Point(0.0f, 0.0f, -0.5f), -0.1f);
+    singlecharge[0] = PointCharge(Point(0.0f, 0.0f, 0.5f), -0.1f);
+    singlecharge[1] = PointCharge(Point(0.0f, 0.0f, -0.5f), 0.1f);
+//    singlecharge[2] = PointCharge(Point(0.0f, 0.5f, 0.0f), -0.01f);
 
     ChargeSystem* testSphere = new ChargeSystem(N, singlecharge);
     debug_vectorfield = new VectorField(0.2f, 10);//separation,dimension
 
-    FieldLines* testLine = new FieldLines(5.0f, 0.8f, 6);
-    //compute_electric_field(*debug_vectorfield, *testSphere);
+    FieldLines* testLine = new FieldLines(5.0f, 0.4f, 6);
     
     Computation<FieldLines> comp(*testLine,*testSphere,compute_field_lines);
     std::thread computationThread = comp.spawnThread();
-    //TODO: replace this join by a temporary render loop
 
     renderer = new Scene(800, 600);
-    //renderer->addPlottable(debug_vectorfield);
     renderer->addPlottable(testSphere);
     renderer->addPlottable(testLine);
 
@@ -160,11 +158,9 @@ int main() {
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    testLine->updateBuffer();
-
-//    printf("bounds: (%f,%f)\n", debug_vectorfield->getLowerBound(), debug_vectorfield->getUpperBound());
-
-
+    testLine->updateBuffer();//catch any potential missing vertices
+    computationThread.detach();
+    
     while (!glfwWindowShouldClose(window)) {
         renderer->render();
         glfwSwapBuffers(window);

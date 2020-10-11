@@ -107,6 +107,9 @@ VERTEX_HEADER+R"LITERAL(
 layout (location = 0) in vec3 vertex;
 layout (location = 1) in vec3 normal;
 layout (location = 3) in vec3 instance_position;
+layout (location = 4) in float charge;
+
+out float o_charge;
 out vec3 lightPosition;
 out vec3 Position;
 out vec3 Normal;
@@ -117,7 +120,7 @@ void main(void) {
   lightPosition = (uModelviewMatrix * vec4(cameraPosition, 1.0)).xyz;
   Normal = (uModelviewMatrix * vec4(normal, 0.0)).xyz;
   Position = (uModelviewMatrix * vec4(vertex+instance_position, 1.0)).xyz;
-
+  o_charge=charge;
   gl_Position = projectionMat * vec4(Position, 1.0);
 }
 )LITERAL";
@@ -130,8 +133,25 @@ in vec3 lightPosition;
 in vec3 Position;
 in vec3 Normal;
 
+//location = 4
+in float o_charge;
+
+vec3 colormap(float charge) {
+  float saturation=5*charge;
+  if (saturation > 1.0) {
+    saturation=1.0;
+  }
+  if(charge < 0){
+  return vec3(0,0,1.0);
+  }
+  return vec3(saturation,0,0);
+}
+
 void main() {
-  vec3 Color=vec3(1,0,0);
+  
+  vec3 Color=colormap(o_charge);
+  //vec3 Color=vec3(1,0,0);
+
   vec3 normal = normalize(Normal);
   vec3 lightDirection = normalize(lightPosition-Position);
   vec3 reflectionDirection = normalize(reflect(lightDirection, normal));
