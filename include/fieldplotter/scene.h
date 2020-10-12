@@ -18,6 +18,7 @@ class Camera {
 	void scroll(float amount);
 	void moveCamera(float dtheta, float dphi);
 };
+typedef unsigned int GLuint;
 
 class Plottable;
 class Scene {
@@ -39,5 +40,7 @@ class Scene {
 		void resizeViewport(int w, int h);
 		void addPlottable(Plottable* plottable);
 		GLuint getSceneMatrices();
-		Camera* getCamera();
+		void moveCamera(float dx, float dy);
+		void scroll(float amount);
+		void moveLinear(float x, float y, float z);
 };

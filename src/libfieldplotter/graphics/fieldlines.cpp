@@ -1,3 +1,5 @@
+#define GLEW_STATIC
+#include <GL/glew.h>
 #include <fieldplotter/fieldlines.h>
 #include <fieldplotter/computation.h>
 

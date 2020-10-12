@@ -46,6 +46,8 @@ class Computation {
 		bool completed;
 		void (*compute_function)(T& object, ChargeSystem& system);
 		void run();
+	protected:
+		virtual void onFinalize() {}
 	public:
 		Computation(T& plottable,ChargeSystem& charge_system, void (*func)(T& object, ChargeSystem& system));
 		std::thread spawnThread();

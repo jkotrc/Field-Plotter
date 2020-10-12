@@ -1,3 +1,5 @@
+#define GLEW_STATIC
+#include <GL/glew.h>
 #include <fieldplotter/commonheaders.h>
 #include <fieldplotter/scene.h>
 #include <fieldplotter/plottable.h>
@@ -37,6 +39,10 @@ projectionMat(glm::perspective(glm::radians(45.0f), (float)width/height, 0.1f, 1
 viewMat(rotate(mat4(1.0f), 1.0f, vec3(1.0, 0.0, 0.0))),
 camera(new Camera())
 {
+	glewExperimental = GL_TRUE;
+	GLenum glewinitialized = glewInit();
+	assert(glewinitialized == GLEW_OK);
+
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
@@ -93,9 +99,16 @@ void Scene::render() {
 	}
 }
 
-Camera* Scene::getCamera() {
-	return camera;
+void Scene::moveCamera(float dx, float dy) {
+	camera->moveCamera(dx, dy);
 }
+void Scene::scroll(float amount) {
+	camera->scroll(amount);
+}
+void Scene::moveLinear(float x, float y, float z) {
+	camera->moveLinear(x, y, z);
+}
+
 GLuint Scene::getSceneMatrices() {
 	return sceneMatrices;
 }

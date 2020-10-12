@@ -156,6 +156,7 @@ template <typename T>
 void Computation<T>::run() {
     compute_function(plottable,charge_system);
     completed=true;
+    onFinalize();
 }
 
 template <typename T>

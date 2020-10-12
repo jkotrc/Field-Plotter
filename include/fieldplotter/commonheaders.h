@@ -1,7 +1,6 @@
 #pragma once
-#define GLEW_STATIC
-#include <GL/glew.h>
 
+typedef unsigned int GLuint;
 #include <vector>
 #include <string>
 #include <assert.h>
