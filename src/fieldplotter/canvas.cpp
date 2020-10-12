@@ -4,8 +4,8 @@
 
 #include <fieldplotter/computation.h>
 #include <fieldplotter/scene.h>
-#include <fieldplotter/physicalobject.h>
 #include <fieldplotter/chargesystem.h>
+#include <fieldplotter/vectorfield.h>
 
 #include <iostream>
 
@@ -27,11 +27,14 @@ PointCharge singlecharge[N] = {
 	PointCharge(Point(0.0f, 0.5f, 0.0f), 0.1f)
 };
 ChargeSystem* charges = new ChargeSystem(3, singlecharge);
+VectorField* debug_vectorfield = new VectorField(0.2f, 10);
 
 void Canvas::initializeGL() {
 	QOpenGLWidget::initializeGL();
 	this->renderer = new Scene(width(), height());
 	renderer->addComponent(*charges);
+	compute_electric_field(*debug_vectorfield, *charges);
+	renderer->addComponent(*debug_vectorfield);
 }
 void Canvas::resizeGL(int w, int h) {
 	renderer->resizeViewport(w, h);

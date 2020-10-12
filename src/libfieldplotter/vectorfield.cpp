@@ -17,6 +17,10 @@ VectorField::VectorField(float spatial_separation, int dimension)
 	dimension(dimension),
 	N(dimension*dimension*dimension)
 {
+	graphicsInitialized = false;
+	//TODO: make this work
+	setComputationalState(false);
+
 	vectors = new float[3*N];
 	positions = new float[3*N];
 	
@@ -57,10 +61,10 @@ VectorField::~VectorField() {
 
 
 void VectorField::initGraphics() {
-	assert(buffers.size() == size_t(3));
-    modelMatrix=mat4(1.0f);
 
-	Model model = loadSphereModel();
+	if (graphicsInitialized) return;
+    modelMatrix=mat4(1.0f);
+	Model model = loadArrowModel();
 	model_size = model.indices.size();
 
 	buffers.resize(5);
@@ -98,11 +102,14 @@ void VectorField::initGraphics() {
     programID = loadShadersFromSource(Shaders::ARROW_VERTEXSHADER, Shaders::ARROW_FRAGMENTSHADER);
 	glUseProgram(programID);
 
-	glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "Matrices"), 0);
-	glBindBufferBase(GL_UNIFORM_BUFFER,0,parent->getSceneMatrices());
-	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"),1,false,glm::value_ptr(modelMatrix));
+	if (parent != NULL) {
+		glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "Matrices"), 0);
+		glBindBufferBase(GL_UNIFORM_BUFFER, 0, parent->getSceneMatrices());
+		glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"), 1, false, glm::value_ptr(modelMatrix));
+	}
 	glUniform1f(glGetUniformLocation(programID, "lowerBound"), lowerBound);
 	glUniform1f(glGetUniformLocation(programID, "upperBound"), upperBound);
+	graphicsInitialized = true;
 }
 
 inline void VectorField::staticDraw() {

@@ -20,7 +20,6 @@ class Computation {
 		T& getComponent();
 		void spawnThread();
 		bool isComplete();
-		static std::vector<std::thread> active_threads;
 };
 
 //compute functions not contained within any class so that they may be more easily provided through other interfaces in the future (CUDA, Fortran, MATLAB,....)

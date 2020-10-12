@@ -13,12 +13,7 @@
 #include <iostream>
 using namespace std;
 
-Scene* renderer;
-VectorField* debug_vectorfield;
-bool lmbPressed = false;
-bool altPressed = false;
-float xHistory;
-float yHistory;
+
 
 //TODO: Set this in the preferences
 #define SCROLL_SENSITIVITY -0.1f

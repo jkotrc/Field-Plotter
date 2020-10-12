@@ -166,14 +166,18 @@ void Computation<T>::run() {
     charge_system.setComputationalState(false);
     completed=true;
     onFinalize();
+
+    //TODO: implement this
+    /*
     for (thread& t : Computation::active_threads) {
         if (t.get_id() == this_thread::get_id()) {
             t.detach();
         }
-    }
+    }*/
 }
 
 template <typename T>
 void Computation<T>::spawnThread() {
-    Computation::active_threads.push_back(thread(&Computation<T>::run,this));
+    //TODO: IMPLEMENT THIS
+    //Computation::active_threads.push_back(thread(&Computation<T>::run,this));
 }
