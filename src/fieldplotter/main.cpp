@@ -101,7 +101,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 }
 
 
-const int N = 2;
+const int N = 3;
 PointCharge* singlecharge;
 int main() {
     if (!glfwInit()) {
@@ -128,13 +128,14 @@ int main() {
     }
 
     singlecharge = new PointCharge[N];
-    singlecharge[0] = PointCharge(Point(0.0f, 0.0f, 0.5f), -0.1f);
-    singlecharge[1] = PointCharge(Point(0.0f, 0.0f, -0.5f), 0.1f);
+    singlecharge[0] = PointCharge(Point(0.0f, 0.0f, 0.5f), 0.1f);
+    singlecharge[1] = PointCharge(Point(0.0f, 0.0f, -0.5f), -0.1f);
+    singlecharge[2] = PointCharge(Point(0.0f, 0.5f, 0.0f), 0.1f);
 
     ChargeSystem* testSphere = new ChargeSystem(N, singlecharge);
     debug_vectorfield = new VectorField(0.2f, 10);//separation,dimension
 
-    FieldLines* testLine = new FieldLines(5.0f, 0.8f, 6);
+    FieldLines* testLine = new FieldLines(4.0f, 0.2f, 4);
     
     Computation<FieldLines> comp(*testLine,*testSphere,compute_field_lines);
     std::thread computationThread = comp.spawnThread();

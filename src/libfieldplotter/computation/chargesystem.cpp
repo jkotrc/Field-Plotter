@@ -89,7 +89,7 @@ void ChargeSystem::removeCharge(int index) {
 	pointCharges.erase(pointCharges.begin()+index);
 }
 int ChargeSystem::getN() {
-	return pointCharges.size();
+	return (int)pointCharges.size();
 }
 PointCharge* ChargeSystem::getCharges() {
 	return &pointCharges[0];

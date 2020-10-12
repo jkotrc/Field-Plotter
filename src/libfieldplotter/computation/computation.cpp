@@ -28,7 +28,7 @@ void compute_field_lines(FieldLines& lines, ChargeSystem& system){
     const float ds = lines.getLineStep();
 
     //TODO: RK4 needs a small step for accuracy but we don't need that many vertices as it makes no visible difference
-    const float ds_visible = 0.2f;//TODO: SET THIS!!
+    const float ds_visible = 0.05f;//TODO: SET THIS!!
 
     PointCharge* charges = system.getCharges();
     std::vector<Point>& vertices = lines.getVertices();
@@ -83,7 +83,9 @@ void compute_field_lines(FieldLines& lines, ChargeSystem& system){
                         lineEnded=true;
                     };
                     if(lineEnded) {
-                        //if(vertices.size() % 2 != 0){vertices.push_back(origin);}
+                        vertices.push_back(origin);
+                        offset++;
+                        cumulative_dF = 0.0f;
                         break;
                     }
 

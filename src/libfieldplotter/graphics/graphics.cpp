@@ -6,7 +6,7 @@ using namespace glm;
 //www.songho.ca/opengl/gl_sphere.html
 
 #define SPHERE_DEFINITION 10
-#define PI 3.1415926
+#define PI 3.1415926f
 
 Model loadSphereModel() {
 	const float radius = 0.1f;
@@ -16,7 +16,6 @@ Model loadSphereModel() {
 	std::vector<unsigned int>& indices = model.indices;
 	float x, y, z, xy;                              // vertex position
 	float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normal
-	float s, t;                                     // vertex texCoord
 
 	float sectorStep = 2 * PI / SPHERE_DEFINITION;
 	float stackStep = PI / SPHERE_DEFINITION;
@@ -71,7 +70,7 @@ Model loadSphereModel() {
 	return model;
 }
 
-#define SCALE 0.6
+#define SCALE 0.6f
 #define LEVEL_OF_DETAIL 10
 #define Z_OFFSET (CYLINDER_HEIGHT - CONE_HEIGHT) / 2
 #define CONE_HEIGHT 0.06*SCALE

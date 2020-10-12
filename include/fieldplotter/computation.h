@@ -35,14 +35,7 @@ struct PointCharge {
 	PointCharge(float x, float y, float z, float charge) : p(Point(x, y, z)), charge(charge) {}
 };
 
-class VectorField;
-class FieldLines;
 class ChargeSystem;
-typedef struct {	//TODO: Refactor this into ChargeSystem
-	PointCharge* charges;
-	int n_charges;
-} PhysicsConfiguration;
-
 
 //A wrapper for any ol' generic computation threa
 template <typename T>
@@ -59,8 +52,9 @@ class Computation {
 		bool isComplete(){return completed;}
 };
 
-
-//compute functions not contained within the classes because of the intention of things like VectorField to be applicable to other physical systems
+//compute functions not contained within any class so that they may be more easily provided through other interfaces in the future (CUDA, Fortran, MATLAB,....)
+class VectorField;
+class FieldLines;
 void compute_electric_field(VectorField& vf, ChargeSystem& system);
 void compute_field_lines(FieldLines& lines, ChargeSystem& system);
 Point electrical_force_at(Point r,ChargeSystem& system);
