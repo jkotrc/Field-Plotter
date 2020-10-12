@@ -1,6 +1,6 @@
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <fieldplotter/graphics.h>
+#include "graphics.h"
+
+#include <vector>
 
 using namespace glm;
 

@@ -1,29 +1,33 @@
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <fieldplotter/chargesystem.h>
-#include <fieldplotter/plottable.h>
-#include <fieldplotter/scene.h>
+#include "chargesystem.h"
+#include "computation.h"
 
-#include <fieldplotter/computation.h>
+#include "graphics.h"
 
-#include <fieldplotter/graphics.h>
-#include <fieldplotter/commonheaders.h>
+#include "Shaders.h"
 
-#include "../graphics/Shaders.h"
-
-#include <vector>
 #include <stdlib.h>
 
 using namespace glm;
 
-ChargeSystem::ChargeSystem(int N, PointCharge* charges) : Plottable(loadSphereModel()) {
+ChargeSystem::ChargeSystem() {
+	graphicsInitialized = false;
+}
+
+ChargeSystem::ChargeSystem(int N, PointCharge* charges) {
+	graphicsInitialized = false;
 	pointCharges.resize(N);
 	memcpy(&pointCharges[0], &charges[0], N*sizeof(PointCharge));
 }
 
 void ChargeSystem::initGraphics() {
-    Plottable::initGraphics();
-	assert(buffers.size() == size_t(3));
+	
+	if (parent != NULL) {
+		glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "Matrices"), 0);
+		glBindBufferBase(GL_UNIFORM_BUFFER, 0, parent->getSceneMatrices());
+		glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"), 1, false, glm::value_ptr(modelMatrix));
+	}
+
+	if (graphicsInitialized) return;
 	modelMatrix=mat4(1.0f);
 
 	//float instance_positions[charges_size*3];
@@ -36,8 +40,28 @@ void ChargeSystem::initGraphics() {
 		instance_positions[3*i+2] = pointCharges[i].p.z;
 		instance_charges[i]=pointCharges[i].charge;
 	}
-	
-	buffers.push_back(0);
+
+	Model model = loadSphereModel();
+	model_size=model.indices.size();
+
+	buffers.resize(5);
+
+	glGenBuffers(1, &buffers[FP_VERTICES]);
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[FP_VERTICES]);
+	glEnableVertexAttribArray(FP_VERTICES);
+	glVertexAttribPointer(FP_VERTICES, 3, GL_FLOAT, false, 0, nullptr);
+	glBufferData(GL_ARRAY_BUFFER, model.vertices.size() * sizeof(vec3), &model.vertices[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &buffers[FP_NORMALS]);
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[FP_NORMALS]);
+	glEnableVertexAttribArray(FP_NORMALS);
+	glVertexAttribPointer(FP_NORMALS, 3, GL_FLOAT, false, 0, nullptr);
+	glBufferData(GL_ARRAY_BUFFER, model.normals.size() * sizeof(vec3), &model.normals[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &buffers[FP_ELEMENTS]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[FP_ELEMENTS]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(unsigned int), &model.indices[0], GL_STATIC_DRAW);
+
 	glGenBuffers(1, &buffers[3]);
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[3]);
 	glEnableVertexAttribArray(3);
@@ -45,7 +69,6 @@ void ChargeSystem::initGraphics() {
 	glVertexAttribDivisor(3,1);
 	glBufferData(GL_ARRAY_BUFFER, pointCharges.size() * sizeof(float)*3, instance_positions, GL_STATIC_DRAW);
 
-	buffers.push_back(0);
 	glGenBuffers(1, &buffers[4]);
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[4]);
 	glEnableVertexAttribArray(4);
@@ -56,14 +79,10 @@ void ChargeSystem::initGraphics() {
     programID = loadShadersFromSource(Shaders::CHARGE_VERTEXSHADER, Shaders::CHARGE_FRAGMENTSHADER);
 	glUseProgram(programID);
 
-	glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "Matrices"), 0);
-	glBindBufferBase(GL_UNIFORM_BUFFER,0,parent->getSceneMatrices());
-	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"),1,false,glm::value_ptr(modelMatrix));
-
-
+	
 }
 
-void ChargeSystem::draw() {
+void ChargeSystem::staticDraw() {
 	glUseProgram(programID);
 	glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "Matrices"), 0);
 	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"),1,false,glm::value_ptr(modelMatrix));
@@ -80,7 +99,7 @@ void ChargeSystem::draw() {
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[4]);
 	glVertexAttribPointer(4, 1, GL_FLOAT, false, 0, nullptr);
 	
-	glDrawElementsInstanced(GL_TRIANGLES,model.indices.size(),GL_UNSIGNED_INT,(void*)0,pointCharges.size());
+	glDrawElementsInstanced(GL_TRIANGLES,model_size,GL_UNSIGNED_INT,(void*)0,pointCharges.size());
 }
 
 

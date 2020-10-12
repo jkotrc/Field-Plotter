@@ -1,5 +1,6 @@
-#include <fieldplotter/commonheaders.h>
-#include <fieldplotter/scene.h>
+#include "scene.h"
+
+#include "plottermath.h"
 
 using namespace glm;
 Camera::Camera()

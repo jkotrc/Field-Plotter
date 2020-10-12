@@ -1,13 +1,7 @@
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <fieldplotter/vectorfield.h>
-#include <fieldplotter/scene.h>
-#include <fieldplotter/plottable.h>
-#include <fieldplotter/graphics.h>
+#include "vectorfield.h"
+#include "graphics.h"
 
-#include <fieldplotter/commonheaders.h>
-
-#include "../graphics/Shaders.h"
+#include "Shaders.h"
 #include <stdio.h>
 #include <cmath>
 /*
@@ -19,7 +13,6 @@
 using namespace glm;
 VectorField::VectorField(float spatial_separation, int dimension)
 	:
-	Plottable(loadArrowModel()),
 	spatial_separation(spatial_separation),
 	dimension(dimension),
 	N(dimension*dimension*dimension)
@@ -64,11 +57,30 @@ VectorField::~VectorField() {
 
 
 void VectorField::initGraphics() {
-	Plottable::initGraphics();
+	PhysicalObject::initGraphics();
 	assert(buffers.size() == size_t(3));
     modelMatrix=mat4(1.0f);
 
-	buffers.resize(buffers.size()+2);
+	Model model = loadSphereModel();
+	model_size = model.indices.size();
+
+	buffers.resize(5);
+
+	glGenBuffers(1, &buffers[FP_VERTICES]);
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[FP_VERTICES]);
+	glEnableVertexAttribArray(FP_VERTICES);
+	glVertexAttribPointer(FP_VERTICES, 3, GL_FLOAT, false, 0, nullptr);
+	glBufferData(GL_ARRAY_BUFFER, model.vertices.size() * sizeof(vec3), &model.vertices[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &buffers[FP_NORMALS]);
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[FP_NORMALS]);
+	glEnableVertexAttribArray(FP_NORMALS);
+	glVertexAttribPointer(FP_NORMALS, 3, GL_FLOAT, false, 0, nullptr);
+	glBufferData(GL_ARRAY_BUFFER, model.normals.size() * sizeof(vec3), &model.normals[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &buffers[FP_ELEMENTS]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[FP_ELEMENTS]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(unsigned int), &model.indices[0], GL_STATIC_DRAW);
 
 	glGenBuffers(1, &buffers[VectorField::FP_POSITION]);
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[VectorField::FP_POSITION]);
@@ -84,8 +96,6 @@ void VectorField::initGraphics() {
 	glVertexAttribDivisor(VectorField::FP_COMPONENT,1);
 	glBufferData(GL_ARRAY_BUFFER, N * sizeof(float)*3, vectors, GL_STATIC_DRAW);
 
-	assert(buffers.size() == size_t(5));
-
     programID = loadShadersFromSource(Shaders::ARROW_VERTEXSHADER, Shaders::ARROW_FRAGMENTSHADER);
 	glUseProgram(programID);
 
@@ -96,7 +106,7 @@ void VectorField::initGraphics() {
 	glUniform1f(glGetUniformLocation(programID, "upperBound"), upperBound);
 }
 
-inline void VectorField::draw() {
+inline void VectorField::staticDraw() {
 	glUseProgram(programID);
 	glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "Matrices"), 0);
 	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"),1,false,glm::value_ptr(modelMatrix));
@@ -116,7 +126,7 @@ inline void VectorField::draw() {
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[VectorField::FP_COMPONENT]);
 	glVertexAttribPointer(VectorField::FP_COMPONENT, 3, GL_FLOAT, false, 0, nullptr);
 
-	glDrawElementsInstanced(GL_TRIANGLES,model.indices.size(),GL_UNSIGNED_INT,(void*)0,N);	
+	glDrawElementsInstanced(GL_TRIANGLES,model_size,GL_UNSIGNED_INT,(void*)0,N);	
 }
 
 int VectorField::getDimension() {

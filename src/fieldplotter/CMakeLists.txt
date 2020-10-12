@@ -1,17 +1,20 @@
-﻿#Top-level CMakeLists for Field_Plotter
-cmake_minimum_required (VERSION 3.14)
+﻿cmake_minimum_required (VERSION 3.14)
 
 
-#set(FIELDPLOTTER_SOURCES Field_Plotter.cpp Debug.h)
-set(FIELDPLOTTER_MODULES .)
+set(CMAKE_PREFIX_PATH "C:\\Qt\\5.15.0\\msvc2019_64\\lib\\cmake")
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(CMAKE_AUTOMOC ON)
+#set(CMAKE_AUTOUIC ON)
+#set(CMAKE_AUTORCC ON)
+
+set(FRONTEND_SOURCES main.cpp mainwindow.cpp mainwindow.ui canvas.cpp)
 
 
-add_executable (frontend main.cpp "main.cpp")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set(CMAKE_WIN32_EXECUTABLE ON)
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
-#find_package(glfw3 REQUIRED)
+add_executable(frontend ${FRONTEND_SOURCES})
 
-IF(WIN32)
-target_link_libraries(frontend glew32s.lib glfw3.lib fieldplotter)
-ELSE()
-target_link_libraries(frontend libGLEW.a glfw fieldplotter)
-ENDIF()
+target_link_libraries(frontend Qt5::Widgets fieldplotter)

@@ -1,12 +1,10 @@
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <fieldplotter/commonheaders.h>
-#include <fieldplotter/scene.h>
-#include <fieldplotter/plottable.h>
+#include "scene.h"
+#include "physicalobject.h"
 
 #include "Shaders.h"
-#include <stdio.h>
 
+#include <stdio.h>
+#include <assert.h>
 
 using namespace glm;
 
@@ -39,6 +37,10 @@ projectionMat(glm::perspective(glm::radians(45.0f), (float)width/height, 0.1f, 1
 viewMat(rotate(mat4(1.0f), 1.0f, vec3(1.0, 0.0, 0.0))),
 camera(new Camera())
 {
+	initGraphics();
+}
+
+void Scene::initGraphics() {
 	glewExperimental = GL_TRUE;
 	GLenum glewinitialized = glewInit();
 	assert(glewinitialized == GLEW_OK);
@@ -52,22 +54,26 @@ camera(new Camera())
 	glEnable(GL_LIGHTING);
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
-	
-	glGenBuffers(1, &sceneMatrices);
-	glBindBuffer(GL_UNIFORM_BUFFER, sceneMatrices);
-	glBufferData(GL_UNIFORM_BUFFER, 2*sizeof(mat4)+sizeof(vec3),NULL,GL_STATIC_DRAW);
-	
+
+	buffers.resize(1);
+	glGenBuffers(1, &buffers[0]);
+	glBindBuffer(GL_UNIFORM_BUFFER, buffers[0]);
+	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(mat4) + sizeof(vec3), NULL, GL_STATIC_DRAW);
+
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(mat4), glm::value_ptr(projectionMat));
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mat4), sizeof(mat4), glm::value_ptr(viewMat));
-	glBufferSubData(GL_UNIFORM_BUFFER, 2*sizeof(mat4), sizeof(vec3),glm::value_ptr(camera->getPos()));
+	glBufferSubData(GL_UNIFORM_BUFFER, 2 * sizeof(mat4), sizeof(vec3), glm::value_ptr(camera->getPos()));
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-	glBindBufferBase(GL_UNIFORM_BUFFER,0,sceneMatrices);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, buffers[0]);
 }
 
-void Scene::addPlottable(Plottable* plottable) {
-	plottable->setParent(this);
-	plottable->initGraphics();
-	plottables.push_back(plottable);
+void Scene::addComponent(PhysicalObject& component) {
+	component.setParent(this, components.size());
+	component.initGraphics();
+	components.push_back(&component);
+}
+void Scene::removeComponent(int index) {
+	components.erase(components.begin()+index);
 }
 
 void Scene::resizeViewport(int w, int h) {
@@ -75,27 +81,22 @@ void Scene::resizeViewport(int w, int h) {
 	height=h;
 	//TODO: Make this orthographic when the user wants a 2D-like view
 	projectionMat = glm::perspective(glm::radians(45.0f), (float)w / h, 0.1f, 100.0f);
-	glBindBuffer(GL_UNIFORM_BUFFER, sceneMatrices);
+	glBindBuffer(GL_UNIFORM_BUFFER, buffers[0]);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(mat4), glm::value_ptr(projectionMat));
 	glBindBuffer(GL_UNIFORM_BUFFER,0);
 	glViewport(0, 0, width, height);
 }
 
-void Scene::render() {
+void Scene::draw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glBindVertexArray(vao);
 	viewMat = camera->getViewMatrix();
-	glBindBuffer(GL_UNIFORM_BUFFER, sceneMatrices);
+	glBindBuffer(GL_UNIFORM_BUFFER, buffers[0]);
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mat4), sizeof(mat4), glm::value_ptr(viewMat));
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mat4)*2,sizeof(vec3),glm::value_ptr(camera->getPos()));
 	glBindBuffer(GL_UNIFORM_BUFFER,0);
-
-	for (const auto& element : plottables) {
-		//TODO: pop the invisible plottables off the vector instead of this horribleness
-		if(element->isVisible()){
-			element->draw();
-		}
-	
+	for (PhysicalObject* element : components) {
+		element->draw();
 	}
 }
 
@@ -108,7 +109,7 @@ void Scene::scroll(float amount) {
 void Scene::moveLinear(float x, float y, float z) {
 	camera->moveLinear(x, y, z);
 }
-
 GLuint Scene::getSceneMatrices() {
-	return sceneMatrices;
+	assert((int)buffers.size() == 1);
+	return buffers[0];
 }

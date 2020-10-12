@@ -1,9 +1,7 @@
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <fieldplotter/fieldlines.h>
-#include <fieldplotter/computation.h>
+#include "fieldlines.h"
+#include "computation.h"
+#include "graphics.h"
 
-#include <fieldplotter/graphics.h>
 #include "Shaders.h"
 
 #define PI 3.1415926
@@ -33,7 +31,7 @@ void FieldLines::initGraphics() {
     glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "Matrices"), 0);
 	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"),1,false,glm::value_ptr(modelMatrix));
 }
-void FieldLines::draw() {
+void FieldLines::staticDraw() {
     glUseProgram(programID);
 	glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "Matrices"), 0);
 	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"),1,false,glm::value_ptr(modelMatrix));
@@ -49,7 +47,7 @@ void FieldLines::draw() {
 }
 
 //TODO: This causes a memory leak
-void FieldLines::updateBuffer() {
+void FieldLines::dynamicDraw() {
     vert_size = vertices.size();
     if (vert_size == thread_bufferoffset) { return; }
     lineindex_size=lines_index.size();
@@ -65,15 +63,13 @@ void FieldLines::updateBuffer() {
         );
         thread_bufferoffset=0;
     }    
-
-    
     glBufferSubData(GL_ARRAY_BUFFER,
     thread_bufferoffset*sizeof(Point),
     (vert_size-thread_bufferoffset)*sizeof(Point),
     &vertices[thread_bufferoffset]
     );
-
-    thread_bufferoffset=vert_size;  
+    thread_bufferoffset=vert_size;
+    staticDraw();
 }
 
 float FieldLines::getRange() {

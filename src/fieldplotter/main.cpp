@@ -1,14 +1,18 @@
+#define GLEW_STATIC
+#include <GL/glew.h>
+
+#include <fieldplotter/scene.h>
+
 #include <fieldplotter/vectorfield.h>
 #include <fieldplotter/chargesystem.h>
 #include <fieldplotter/fieldlines.h>
-#include <fieldplotter/scene.h>
 
+#include <QApplication>
+#include "mainwindow.h"
 
-#include <GLFW/glfw3.h>
 #include <iostream>
 using namespace std;
 
-GLFWwindow* window;
 Scene* renderer;
 VectorField* debug_vectorfield;
 bool lmbPressed = false;
@@ -19,92 +23,15 @@ float yHistory;
 //TODO: Set this in the preferences
 #define SCROLL_SENSITIVITY -0.1f
 
-template <typename T> float sgn(T val) {
-    return (T(0) < val) - (val < T(0));
-}
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-
-    renderer->getCamera()->scroll(sgn(yoffset) * SCROLL_SENSITIVITY);
-}
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-
-    if (key == GLFW_KEY_LEFT_ALT) {
-        if (GLFW_PRESS) {
-            altPressed = true;
-        }
-        else if (GLFW_RELEASE) {
-            altPressed = false;
-        }
-    }
-    switch (key) {
-    case(GLFW_KEY_W):
-        renderer->getCamera()->moveLinear(0.1f, 0.0f, 0.0f);
-        break;
-    case(GLFW_KEY_S):
-        renderer->getCamera()->moveLinear(-0.1f, -0.0f, 0.0f);
-        break;
-    case(GLFW_KEY_A):
-        renderer->getCamera()->moveLinear(0.0f, 0.0f, -0.1f);
-        break;
-    case(GLFW_KEY_D):
-        renderer->getCamera()->moveLinear(0.0f, 0.0f, 0.1f);
-        break;
-    case(GLFW_KEY_R):
-        renderer->getCamera()->moveLinear(0.0f, -0.1f, 0.0f);
-        break;
-    case(GLFW_KEY_F):
-        renderer->getCamera()->moveLinear(0.0f, 0.1f, 0.0f);
-        break;
-    case(GLFW_KEY_UP):
-        renderer->getCamera()->moveCamera(0.0f, 0.1f);
-        break;
-    case(GLFW_KEY_DOWN):
-        renderer->getCamera()->moveCamera(0.0f, -0.1f);
-        break;
-    case(GLFW_KEY_LEFT):
-        renderer->getCamera()->moveCamera(0.1f, 0.0f);
-        break;
-    case(GLFW_KEY_RIGHT):
-        renderer->getCamera()->moveCamera(-0.1f, 0.0f);
-        break;
-    default:
-        break;
-    }
-}
-
-
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
-{
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        lmbPressed = true;
-    }
-    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-        lmbPressed = false;
-    }
-}
-#define SENSITIVITY 0.01f
-void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
-{
-    if (lmbPressed) {
-        const float dx = SENSITIVITY * ((float)xpos - xHistory);
-        const float dy = SENSITIVITY * ((float)ypos - yHistory);
-        renderer->getCamera()->moveCamera(-dx, dy);
-    }
-    xHistory = (float)xpos;
-    yHistory = (float)ypos;
-}
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    renderer->resizeViewport(width, height);
-}
-
-
 const int N = 3;
 PointCharge* singlecharge;
-int main() {
-    if (!glfwInit()) {
+int main(int argc, char* argv[]) {
+    QApplication app(argc, argv);
+    MainWindow win;
+    win.show();
+    return app.exec();
+
+    /*if (!glfwInit()) {
         cout << "GLFW FAILED TO INITIALIZE\n";
         exit(-1);
     }
@@ -123,9 +50,6 @@ int main() {
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
     GLenum glewinitialized = glewInit();
-    if (glewinitialized != GLEW_OK) {
-        cout << "GLEW FAILED TO INITIALIZE!\n";
-    }
 
     singlecharge = new PointCharge[N];
     singlecharge[0] = PointCharge(Point(0.0f, 0.0f, 0.5f), 0.1f);
@@ -157,7 +81,7 @@ int main() {
         renderer->render();
         glfwSwapBuffers(window);
         glfwPollEvents();
-    }
+    }*/
 
-    return 0;
+    
 }

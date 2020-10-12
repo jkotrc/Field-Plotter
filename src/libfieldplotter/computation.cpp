@@ -1,9 +1,9 @@
-#include <fieldplotter/computation.h>
+#include "computation.h"
 
-#include <fieldplotter/plottable.h>
-#include <fieldplotter/chargesystem.h>
-#include <fieldplotter/vectorfield.h>
-#include <fieldplotter/fieldlines.h>
+#include "physicalobject.h"
+#include "chargesystem.h"
+#include "vectorfield.h"
+#include "fieldlines.h"
 
 #include <vector>
 #include <cmath>
@@ -140,13 +140,19 @@ void compute_electric_field(VectorField& vf, ChargeSystem& system) {
 
 template <typename T>
 Computation<T>::Computation(
-T& plottable,
+T& comp,
 ChargeSystem& charge_system,
 void (*func)(T& object, ChargeSystem& system))
-:completed(false),plottable(plottable),compute_function(func),charge_system(charge_system) 
+:completed(false),component(comp),compute_function(func),charge_system(charge_system) 
 {
 
 }
+
+template <typename T>
+T& Computation<T>::getComponent() { return component; }
+
+template <typename T>
+bool Computation<T>::isComplete() {return completed; }
 
 //https://stackoverflow.com/questions/8752837/undefined-reference-to-template-class-constructor
 template class Computation<FieldLines>;
@@ -154,7 +160,7 @@ template class Computation<VectorField>;
 
 template <typename T>
 void Computation<T>::run() {
-    compute_function(plottable,charge_system);
+    compute_function(component,charge_system);
     completed=true;
     onFinalize();
 }
@@ -162,5 +168,4 @@ void Computation<T>::run() {
 template <typename T>
 thread Computation<T>::spawnThread() {
     return thread(&Computation<T>::run,this);
-    //return thread(compute_function, std::ref(plottable), std::ref(charge_system));
 }
