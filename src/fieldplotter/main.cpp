@@ -134,7 +134,7 @@ int main() {
     ChargeSystem* testSphere = new ChargeSystem(N, singlecharge);
     debug_vectorfield = new VectorField(0.2f, 10);//separation,dimension
 
-    FieldLines* testLine = new FieldLines(5.0f, 0.2f, 6);
+    FieldLines* testLine = new FieldLines(5.0f, 0.8f, 6);
     
     Computation<FieldLines> comp(*testLine,*testSphere,compute_field_lines);
     std::thread computationThread = comp.spawnThread();

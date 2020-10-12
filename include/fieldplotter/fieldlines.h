@@ -9,6 +9,9 @@ class FieldLines : public Plottable {
         float ds;
         int line_density;
         std::vector<Point> vertices;
+        size_t vert_size;
+        size_t lineindex_size;
+        std::vector<int> lines_index;
     public:
         FieldLines(float range, float ds, int line_density);
         ~FieldLines();
@@ -16,6 +19,7 @@ class FieldLines : public Plottable {
         float getLineStep();
         int getLineDensity();
         std::vector<Point>& getVertices();
+        std::vector<int>& getLinesIndex();
         void draw() override;
         void initGraphics() override;
         void updateBuffer() override;

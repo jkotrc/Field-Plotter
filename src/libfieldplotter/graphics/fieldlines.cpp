@@ -1,5 +1,7 @@
 #include <fieldplotter/fieldlines.h>
 #include <fieldplotter/computation.h>
+
+#include <fieldplotter/graphics.h>
 #include "Shaders.h"
 
 #define BUFFER_STEP 100
@@ -11,9 +13,12 @@ using namespace std;
 
 
 FieldLines::FieldLines(float range, float ds, int line_density)
-: range(range),ds(ds),line_density(line_density)
+: range(range),ds(ds),line_density(line_density),vert_size(size_t(0)),lineindex_size(size_t(0))
 {
     modelMatrix=glm::mat4(1.0f);    
+}
+FieldLines::~FieldLines() {
+    //Do nothing because vectors delete themselves when they go out of scope anyway
 }
 
 void FieldLines::initGraphics() {
@@ -34,14 +39,21 @@ void FieldLines::draw() {
 	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"),1,false,glm::value_ptr(modelMatrix));
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 	glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, nullptr);
-    glDrawArrays(GL_LINES,0,vertices.size());
+
+
+    for (int i = 0; i < lineindex_size-1; i++) {
+        const int size = lines_index[i+1]-lines_index[i];
+        glDrawArrays(GL_LINE_STRIP, lines_index[i], size);
+    }
+    glDrawArrays(GL_LINE_STRIP, lines_index[lineindex_size-1], vert_size-lines_index[lineindex_size-1]);
 }
 
 //TODO: This causes a memory leak
 void FieldLines::updateBuffer() {
     glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
     glVertexAttribPointer(0,3,GL_FLOAT,false,0,nullptr);
-    size_t vert_size = vertices.size();
+    vert_size = vertices.size();
+    lineindex_size=lines_index.size();
     if (vert_size > thread_buffersize) {
         thread_buffersize=vert_size*2;
         glBufferData(
@@ -71,4 +83,7 @@ int FieldLines::getLineDensity() {
 }
 std::vector<Point>& FieldLines::getVertices() {
     return vertices;
+}
+std::vector<int>& FieldLines::getLinesIndex() {
+    return lines_index;
 }

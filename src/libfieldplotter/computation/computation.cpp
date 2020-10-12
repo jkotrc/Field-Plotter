@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <cmath>
+#include <iostream>
 
 using namespace std;
 
@@ -18,60 +19,20 @@ bool isOutOfBounds(Point point, float range) {
     return (point.mag() >= range);
 }
 
-//This will break if it is called more than once
-//test this!
-#ifndef NDEBUG //this has to go out in the release mode
-void make_hedgehog(FieldLines& lines, ChargeSystem& system) {
-    float line_density = lines.getLineDensity();    
-    const float radius = 0.1f;
-    const float delta_theta = 2 * PI / (line_density);
-	const float delta_phi = PI / (line_density);
-    const float range = lines.getRange();
-    const float ds = lines.getLineStep();
-
-    PointCharge* charges = system.getCharges();
-    std::vector<Point>& vertices = lines.getVertices();
-    std::vector<Point> sources;
-    std::vector<Point> sinks;
-    for (int i = 0; i < system.getN(); i++) {
-        if (charges[i].charge > 0.0f) {
-            sources.push_back(charges[i].p);
-        } else {
-            sinks.push_back(charges[i].p);
-        }
-    }
-
-    for (const Point& source : sources) {
-        
-        for (float theta=0.0f; theta <= 2*PI; theta+=delta_theta) { //TODO: Check if this produces too many field lines
-            for (float phi=0.0f; phi <= PI; phi+=delta_phi) {
-                Point origin = Point 
-                (
-                    radius*sinf(phi)*cosf(theta),
-                    radius*sinf(phi)*sinf(theta), //OpenGL's y and z are switched!
-                    radius*cosf(phi)
-                );
-                vertices.push_back(origin);
-                
-            }
-        }
-    }
-}
-#endif
-
 void compute_field_lines(FieldLines& lines, ChargeSystem& system){
     float line_density = lines.getLineDensity();    
-    const float radius = 0.1f;
+    const float radius = 0.1f;//TODO: SET THIS!!!
     const float delta_theta = 2 * PI / (line_density);
 	const float delta_phi = PI / (line_density);
     const float range = lines.getRange();
     const float ds = lines.getLineStep();
 
     //TODO: RK4 needs a small step for accuracy but we don't need that many vertices as it makes no visible difference
-    const float ds_visible = 1.0f;
+    const float ds_visible = 0.2f;//TODO: SET THIS!!
 
     PointCharge* charges = system.getCharges();
-    std::vector<Point>& vertices = lines.getVertices();//TODO: make this <std:vector<Point>&>&
+    std::vector<Point>& vertices = lines.getVertices();
+    std::vector<int>& lines_index = lines.getLinesIndex();
     std::vector<Point> sources;
     std::vector<Point> sinks;
     for (int i = 0; i < system.getN(); i++) {
@@ -82,6 +43,7 @@ void compute_field_lines(FieldLines& lines, ChargeSystem& system){
         }
     }
 
+    int offset=0;
     for (const Point& source : sources) {
         for (float theta=0.0f; theta <= 2*PI; theta+=delta_theta) {
             for (float phi=0.0f; phi <= PI; phi+=delta_phi) {
@@ -92,9 +54,13 @@ void compute_field_lines(FieldLines& lines, ChargeSystem& system){
                     (radius)*cosf(phi)+source.z
                 );
                 
-                int count=1;
+                lines_index.push_back(offset);
+                vertices.push_back(origin);
+                offset++;
+                
+                float cumulative_dF = 0.0f;
                 while(true) {
-                    vertices.push_back(origin);
+                    //vertices.push_back(origin);
                     Point dF1 = electrical_force_at(origin,system)*ds;
                     Point dF2 = electrical_force_at(origin+dF1*(ds/2),system)*ds;
                     Point dF3 = electrical_force_at(origin+dF2*(ds/2),system)*ds;
@@ -103,24 +69,30 @@ void compute_field_lines(FieldLines& lines, ChargeSystem& system){
                     dF*=ds;
                     dF/=6.0f;
                     origin +=dF;
+                    cumulative_dF+=dF.mag();
 
                     bool lineEnded=false;
                     for(const Point& sink : sinks) {
-                        if((origin-sink).mag()<=radius){
+                        if((origin-sink).mag()<=radius)
+                        {
                             lineEnded=true;
-                        };
+                            break;
+                        }
                     }
                     if(isOutOfBounds(origin,range) || (dF.mag() < 1e-9f)) {
                         lineEnded=true;
                     };
                     if(lineEnded) {
-                        if(vertices.size() % 2 != 0){vertices.push_back(origin);}
+                        //if(vertices.size() % 2 != 0){vertices.push_back(origin);}
                         break;
                     }
 
-                    vertices.push_back(origin);
+                    if(cumulative_dF >= ds_visible) {
+                        vertices.push_back(origin);
+                        offset++;
+                        cumulative_dF=0.0f;
+                    }
 
-                    count++;
                 }
             }
         }

@@ -4,6 +4,7 @@
 
 #include <fieldplotter/computation.h>
 
+#include <fieldplotter/graphics.h>
 #include <fieldplotter/commonheaders.h>
 
 #include "../graphics/Shaders.h"

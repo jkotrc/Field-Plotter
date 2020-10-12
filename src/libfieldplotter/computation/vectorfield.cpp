@@ -1,6 +1,7 @@
 #include <fieldplotter/vectorfield.h>
 #include <fieldplotter/scene.h>
 #include <fieldplotter/plottable.h>
+#include <fieldplotter/graphics.h>
 
 #include <fieldplotter/commonheaders.h>
 

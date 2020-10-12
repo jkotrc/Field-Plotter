@@ -1,9 +1,8 @@
 #pragma once
 #include <fieldplotter/commonheaders.h>
 #include <fieldplotter/graphics.h>
-#include <queue>
 
-//struct Model;
+struct Model;
 class Scene;
 class Plottable {
 	protected:
@@ -20,9 +19,9 @@ class Plottable {
     public:
 		Plottable(Model mdl);
 		Plottable();
-		virtual void draw(){}//TODO: maybe don't make this abstract
+		virtual void draw(){}
 		virtual void initGraphics();
-		virtual void updateBuffer(){}//TODO: implement this for all Plottables
+		virtual void updateBuffer(){}
 
 		void setParent(Scene* parent);
 		void setVisible(bool visible);

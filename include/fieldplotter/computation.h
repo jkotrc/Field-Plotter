@@ -64,4 +64,3 @@ class Computation {
 void compute_electric_field(VectorField& vf, ChargeSystem& system);
 void compute_field_lines(FieldLines& lines, ChargeSystem& system);
 Point electrical_force_at(Point r,ChargeSystem& system);
-void make_hedgehog(FieldLines& lines, ChargeSystem& system);
