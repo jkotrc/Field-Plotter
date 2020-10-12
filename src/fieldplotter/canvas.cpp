@@ -31,7 +31,6 @@ ChargeSystem* charges = new ChargeSystem(3, singlecharge);
 void Canvas::initializeGL() {
 	QOpenGLWidget::initializeGL();
 	this->renderer = new Scene(width(), height());
-	
 	renderer->addComponent(*charges);
 }
 void Canvas::resizeGL(int w, int h) {

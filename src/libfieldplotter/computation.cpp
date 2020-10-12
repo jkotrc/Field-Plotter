@@ -6,6 +6,7 @@
 #include "fieldlines.h"
 
 #include <vector>
+#include <thread>
 #include <cmath>
 #include <iostream>
 
@@ -160,12 +161,19 @@ template class Computation<VectorField>;
 
 template <typename T>
 void Computation<T>::run() {
+    charge_system.setComputationalState(true);
     compute_function(component,charge_system);
+    charge_system.setComputationalState(false);
     completed=true;
     onFinalize();
+    for (thread& t : Computation::active_threads) {
+        if (t.get_id() == this_thread::get_id()) {
+            t.detach();
+        }
+    }
 }
 
 template <typename T>
-thread Computation<T>::spawnThread() {
-    return thread(&Computation<T>::run,this);
+void Computation<T>::spawnThread() {
+    Computation::active_threads.push_back(thread(&Computation<T>::run,this));
 }

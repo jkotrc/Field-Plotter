@@ -57,7 +57,6 @@ VectorField::~VectorField() {
 
 
 void VectorField::initGraphics() {
-	PhysicalObject::initGraphics();
 	assert(buffers.size() == size_t(3));
     modelMatrix=mat4(1.0f);
 
@@ -127,6 +126,10 @@ inline void VectorField::staticDraw() {
 	glVertexAttribPointer(VectorField::FP_COMPONENT, 3, GL_FLOAT, false, 0, nullptr);
 
 	glDrawElementsInstanced(GL_TRIANGLES,model_size,GL_UNSIGNED_INT,(void*)0,N);	
+}
+
+void VectorField::dynamicDraw() {
+
 }
 
 int VectorField::getDimension() {

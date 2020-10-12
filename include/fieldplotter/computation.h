@@ -18,8 +18,9 @@ class Computation {
 	public:
 		Computation(T& comp,ChargeSystem& charge_system, void (*func)(T& object, ChargeSystem& system));
 		T& getComponent();
-		std::thread spawnThread();
+		void spawnThread();
 		bool isComplete();
+		static std::vector<std::thread> active_threads;
 };
 
 //compute functions not contained within any class so that they may be more easily provided through other interfaces in the future (CUDA, Fortran, MATLAB,....)

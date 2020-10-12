@@ -20,16 +20,24 @@ FieldLines::~FieldLines() {
 }
 
 void FieldLines::initGraphics() {
+
+    if (graphicsInitialized) return;
     buffers.resize(1);
     glGenBuffers(1,&buffers[0]);
     glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0,3,GL_FLOAT,false,0,nullptr);
     assert(buffers.size()==1);
+
     programID=loadShadersFromSource(Shaders::LINES_VERTEXSHADER,Shaders::LINES_FRAGMENTSHADER);
-    glUseProgram(programID);
+
     glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "Matrices"), 0);
-	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"),1,false,glm::value_ptr(modelMatrix));
+    glBindBufferBase(GL_UNIFORM_BUFFER, 0, parent->getSceneMatrices());
+    glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"), 1, false, glm::value_ptr(modelMatrix));
+    glUseProgram(programID);
+
+    graphicsInitialized = true;
+    
 }
 void FieldLines::staticDraw() {
     glUseProgram(programID);

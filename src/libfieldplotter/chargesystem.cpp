@@ -20,12 +20,6 @@ ChargeSystem::ChargeSystem(int N, PointCharge* charges) {
 }
 
 void ChargeSystem::initGraphics() {
-	
-	if (parent != NULL) {
-		glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "Matrices"), 0);
-		glBindBufferBase(GL_UNIFORM_BUFFER, 0, parent->getSceneMatrices());
-		glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"), 1, false, glm::value_ptr(modelMatrix));
-	}
 
 	if (graphicsInitialized) return;
 	modelMatrix=mat4(1.0f);
@@ -77,6 +71,11 @@ void ChargeSystem::initGraphics() {
 	glBufferData(GL_ARRAY_BUFFER, pointCharges.size()*sizeof(float), instance_charges, GL_STATIC_DRAW);
 
     programID = loadShadersFromSource(Shaders::CHARGE_VERTEXSHADER, Shaders::CHARGE_FRAGMENTSHADER);
+
+	glUniformBlockBinding(programID, glGetUniformBlockIndex(programID, "Matrices"), 0);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, parent->getSceneMatrices());
+	glUniformMatrix4fv(glGetUniformLocation(programID, "modelMat"), 1, false, glm::value_ptr(modelMatrix));
+	
 	glUseProgram(programID);
 
 	
