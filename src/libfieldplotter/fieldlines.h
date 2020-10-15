@@ -12,7 +12,6 @@ class FieldLines : public PhysicalObject {
         size_t lineindex_size;
         std::vector<int> lines_index;
         void staticDraw() override;
-        void dynamicDraw() override;
     public:
         FieldLines(float range, float ds, int line_density);
         ~FieldLines();
@@ -20,6 +19,7 @@ class FieldLines : public PhysicalObject {
         float getRange();
         float getLineStep();
         int getLineDensity();
+        void updateBuffers() override;
 
         std::vector<Point>& getVertices();
         std::vector<int>& getLinesIndex();

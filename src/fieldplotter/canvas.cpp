@@ -2,55 +2,46 @@
 #include <GL/glew.h>
 #include "canvas.h"
 
-#include <fieldplotter/computation.h>
-#include <fieldplotter/scene.h>
-#include <fieldplotter/chargesystem.h>
-#include <fieldplotter/vectorfield.h>
+#include <libfieldplotter/scene.h>
+#include <libfieldplotter/physicalobject.h>
+
 
 #include <iostream>
+
 
 Canvas::Canvas(QWidget* parent)
 	: QOpenGLWidget(parent), lmbPressed(false)
 {
 	this->setMouseTracking(true);
+
+	
+//	QOpenGLContext* ctx = this->context();
+//	assert(ctx != NULL);
+//	this->renderer = new Scene(width(), height());
+//	this->renderer->addComponent(*dbg);
+	this->setUpdateBehavior(QOpenGLWidget::NoPartialUpdate);
 	assert(this->hasMouseTracking());
 }
 
+Scene* Canvas::getScene() {
+	return renderer;
+}
 
 
-//TODO: Remove this puny example
-bool toggle = false;
-const int N = 3;
-PointCharge singlecharge[N] = { 
-	PointCharge(Point(0.0f, 0.0f, 0.5f), 0.1f),
-	PointCharge(Point(0.0f, 0.0f, -0.5f), -0.1f),
-	PointCharge(Point(0.0f, 0.5f, 0.0f), 0.1f)
-};
-ChargeSystem* charges = new ChargeSystem(3, singlecharge);
-VectorField* debug_vectorfield = new VectorField(0.2f, 10);
 
 void Canvas::initializeGL() {
 	QOpenGLWidget::initializeGL();
 	this->renderer = new Scene(width(), height());
-	renderer->addComponent(*charges);
-	compute_electric_field(*debug_vectorfield, *charges);
-	renderer->addComponent(*debug_vectorfield);
+	emit glReady();
 }
+
+
 void Canvas::resizeGL(int w, int h) {
 	renderer->resizeViewport(w, h);
 }
 void Canvas::mousePressEvent(QMouseEvent* event) {
 	if (event->button() == Qt::LeftButton) {
 		lmbPressed = true;
-	}
-	else {
-		toggle = !toggle;
-		if (toggle) {
-			charges->detach();
-		}
-		else {
-			renderer->addComponent(*charges);
-		}
 	}
 	update();
 }
@@ -84,4 +75,5 @@ void Canvas::mouseReleaseEvent(QMouseEvent* event) {
 }
 void Canvas::paintGL() {
 	renderer->draw();
+	this->update();
 }

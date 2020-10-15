@@ -17,7 +17,6 @@ VectorField::VectorField(float spatial_separation, int dimension)
 	dimension(dimension),
 	N(dimension*dimension*dimension)
 {
-	graphicsInitialized = false;
 	//TODO: make this work
 	setComputationalState(false);
 
@@ -135,7 +134,15 @@ inline void VectorField::staticDraw() {
 	glDrawElementsInstanced(GL_TRIANGLES,model_size,GL_UNSIGNED_INT,(void*)0,N);	
 }
 
-void VectorField::dynamicDraw() {
+void VectorField::updateBuffers() {
+
+	/*glBindBuffer(GL_ARRAY_BUFFER, buffers[VectorField::FP_POSITION]);
+	glVertexAttribPointer(VectorField::FP_POSITION, 3, GL_FLOAT, false, 0, nullptr);
+	glBufferSubData(GL_ARRAY_BUFFER,0, N * sizeof(float) * 3, positions);
+
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[VectorField::FP_COMPONENT]);
+	glVertexAttribPointer(VectorField::FP_COMPONENT, 3, GL_FLOAT, false, 0, nullptr);
+	glBufferSubData(GL_ARRAY_BUFFER, 0,N * sizeof(float) * 3, vectors);*/
 
 }
 

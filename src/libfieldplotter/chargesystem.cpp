@@ -9,9 +9,7 @@
 
 using namespace glm;
 
-ChargeSystem::ChargeSystem() {
-	graphicsInitialized = false;
-}
+ChargeSystem::ChargeSystem() {}
 
 ChargeSystem::ChargeSystem(int N, PointCharge* charges) {
 	graphicsInitialized = false;
@@ -78,7 +76,7 @@ void ChargeSystem::initGraphics() {
 	
 	glUseProgram(programID);
 
-	
+	graphicsInitialized = true;
 }
 
 void ChargeSystem::staticDraw() {

@@ -1,13 +1,19 @@
 #pragma once
 
+
 #include <QtWidgets/QOpenGLWidget>
 #include <QtWidgets/QWidget>
 #include <QMouseEvent>
 
-#include <fieldplotter/physicalobject.h>
-#include <fieldplotter/computation.h>
 class Scene;
+class PhysicalObject;
 class Canvas : public QOpenGLWidget {
+
+	Q_OBJECT
+
+signals:
+	void glReady();
+
 protected:
 	void initializeGL() override;
 	void resizeGL(int w, int h) override;
@@ -27,5 +33,5 @@ private:
 
 public:
 	Canvas(QWidget* parent = 0);
-	template <typename T> void startComputation(Computation<T>& comp);
+	Scene* getScene();
 };

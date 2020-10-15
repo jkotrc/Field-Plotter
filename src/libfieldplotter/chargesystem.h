@@ -7,7 +7,7 @@ class ChargeSystem : public PhysicalObject {
         int model_size;
         std::vector<PointCharge> pointCharges;
         void staticDraw();
-        void dynamicDraw() override {}
+        void updateBuffers() override {}
     public:
         ChargeSystem();
         ChargeSystem(int N, PointCharge* charges);

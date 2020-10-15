@@ -27,12 +27,10 @@ class VectorField: public PhysicalObject {
 		float upperBound;
 		enum VectorField_Buffers {FP_POSITION=3,FP_COMPONENT};
 		void staticDraw() override;
-		void dynamicDraw() override;
 	public:
 		VectorField(float separation, int cubic_dimension);
 		~VectorField();
 		Vector getVector(int index);	//Return vector pointer at index of an array
-		void setVector(Vector v);
 		int getDimension();
 		int getAmount();
 		float getUpperBound();
@@ -40,4 +38,5 @@ class VectorField: public PhysicalObject {
 		void setUpperBound(float ub);
 		void setLowerBound(float lb);
 		void initGraphics() override;
+		void updateBuffers() override;
 };

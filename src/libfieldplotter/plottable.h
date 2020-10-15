@@ -5,7 +5,7 @@
 
 class Plottable {
 protected:
-	bool graphicsInitialized;
+	bool graphicsInitialized=false;
 	std::vector<GLuint> buffers;
 public:
 	virtual void initGraphics()=0;

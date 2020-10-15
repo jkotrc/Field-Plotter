@@ -6,7 +6,6 @@ class Camera {
 	private:
 		float angle;
 		float phi;
-		float radius;
 		glm::vec3 up;
 		glm::vec3 cameraPosition;
 		glm::vec3 origin;

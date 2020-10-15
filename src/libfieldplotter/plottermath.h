@@ -15,12 +15,13 @@ struct Point {
 	Point() : x(0), y(0), z(0) {}
 	Point(float x, float y, float z) : x(x), y(y), z(z) {}
 
-	const float magsq() {
+	constexpr float magsq() const {
 		return x * x + y * y + z * z;
 	}
-	const float mag() {
-		return sqrtf(x * x + y * y + z * z);	//sqrtf32 does not compile on Windows.
+	float mag() {
+		return sqrtf(x * x + y * y + z * z);
 	}
+
 	void operator+=(Point const& v);	//reference to const Point
 	void operator-=(Point const& v);
 	void operator*=(float scalar);

@@ -46,7 +46,6 @@ void FieldLines::staticDraw() {
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 	glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, nullptr);
 
-
     for (int i = 0; i < lineindex_size-1; i++) {
         const int size = lines_index[i+1]-lines_index[i];
         glDrawArrays(GL_LINE_STRIP, lines_index[i], size);
@@ -55,7 +54,7 @@ void FieldLines::staticDraw() {
 }
 
 //TODO: This causes a memory leak
-void FieldLines::dynamicDraw() {
+void FieldLines::updateBuffers() {
     vert_size = vertices.size();
     if (vert_size == thread_bufferoffset) { return; }
     lineindex_size=lines_index.size();
@@ -77,7 +76,6 @@ void FieldLines::dynamicDraw() {
     &vertices[thread_bufferoffset]
     );
     thread_bufferoffset=vert_size;
-    staticDraw();
 }
 
 float FieldLines::getRange() {

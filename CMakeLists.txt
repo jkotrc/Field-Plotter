@@ -9,7 +9,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${FIELDPLOTTER_OUT}/libs)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${FIELDPLOTTER_OUT})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${FIELDPLOTTER_OUT}/libs)
 
-include_directories("${CMAKE_SOURCE_DIR}/include")
+include_directories("${CMAKE_SOURCE_DIR}/include" "${CMAKE_SOURCE_DIR}/src")
 link_directories("${CMAKE_SOURCE_DIR}/libs" "${FIELDPLOTTER_OUT}/libs")
 message("Found ${CMAKE_SOURCE_DIR}/include and ${FIELDPLOTTER_OUT}/libs")
 
