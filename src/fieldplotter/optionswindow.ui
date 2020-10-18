@@ -28,16 +28,16 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="1">
-       <widget class="QLineEdit" name="chargebox3_3"/>
+       <widget class="QLineEdit" name="chargebox3"/>
       </item>
       <item row="0" column="0">
-       <widget class="QLineEdit" name="chargebox1_3"/>
+       <widget class="QLineEdit" name="chargebox1"/>
       </item>
       <item row="1" column="0">
-       <widget class="QLineEdit" name="chargebox2_3"/>
+       <widget class="QLineEdit" name="chargebox2"/>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="chargebox4_3"/>
+       <widget class="QLineEdit" name="chargebox4"/>
       </item>
      </layout>
     </widget>
@@ -52,7 +52,7 @@
        <string>Charge radius (graphical):</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="linedensitybox_6"/>
+     <widget class="QLineEdit" name="linedensitybox"/>
     </widget>
    </item>
    <item>
@@ -74,7 +74,7 @@
          <string>arrow count:</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="arrowcountbox_3"/>
+       <widget class="QLineEdit" name="arrowcountbox"/>
       </widget>
      </item>
      <item>
@@ -87,7 +87,7 @@
          <string>spatial separation:</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="vfseparationbox_3"/>
+       <widget class="QLineEdit" name="vfseparationbox"/>
       </widget>
      </item>
     </layout>
@@ -111,7 +111,7 @@
          <string>Line density:</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="linedensitybox_5"/>
+       <widget class="QLineEdit" name="linedensitybox"/>
       </widget>
      </item>
      <item>
@@ -124,7 +124,7 @@
          <string>computational step:</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="dsbox_3"/>
+       <widget class="QLineEdit" name="dsbox"/>
       </widget>
      </item>
      <item>
@@ -137,7 +137,7 @@
          <string>visible step:</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="visible_dsbox_3"/>
+       <widget class="QLineEdit" name="visible_dsbox"/>
       </widget>
      </item>
      <item>
@@ -150,7 +150,7 @@
          <string>maximum range:</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="maxrangebox_3"/>
+       <widget class="QLineEdit" name="maxrangebox"/>
       </widget>
      </item>
     </layout>

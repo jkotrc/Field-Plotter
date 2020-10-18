@@ -8,7 +8,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-set(FRONTEND_SOURCES main.cpp mainwindow.cpp mainwindow.ui optionswindow.cpp optionswindow.ui canvas.cpp useroptions.cpp)
+set(FRONTEND_SOURCES main.cpp mainwindow.cpp mainwindow.ui optionswindow.cpp optionswindow.ui canvas.cpp useroptions.cpp chargebox.cpp)
 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")

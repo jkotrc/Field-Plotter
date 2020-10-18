@@ -13,12 +13,6 @@ Canvas::Canvas(QWidget* parent)
 	: QOpenGLWidget(parent), lmbPressed(false)
 {
 	this->setMouseTracking(true);
-
-	
-//	QOpenGLContext* ctx = this->context();
-//	assert(ctx != NULL);
-//	this->renderer = new Scene(width(), height());
-//	this->renderer->addComponent(*dbg);
 	this->setUpdateBehavior(QOpenGLWidget::NoPartialUpdate);
 	assert(this->hasMouseTracking());
 }
@@ -26,7 +20,6 @@ Canvas::Canvas(QWidget* parent)
 Scene* Canvas::getScene() {
 	return renderer;
 }
-
 
 
 void Canvas::initializeGL() {

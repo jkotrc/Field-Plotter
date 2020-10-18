@@ -11,7 +11,7 @@ using namespace glm;
 
 ChargeSystem::ChargeSystem() {}
 
-ChargeSystem::ChargeSystem(int N, PointCharge* charges) {
+ChargeSystem::ChargeSystem(int N, PointCharge* charges, float ball_radius) : ball_radius(ball_radius) {
 	graphicsInitialized = false;
 	pointCharges.resize(N);
 	memcpy(&pointCharges[0], &charges[0], N*sizeof(PointCharge));
@@ -111,4 +111,7 @@ int ChargeSystem::getN() {
 }
 PointCharge* ChargeSystem::getCharges() {
 	return &pointCharges[0];
+}
+float ChargeSystem::getBallRadius() {
+	return ball_radius;
 }

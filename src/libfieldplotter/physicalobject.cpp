@@ -36,3 +36,6 @@ bool PhysicalObject::isComputed() {
 void PhysicalObject::setComputed(bool comp) {
 	computed = comp;
 }
+void PhysicalObject::setIndex(int new_index) {
+	parent_index = new_index;
+}

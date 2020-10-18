@@ -18,6 +18,11 @@ inline Point operator/(Point const& a, float c){
 inline Point operator/(float c, Point const& a){
 	return Point(a.x/c, a.y/c, a.z/c);
 }
+
+inline bool Point::operator==(Point const& c) {
+	return (this->x == c.x && this->y == c.y && this->z == c.z);
+}
+
 inline void Point::operator=(Point const& c) {
 	this->x=c.x;
 	this->y=c.y;
@@ -43,3 +48,4 @@ inline void Point::operator/=(float c) {
 	this->y /= c;
 	this->z /= c;
 }
+

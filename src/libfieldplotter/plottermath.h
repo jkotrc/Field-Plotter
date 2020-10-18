@@ -27,6 +27,7 @@ struct Point {
 	void operator*=(float scalar);
 	void operator/=(float scalar);
 	void operator=(Point const& c);
+	bool operator==(Point const& c);
 };
 Point operator+(Point const& a, Point const& b);
 Point operator-(Point const& a, Point const& b);

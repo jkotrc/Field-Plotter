@@ -30,9 +30,7 @@ void compute_field_lines(PhysicalObject* p_lines, ChargeSystem& system) {
     const float delta_phi = PI / (line_density);
     const float range = lines->getRange();
     const float ds = lines->getLineStep();
-
-    //TODO: RK4 needs a small step for accuracy but we don't need that many vertices as it makes no visible difference
-    const float ds_visible = 0.05f;//TODO: SET THIS!!
+    const float ds_visible = lines->getVisibleStep();
 
     PointCharge* charges = system.getCharges();
     std::vector<Point>& vertices = lines->getVertices();
@@ -162,7 +160,8 @@ void Computation::run() {
     component->setComputed(true);
     compute_function(component, charge_system);
     component->setComputationalState(false);
-    onFinalize();
+//    onFinalize();
+    component->finalizeBuffers();
     component->updateBuffers();
     for (thread& t : Computation::active_threads) {
         if (t.get_id() == this_thread::get_id()) {

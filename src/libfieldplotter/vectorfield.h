@@ -27,6 +27,7 @@ class VectorField: public PhysicalObject {
 		float upperBound;
 		enum VectorField_Buffers {FP_POSITION=3,FP_COMPONENT};
 		void staticDraw() override;
+		void finalizeBuffers() override {}
 	public:
 		VectorField(float separation, int cubic_dimension);
 		~VectorField();

@@ -32,8 +32,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::initScene() {
     scene = ui->openGLWidget->getScene();
-    field_lines = new FieldLines(options.maxrange, options.computational_step, options.line_density);
-    charge_system = new ChargeSystem(N, singlecharge);
+    field_lines = new FieldLines(options.maxrange, options.visible_step, options.computational_step, options.line_density);
+    charge_system = new ChargeSystem(N, singlecharge, options.ball_radius);
     vector_field = new VectorField(options.arrow_spatial_separation, options.arrow_count);
     field_lines_comp = new Computation(field_lines, *charge_system, compute_field_lines);
     vector_field_comp = new Computation(vector_field, *charge_system, compute_electric_field);
@@ -84,6 +84,7 @@ void MainWindow::on_actionShow_charges_toggled(bool arg1)
 void MainWindow::on_actionOptions_triggered()
 {
     OptionsWindow win;
+    win.setOptions(options);
     win.setModal(true);
     win.exec();
 }

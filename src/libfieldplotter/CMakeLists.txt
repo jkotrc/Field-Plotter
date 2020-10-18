@@ -41,6 +41,15 @@ message("OUTPUT WILL BE PUT IN ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
 add_library (fieldplotter ${LIBFIELDPLOTTER_SOURCES} ${LIBFIELDPLOTTER_HEADERS})
 
+install(
+    TARGETS              "fieldplotter"
+    EXPORT               "libfieldplotter"
+    LIBRARY DESTINATION  "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
+    INCLUDES DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/include/fieldplotter"
+)
+
+
+#add_custom_command(TARGET fieldplotter POST_BUILD COMMAND "cp ${LIBFIELDPLOTTER_HEADERS} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/include")
 
 if(WIN32)
 target_link_libraries(fieldplotter glew32s.lib glfw3.lib opengl32)

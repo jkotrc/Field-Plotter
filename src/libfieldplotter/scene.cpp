@@ -72,8 +72,12 @@ void Scene::addComponent(PhysicalObject& component) {
 	component.initGraphics();
 	components.push_back(&component);
 }
+
 void Scene::removeComponent(int index) {
 	components.erase(components.begin()+index);
+	for (int i = index; i < components.size(); i++) {
+		components[i]->setIndex(i);
+	}
 }
 
 void Scene::resizeViewport(int w, int h) {

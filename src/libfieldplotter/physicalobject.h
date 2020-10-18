@@ -17,10 +17,12 @@ class PhysicalObject : public Plottable {
 		bool computed = false;
     public:
 		virtual void updateBuffers() = 0;
+		virtual void finalizeBuffers() = 0;
 		void setParent(Scene* parent, int index);
 		void detach();
 		virtual void draw() override;
 		void setComputationalState(bool state);
 		bool isComputed();
 		void setComputed(bool comp);
+		void setIndex(int new_index);
 };
