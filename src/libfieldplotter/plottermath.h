@@ -18,7 +18,7 @@ struct Point {
 	constexpr float magsq() const {
 		return x * x + y * y + z * z;
 	}
-	float mag() {
+	constexpr float mag() const {
 		return sqrtf(x * x + y * y + z * z);
 	}
 

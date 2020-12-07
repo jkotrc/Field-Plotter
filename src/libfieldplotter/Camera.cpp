@@ -2,6 +2,8 @@
 
 #include "plottermath.h"
 
+#include <gtest/gtest.h>
+
 using namespace glm;
 Camera::Camera()
     :

@@ -1,6 +1,8 @@
 #pragma once
-#include "plottable.h"
 #include "plottermath.h"
+
+class DynamicObject;
+class Plottable;
 
 class Camera {
 	private:
@@ -20,26 +22,22 @@ class Camera {
 };
 
 
-class PhysicalObject;
-class Scene : Plottable {
-	private:
-		Camera* camera;
-		GLuint vao;
-        //GLuint sceneMatrices; //this is just a buffer
-		glm::mat4 projectionMat;
-		glm::mat4 viewMat;
-        int width;
-		int height;
-        std::vector<PhysicalObject*> components;		
+class Scene {
 	public:
 		Scene(int width, int height);
+		void render();
 		void initGraphics();
-		void draw();
-		void addComponent(PhysicalObject& object);
-		void removeComponent(int index);
 		void resizeViewport(int w, int h);
+		void addPlottable(Plottable* plottable);
+		void removePlottable(Plottable* plottable);
 		GLuint getSceneMatrices();
-		void moveCamera(float dx, float dy);
-		void scroll(float amount);
-		void moveLinear(float x, float y, float z);
+		Camera& getCamera();
+	private:
+		std::vector<Plottable*> m_plottables;
+		Camera m_camera;
+		GLuint m_vao;
+		GLuint m_uniformbuffer;
+		glm::mat4 m_projectionMatrix;
+		glm::mat4 m_viewMatrix;
+	
 };

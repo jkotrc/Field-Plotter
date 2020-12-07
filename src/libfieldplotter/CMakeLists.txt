@@ -7,24 +7,23 @@ set(LIBFIELDPLOTTER_HEADERS
     computation.h
     fieldlines.h
     graphics.h
-    physicalobject.h
+    dynamicobject.h
     plottable.h
     plottermath.h
     point_operators.inl
     scene.h
-    vectorfield.h
 )
 set(LIBFIELDPLOTTER_HEADERS ${LIBFIELDPLOTTER_HEADERS})
 
 set(LIBFIELDPLOTTER_SOURCES
     chargesystem.cpp
     Camera.cpp
-    computation.cpp
+    physics.cpp
     fieldlines.cpp
     graphics.cpp
-    physicalobject.cpp
+    dynamicobject.cpp
     scene.cpp
-    vectorfield.cpp
+    computation.h
     Shaders.h   #this is taken as a source because it won't be copied to out/libs/include
  )
 set(LIBFIELDPLOTTER_SOURCES ${LIBFIELDPLOTTER_SOURCES})
@@ -39,7 +38,7 @@ set(LIBFIELDPLOTTER_SOURCES ${LIBFIELDPLOTTER_SOURCES})
 message("Found these sources: ${LIBFIELDPLOTTER_SOURCES} ")
 message("OUTPUT WILL BE PUT IN ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
-add_library (fieldplotter ${LIBFIELDPLOTTER_SOURCES} ${LIBFIELDPLOTTER_HEADERS})
+add_library (fieldplotter ${LIBFIELDPLOTTER_SOURCES})
 
 install(
     TARGETS              "fieldplotter"
@@ -52,7 +51,7 @@ install(
 #add_custom_command(TARGET fieldplotter POST_BUILD COMMAND "cp ${LIBFIELDPLOTTER_HEADERS} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/include")
 
 if(WIN32)
-target_link_libraries(fieldplotter glew32s.lib glfw3.lib opengl32)
+target_link_libraries(fieldplotter ${GTEST_BOTH_LIBRARIES} glew32s.lib glfw3.lib opengl32)
 #add_custom_command(TARGET fieldplotter.lib POST_BUILD COMMAND "cp ${LIBFIELDPLOTTER_HEADERS} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/include")
 ELSE()
 target_link_libraries(fieldplotter pthread libGLEW.a GL glfw)

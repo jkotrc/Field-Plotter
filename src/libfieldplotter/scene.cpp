@@ -1,10 +1,8 @@
 #include "scene.h"
-#include "physicalobject.h"
+#include "dynamicobject.h"
 
 #include "Shaders.h"
 
-#include <stdio.h>
-#include <assert.h>
 
 using namespace glm;
 
@@ -31,11 +29,10 @@ layout (std140) uniform Block{
 #define VEC3_BASE_ALIGNMENT 16
 
 Scene::Scene(int width, int height) 
-:height(height),
-width(width),
-projectionMat(glm::perspective(glm::radians(45.0f), (float)width/height, 0.1f, 100.0f)),
-viewMat(rotate(mat4(1.0f), 1.0f, vec3(1.0, 0.0, 0.0))),
-camera(new Camera())
+:
+m_projectionMatrix(glm::perspective(glm::radians(45.0f), (float)width/height, 0.1f, 100.0f)),
+m_viewMatrix(rotate(mat4(1.0f), 1.0f, vec3(1.0, 0.0, 0.0))),
+m_camera()
 {
 	initGraphics();
 }
@@ -43,10 +40,9 @@ camera(new Camera())
 void Scene::initGraphics() {
 	glewExperimental = GL_TRUE;
 	GLenum glewinitialized = glewInit();
-	assert(glewinitialized == GLEW_OK);
 
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+	glGenVertexArrays(1, &m_vao);
+	glBindVertexArray(m_vao);
 
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
@@ -55,65 +51,51 @@ void Scene::initGraphics() {
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 
-	buffers.resize(1);
-	glGenBuffers(1, &buffers[0]);
-	glBindBuffer(GL_UNIFORM_BUFFER, buffers[0]);
+	glGenBuffers(1, &m_uniformbuffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, m_uniformbuffer);
 	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(mat4) + sizeof(vec3), NULL, GL_STATIC_DRAW);
 
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(mat4), glm::value_ptr(projectionMat));
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mat4), sizeof(mat4), glm::value_ptr(viewMat));
-	glBufferSubData(GL_UNIFORM_BUFFER, 2 * sizeof(mat4), sizeof(vec3), glm::value_ptr(camera->getPos()));
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(mat4), glm::value_ptr(m_projectionMatrix));
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mat4), sizeof(mat4), glm::value_ptr(m_viewMatrix));
+	glBufferSubData(GL_UNIFORM_BUFFER, 2 * sizeof(mat4), sizeof(vec3), glm::value_ptr(m_camera.getPos()));
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, buffers[0]);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, m_uniformbuffer);
 }
 
-void Scene::addComponent(PhysicalObject& component) {
-	component.setParent(this, components.size());
-	component.initGraphics();
-	components.push_back(&component);
+void Scene::addPlottable(Plottable* component) {
+	component->setParent(this);
+	component->initGraphics();
+	m_plottables.push_back(component);
 }
 
-void Scene::removeComponent(int index) {
-	components.erase(components.begin()+index);
-	for (int i = index; i < components.size(); i++) {
-		components[i]->setIndex(i);
-	}
+void Scene::removePlottable(Plottable* component) {
+	//TODO: implement
 }
 
 void Scene::resizeViewport(int w, int h) {
-	width=w;
-	height=h;
 	//TODO: Make this orthographic when the user wants a 2D-like view
-	projectionMat = glm::perspective(glm::radians(45.0f), (float)w / h, 0.1f, 100.0f);
-	glBindBuffer(GL_UNIFORM_BUFFER, buffers[0]);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(mat4), glm::value_ptr(projectionMat));
+	m_projectionMatrix = glm::perspective(glm::radians(45.0f), (float)w / h, 0.1f, 100.0f);
+	glBindBuffer(GL_UNIFORM_BUFFER, m_uniformbuffer);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(mat4), glm::value_ptr(m_projectionMatrix));
 	glBindBuffer(GL_UNIFORM_BUFFER,0);
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, w, h);
 }
 
-void Scene::draw() {
+void Scene::render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glBindVertexArray(vao);
-	viewMat = camera->getViewMatrix();
-	glBindBuffer(GL_UNIFORM_BUFFER, buffers[0]);
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mat4), sizeof(mat4), glm::value_ptr(viewMat));
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mat4)*2,sizeof(vec3),glm::value_ptr(camera->getPos()));
+	glBindVertexArray(m_vao);
+	m_viewMatrix = m_camera.getViewMatrix();
+	glBindBuffer(GL_UNIFORM_BUFFER, m_uniformbuffer);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mat4), sizeof(mat4), glm::value_ptr(m_viewMatrix));
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mat4)*2,sizeof(vec3),glm::value_ptr(m_camera.getPos()));
 	glBindBuffer(GL_UNIFORM_BUFFER,0);
-	for (PhysicalObject* element : components) {
+	for (auto& element : m_plottables) {
 		element->draw();
 	}
 }
-
-void Scene::moveCamera(float dx, float dy) {
-	camera->moveCamera(dx, dy);
-}
-void Scene::scroll(float amount) {
-	camera->scroll(amount);
-}
-void Scene::moveLinear(float x, float y, float z) {
-	camera->moveLinear(x, y, z);
+Camera& Scene::getCamera() {
+	return m_camera;
 }
 GLuint Scene::getSceneMatrices() {
-	assert((int)buffers.size() == 1);
-	return buffers[0];
+	return m_uniformbuffer;
 }

@@ -1,30 +1,29 @@
 #pragma once
-#include "physicalobject.h"
+
+//TODO: this might not be necessary
+#include "dynamicobject.h"
 #include "plottermath.h"
 
-class FieldLines : public PhysicalObject {
-    private:
-        float range;
-        float ds;
-        float visible_step;
-        int line_density;
-        std::vector<Point> vertices;
-        size_t vert_size;
-        size_t lineindex_size;
-        std::vector<int> lines_index;
-        void staticDraw() override;
-    public:
-        FieldLines(float range, float visible_step, float ds, int line_density);
-        ~FieldLines();
-        void initGraphics() override;
-        float getRange();
-        float getLineStep();
-        float getVisibleStep();
-        int getLineDensity();
-        void updateBuffers() override;
-        void finalizeBuffers() override;
-        void clearComputation();
 
+class FieldLines : public DynamicObject {
+    public:
+        static struct FieldLinesConfig {
+            float ds;
+            float visible_ds;
+            float range;
+            int line_density;
+        };
+        FieldLines(FieldLinesConfig configuration);
+        FieldLines();
+        ~FieldLines();
+        bool initGraphics() override;
         std::vector<Point>& getVertices();
-        std::vector<int>& getLinesIndex();
+        std::vector<int>& getIndices();
+        FieldLinesConfig getConfiguration();
+    private:
+        FieldLinesConfig m_configuration;
+        std::vector<int> m_indices;
+        std::vector<Point> m_vertices;
+        void dynamicDraw() override;
+        void staticDraw() override;
 };

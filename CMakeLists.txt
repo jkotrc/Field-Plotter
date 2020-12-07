@@ -3,6 +3,13 @@
 cmake_minimum_required (VERSION 3.14)
 project (Field_Plotter)
 
+
+#Unit testing
+enable_testing()
+#find_package(PkgConfig)
+#pkg_check_modules(GTest REQUIRED)
+find_package(GTest CONFIG REQUIRED)
+
 set(FIELDPLOTTER_OUT "${CMAKE_SOURCE_DIR}/out")
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${FIELDPLOTTER_OUT}/libs)

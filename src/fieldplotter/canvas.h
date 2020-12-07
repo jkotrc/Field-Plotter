@@ -6,7 +6,7 @@
 #include <QMouseEvent>
 
 class Scene;
-class PhysicalObject;
+class DynamicObject;
 class Canvas : public QOpenGLWidget {
 
 	Q_OBJECT
@@ -27,7 +27,7 @@ private:
 	bool lmbPressed;
 	float xHistory;
 	float yHistory;
-	std::vector<PhysicalObject*> plottables;
+	std::vector<DynamicObject*> plottables;
 	std::vector<int> visible;
 	std::vector<int> running;
 

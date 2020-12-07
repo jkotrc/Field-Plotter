@@ -1,33 +1,26 @@
 #pragma once
-#include "fieldlines.h"
-#include "vectorfield.h"
+
 #include "plottermath.h"
 #include <thread>
 
-class ChargeSystem;
-
-
+//TODO: implement fully
+class PhysicalObject;
+template<typename T, typename std::enable_if<std::is_base_of<PhysicalObject, T>::value>::type* = nullptr>
 class Computation {
-private:
-	PhysicalObject* component;
-	ChargeSystem& charge_system;
-	bool completed;
-	void (*compute_function)(PhysicalObject* object, ChargeSystem& system);
-	void run();
-protected:
-	virtual void onFinalize() {}
-public:
-	Computation(PhysicalObject* comp, ChargeSystem& charge_system, void (*func)(PhysicalObject* object, ChargeSystem& system));
-	PhysicalObject* getComponent();
-	void spawnThread();
-	bool isComplete();
-	static std::vector<std::thread> active_threads;
+	public:
+		Computation(auto func) : m_computefunc(func) {}
+		~Computation() { if (m_workerThread.joinable())m_workerThread.join(); }
+
+		std::shared_ptr<ConcurrentQueue> compute(ChargeSystem* system, T* object) {
+			m_workerThread = std::thread(m_computefunc, system, object, m_pointbuffer);
+		}
+	private:
+		std::thread m_workerThread;
+		std::shared_ptr<ConcurrentQueue> m_pointbuffer;
+		void (*m_computefunc)(ChargeSystem* system, T* object, ConcurrentQueue* queue);
 };
 
-//compute functions not contained within any class so that they may be more easily provided through other interfaces in the future (CUDA, Fortran, MATLAB,....)
-void compute_electric_field(PhysicalObject* vf, ChargeSystem& system);
-void compute_field_lines(PhysicalObject* lines, ChargeSystem& system);
-Point electrical_force_at(Point r,ChargeSystem& system);
 
-
-
+//void compute_electric_field(DynamicObject* vf, ChargeSystem& system);
+//void compute_field_lines(DynamicObject* lines, ChargeSystem& system);
+//Point electrical_force_at(Point r,ChargeSystem& system);

@@ -10,11 +10,11 @@
 #include <libfieldplotter/fieldlines.h>
 #include <libfieldplotter/vectorfield.h>
 
-const int N = 3;
+const int N = 2;
 PointCharge singlecharge[N] = {
-    PointCharge(Point(0.0f, 0.0f, 0.5f), 0.1f),
-    PointCharge(Point(0.0f, 0.0f, -0.5f), -0.1f),
-    PointCharge(Point(0.0f, 0.5f, 0.0f), 0.1f)
+    PointCharge(Point(0.0f, 0.2f, 0.5f), -0.1f),
+    PointCharge(Point(0.0f, 0.2f, -0.5f), 0.1f),
+    //PointCharge(Point(0.0f, 0.5f, 0.0f), 0.1f)
 };
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

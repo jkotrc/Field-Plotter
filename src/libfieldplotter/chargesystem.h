@@ -1,23 +1,22 @@
 #pragma once
-#include "physicalobject.h"
+#include "dynamicobject.h"
 #include "computation.h"
 
-class ChargeSystem : public PhysicalObject {
-    private:
-        int model_size;
-        std::vector<PointCharge> pointCharges;
-        void staticDraw();
-        void updateBuffers() override {}
-        void finalizeBuffers() override {}
-        float ball_radius;
+struct Model;
+struct Point;
+class ChargeSystem : public Plottable {
     public:
-        ChargeSystem();
-        ChargeSystem(int N, PointCharge* charges, float ball_radius);
-        void draw() { staticDraw(); }
-        void initGraphics() override;
-        PointCharge* getCharges();
-        int getN();
-        void addCharge(PointCharge& charge, int index);
+        ChargeSystem(Scene* parent,std::vector<PointCharge> charges);
+        ChargeSystem(Scene* parent);
+        void draw() override;
+        bool initGraphics() override;
+        std::vector<PointCharge> getCharges();
+        void addCharge(PointCharge const& charge);
         void removeCharge(int index);
-        float getBallRadius();
+        float getRadius();
+    private:
+        Model m_model;
+        std::vector<Point> m_point;
+        std::vector<float> m_charge;
+        float m_radius;
 };

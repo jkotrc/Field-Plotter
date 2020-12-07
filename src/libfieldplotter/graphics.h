@@ -1,6 +1,8 @@
 #pragma once
+
 #define GLEW_STATIC
 #include <GL/glew.h>
+
 #include "plottermath.h"
 #include <vector>
 #include <string>
@@ -9,6 +11,7 @@ struct Model {
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<unsigned int> indices;
+	constexpr size_t size() const { return indices.size(); }
 };
 
 enum Plottable_Buffers {
