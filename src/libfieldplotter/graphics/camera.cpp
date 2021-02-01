@@ -1,6 +1,4 @@
-#include "scene.h"
-
-#include "plottermath.h"
+#include "camera.h"
 
 #include <gtest/gtest.h>
 

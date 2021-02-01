@@ -1,19 +1,12 @@
 #include "physics.h"
 
-#include "chargesystem.h"
-#include "fieldlines.h"
-#include "concurrentqueue.h"
 
-#include <vector>
-#include <thread>
-#include <cmath>
-#include <assert.h>
+#include "../components/chargesystem.h"
+#include "../components/fieldlines.h"
+
+#include <fieldplotter_pch.h>
 
 using namespace std;
-
-#define PERMITTIVITY 8.8541878128f
-#define PI 3.141592653f
-constexpr float factor = 1 / (4 * PI * PERMITTIVITY);
 
 namespace {
     bool isOutOfBounds(Point const& point, const float range) {
@@ -32,13 +25,13 @@ namespace {
     }
 }
 
-void compute_field_lines(ChargeSystem* system, FieldLines* p_lines, ConcurrentQueue* queue) {
+void compute_field_lines(ChargeSystem* system, FieldLines* p_lines, ReaderWriterQueue<Point>* vertex_queue, ReaderWriterQueue<int>* index_queue) {
     FieldLines::FieldLinesConfig configuration = p_lines->getConfiguration();
 
     const float line_density = configuration.line_density;
     const float radius = 0.1f;//TODO: SET THIS!!!
-    const float delta_theta = 2 * PI / (line_density);
-    const float delta_phi = PI / (line_density);
+    const float delta_theta = 2 * pi / (line_density);
+    const float delta_phi = pi / (line_density);
     const float range = configuration.range;
     const float ds = configuration.ds;
     const float ds_visible = configuration.visible_ds;
@@ -61,8 +54,8 @@ void compute_field_lines(ChargeSystem* system, FieldLines* p_lines, ConcurrentQu
 
     int offset = 0;
     for (const Point& source : sources) {
-        for (float theta = 0.0f; theta <= 2 * PI; theta += delta_theta) {
-            for (float phi = 0.0f; phi <= PI; phi += delta_phi) {
+        for (float theta = 0.0f; theta <= 2 * pi; theta += delta_theta) {
+            for (float phi = 0.0f; phi <= pi; phi += delta_phi) {
                 Point origin = Point
                 (
                     (radius)*sinf(phi) * cosf(theta) + source.x,
@@ -70,8 +63,8 @@ void compute_field_lines(ChargeSystem* system, FieldLines* p_lines, ConcurrentQu
                     (radius)*cosf(phi) + source.z
                     );
 
-                queue->enqueue_point(origin);
-                queue->enqueue_index(offset);
+                vertex_queue->enqueue(origin);
+                index_queue->enqueue(offset);
                 //lines_index.push_back(offset);
                 //vertices.push_back(origin);
                 offset++;
@@ -100,7 +93,7 @@ void compute_field_lines(ChargeSystem* system, FieldLines* p_lines, ConcurrentQu
                         lineEnded = true;
                     };
                     if (lineEnded) {
-                        queue->enqueue_point(origin);
+                        vertex_queue->enqueue(origin);
                         //vertices.push_back(origin);
                         offset++;
                         cumulative_dF = 0.0f;
@@ -108,7 +101,7 @@ void compute_field_lines(ChargeSystem* system, FieldLines* p_lines, ConcurrentQu
                     }
                     if (cumulative_dF >= ds_visible) {
                         //assert(origin.mag() > 0.01f);
-                        queue->enqueue_point(origin);
+                        vertex_queue->enqueue(origin);
                         //vertices.push_back(origin);
                         offset++;
                         cumulative_dF = 0.0f;
@@ -118,7 +111,7 @@ void compute_field_lines(ChargeSystem* system, FieldLines* p_lines, ConcurrentQu
             }
         }
     }
-    queue->finish();
+    p_lines->finishComputation();
 }
     
 /*

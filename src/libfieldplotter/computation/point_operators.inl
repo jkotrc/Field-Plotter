@@ -48,4 +48,3 @@ inline void Point::operator/=(float c) {
 	this->y /= c;
 	this->z /= c;
 }
-

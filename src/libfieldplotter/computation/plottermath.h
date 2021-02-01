@@ -1,12 +1,6 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <glm/matrix.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/rotate_vector.hpp>
-#include <glm/gtc/matrix_inverse.hpp>
+#include <fieldplotter_pch.h>
 
 typedef unsigned int GLuint;
 
@@ -44,3 +38,22 @@ struct PointCharge {
 	PointCharge(Point p, float charge) : p(p), charge(charge) {}
 	PointCharge(float x, float y, float z, float charge) : p(Point(x, y, z)), charge(charge) {}
 };
+
+struct PerspectiveParams {
+    float aspect_ratio;
+    float zNear;
+    float zFar;
+    float fov;
+    PerspectiveParams() { //defaults
+        aspect_ratio=1.0f;
+        zNear=0.1f;
+        zFar=100.0f;
+        fov=glm::radians(45.0f);
+    }
+};
+
+glm::mat4 makePerspective(PerspectiveParams parameters);
+
+/*glm::mat4 makePerspective(PerspectiveParams parameters) {
+	return ;
+}*/

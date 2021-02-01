@@ -1,60 +1,43 @@
-﻿#Top-level CMakeLists for Field_Plotter
-cmake_minimum_required (VERSION 3.14)
-
-
-set(LIBFIELDPLOTTER_HEADERS
-    chargesystem.h
-    computation.h
-    fieldlines.h
-    graphics.h
-    dynamicobject.h
-    plottable.h
-    plottermath.h
-    point_operators.inl
-    scene.h
+﻿set(LIBFIELDPLOTTER_HEADERS
+    "dynamicobject.h"
+    "plottable.h"
+    "plottermath.h"
+    "point_operators.inl"
+    "scene.h"
+    "common/readerwriterqueue.h"
 )
-set(LIBFIELDPLOTTER_HEADERS ${LIBFIELDPLOTTER_HEADERS})
 
 set(LIBFIELDPLOTTER_SOURCES
-    chargesystem.cpp
-    Camera.cpp
-    physics.cpp
-    fieldlines.cpp
-    graphics.cpp
-    dynamicobject.cpp
-    scene.cpp
-    computation.h
-    Shaders.h   #this is taken as a source because it won't be copied to out/libs/include
- )
-set(LIBFIELDPLOTTER_SOURCES ${LIBFIELDPLOTTER_SOURCES})
-
-
-#foreach (X IN LISTS LIBFIELDPLOTTER_MODULES)
-#    file(GLOB MODULE_SOURCES "${X}/*")
-#    set(LIBFIELDPLOTTER_SOURCES ${LIBFIELDPLOTTER_SOURCES} ${MODULE_SOURCES})
-#endforeach()
-
-
-message("Found these sources: ${LIBFIELDPLOTTER_SOURCES} ")
-message("OUTPUT WILL BE PUT IN ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+    "components/chargesystem.cpp"
+    "components/dynamicobject.cpp"
+    "components/fieldlines.cpp"
+    "components/scene.cpp"
+    "components/plottable.cpp"
+    "components/debugtriangle.cpp"
+    "computation/plottermath.cpp"
+    "computation/physics.cpp"
+    "graphics/camera.cpp"
+    "graphics/graphics.cpp"
+    "graphics/bufferobject.cpp"
+    "graphics/shaders.h"
+    "graphics/sceneuniforms.cpp"
+    "graphics/renderer.cpp"
+    "graphics/model.cpp"
+    "graphics/attribute.h"
+)
 
 add_library (fieldplotter ${LIBFIELDPLOTTER_SOURCES})
+target_precompile_headers(fieldplotter PUBLIC "fieldplotter_pch.h")
+if(WIN32)
+    target_link_libraries(fieldplotter ${GTEST_BOTH_LIBRARIES} glew32s.lib opengl32)
+else()
+    target_link_libraries(fieldplotter ${GTEST_BOTH_LIBRARIES} pthread libGLEW.a GL)
+endif()
+target_include_directories(fieldplotter PUBLIC "${SOURCE_DIR}")
 
 install(
     TARGETS              "fieldplotter"
     EXPORT               "libfieldplotter"
-    LIBRARY DESTINATION  "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
+    LIBRARY DESTINATION  "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libs/"
     INCLUDES DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/include/fieldplotter"
 )
-
-
-#add_custom_command(TARGET fieldplotter POST_BUILD COMMAND "cp ${LIBFIELDPLOTTER_HEADERS} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/include")
-
-if(WIN32)
-target_link_libraries(fieldplotter ${GTEST_BOTH_LIBRARIES} glew32s.lib glfw3.lib opengl32)
-#add_custom_command(TARGET fieldplotter.lib POST_BUILD COMMAND "cp ${LIBFIELDPLOTTER_HEADERS} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/include")
-ELSE()
-target_link_libraries(fieldplotter pthread libGLEW.a GL glfw)
-#add_custom_command(TARGET fieldplotter.a POST_BUILD COMMAND "cp foo.h ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/include")
-ENDIF()
-

@@ -1,13 +1,12 @@
 #pragma once
 
-//TODO: this might not be necessary
-#include "dynamicobject.h"
-#include "plottermath.h"
-
+#include <computation/plottermath.h>
+#include <components/dynamicobject.h>
+#include <graphics/attribute.h>
 
 class FieldLines : public DynamicObject {
     public:
-        static struct FieldLinesConfig {
+        struct FieldLinesConfig {
             float ds;
             float visible_ds;
             float range;
@@ -22,7 +21,10 @@ class FieldLines : public DynamicObject {
         FieldLinesConfig getConfiguration();
     private:
         FieldLinesConfig m_configuration;
+        ReaderWriterQueue<int> m_indexqueue;
+        size_t m_buffersize;
         std::vector<int> m_indices;
+        VertexAttribute<Point> m_vertexbuffer;
         std::vector<Point> m_vertices;
         void dynamicDraw() override;
         void staticDraw() override;
