@@ -3,16 +3,17 @@
 #include "plottable.h"
 #include "scene.h"
 #include "../graphics/attribute.h"
+#include "../graphics/buffers.h"
 #include <memory>
 
 class DebugTriangle : public Plottable {
     public:
         DebugTriangle();
-        bool initGraphics() override;
+        void updateGraphics() override;
     protected:
         void draw() override;
     private:
-        VertexAttribute<Point> m_buf;
-        //std::unique_ptr<VectorBuffer> m_buf;
-        GLuint trianglebuf;
+        VertexBuffer m_buf;
+        VertexArray m_vao;
+        //VertexAttribute<Point> m_buf;
 };

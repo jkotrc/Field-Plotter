@@ -2,15 +2,18 @@
 
 #include "../components/plottable.h"
 
-Renderer::Renderer(Scene* scene) : m_scene(scene) {
+#include <fieldplotter_pch.h>
 
-}
+
 Renderer::Renderer() {
 
 }
 void Renderer::initGraphics() {
     glewExperimental = GL_TRUE;
 	GLenum glewinitialized = glewInit();
+	if (glewinitialized != GLEW_OK) {
+		std::cout << "GLEW FAILED TO INITIALIZE!\n";
+	}
     
     glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
@@ -41,6 +44,9 @@ void Renderer::removeObject(Plottable* plottable) {
             return;
         }
     }
+}
+void Renderer::setScene(Scene* scene) {
+	m_scene = scene;
 }
 void Renderer::resizeScreen(int w, int h) {
     m_width=w;

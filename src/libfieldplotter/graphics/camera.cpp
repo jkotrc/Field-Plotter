@@ -1,6 +1,5 @@
 #include "camera.h"
 
-#include <gtest/gtest.h>
 
 using namespace glm;
 Camera::Camera()

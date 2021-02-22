@@ -2,8 +2,8 @@
 
 #include <components/scene.h>
 #include <components/chargesystem.h>
-#include <components/fieldlines.h>
 #include <components/debugtriangle.h>
+#include <components/debugsphere.h>
 #include <graphics/renderer.h>
 
 #include <GLFW/glfw3.h>
@@ -171,12 +171,11 @@ int main(int argc, char** argv) {
     glfwSetMouseButtonCallback(window, mouse_button_callback);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwMakeContextCurrent(window);
+
+    renderer = new Renderer();
+    renderer->initGraphics();
     
-    glewExperimental = GL_TRUE;
-    GLenum glewinitialized = glewInit();
-    if (glewinitialized != GLEW_OK) {
-        cout << "GLEW FAILED TO INITIALIZE!\n";
-    }
+
     
       
     int flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
@@ -191,23 +190,23 @@ int main(int argc, char** argv) {
     }
 
     std::vector<PointCharge> sample_charges;
-    sample_charges.push_back(PointCharge({1.5f,1.5f,1.5f},-0.1f));
     sample_charges.push_back(PointCharge(Point(0.0f, 0.0f, 0.5f),0.1f));
     sample_charges.push_back(PointCharge(Point(0.0f, 0.0f, -0.5f),-0.1f));
     sample_charges.push_back(PointCharge(Point(0.0f, 0.5f, 0.0f),0.1f));
    
+    
     scene = new Scene(800, 600);
-    renderer = new Renderer(scene);
-    renderer->initGraphics();
+    renderer->setScene(scene);
+
     ChargeSystem* testSphere = new ChargeSystem(sample_charges);
     DebugTriangle* tri = new DebugTriangle();
-    testSphere->initGraphics();
-    tri->initGraphics();
+    DebugSphere* sp = new DebugSphere();
     tri->setParent(scene);
+    sp->setParent(scene);
     testSphere->setParent(scene);
 
-
     renderer->addObject(tri);
+    renderer->addObject(sp);
     renderer->addObject(testSphere);
 
     

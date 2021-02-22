@@ -9,13 +9,11 @@
 
 class Plottable {
 public:
-	virtual bool initGraphics() = 0;
+	virtual void updateGraphics() = 0;
 	virtual void draw() = 0;
 	void setParent(Scene* parent);
 protected:
-	void updateUniforms();
-	bool m_graphicsInitialized{false};
 	Scene* m_parent;
-	glm::mat4 m_modelMatrix;
+	glm::mat4 m_modelMatrix{ 1.0f };
 	GLuint m_programID;
 };

@@ -9,12 +9,10 @@ constexpr int DYNAMICDRAW_MAX = 1000;
 using namespace std;
 
 
-FieldLines::FieldLines(FieldLinesConfig cfg) : m_configuration(cfg),m_vertexbuffer({true,0})
+FieldLines::FieldLines(Configuration cfg) : m_config(cfg),m_vertexbuffer({true,0})
 {
     m_programID=loadShadersFromSource(Shaders::LINES_VERTEXSHADER,Shaders::LINES_FRAGMENTSHADER);
-    this->updateUniforms();    
     m_parent->getUniforms().setModelMatrix(m_programID,&m_modelMatrix);
-
 }
 FieldLines::~FieldLines() {
 }
@@ -89,10 +87,15 @@ std::vector<int>& FieldLines::getIndices() {
     return m_indices;
 }
 
+FieldLines::Configuration FieldLines::getConfiguration() {
+    return m_config;
+}
 
+void FieldLines::configure(const Configuration& newconfig) {
+    
+}
 
-
-bool FieldLines::initGraphics() {
+//bool FieldLines::initGraphics() {
     //if (m_graphicsInitialized) return true;
     
 /*
@@ -109,5 +112,5 @@ bool FieldLines::initGraphics() {
 */
 //    glUniformMatrix4fv(glGetUniformLocation(m_programID, "modelMat"), 1, false, glm::value_ptr(m_modelMatrix));
 
-    return true;    
-}
+   // return true;    
+//}

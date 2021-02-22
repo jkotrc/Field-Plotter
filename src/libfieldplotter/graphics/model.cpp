@@ -6,11 +6,13 @@
 #include "../computation/plottermath.h"
 using namespace glm;
 
-void loadSphereModel(Model& model) {
-	const float radius = 0.1f;
+void loadSphereModel(Model& model, float radius) {
 	std::vector<vec3>& vertices = model.vertices;
 	std::vector<vec3>& normals = model.normals;
 	std::vector<uint32_t>& indices = model.indices;
+	vertices.clear();
+	normals.clear();
+	indices.clear();
 	float x, y, z, xy;                              // vertex position
 	float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normal
 
@@ -64,7 +66,7 @@ void loadSphereModel(Model& model) {
 			}
 		}
 	}
-	model.loadGL();
+	model.update();
 }
 
 #define SCALE 0.6f
@@ -74,8 +76,7 @@ void loadSphereModel(Model& model) {
 #define CYLINDER_HEIGHT 0.15*SCALE
 #define CYLINDER_RADIUS 0.004*SCALE
 #define CONE_RADIUS 0.01*SCALE
-Model loadArrowModel() {
-	Model model;
+Model loadArrowModel(Model& model) {
 	int i;
 	const glm::vec3 baseNormal = { 0, 0, -1 };
 	float l = sqrt(CONE_RADIUS * CONE_RADIUS + CONE_HEIGHT * CONE_HEIGHT);

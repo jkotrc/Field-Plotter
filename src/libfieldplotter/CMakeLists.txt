@@ -10,21 +10,23 @@
 set(LIBFIELDPLOTTER_SOURCES
     "components/chargesystem.cpp"
     "components/dynamicobject.cpp"
-    "components/fieldlines.cpp"
+   # "components/fieldlines.cpp"
     "components/scene.cpp"
     "components/plottable.cpp"
     "components/debugtriangle.cpp"
     "computation/plottermath.cpp"
-    "computation/physics.cpp"
+    #"computation/physics.cpp"
     "graphics/camera.cpp"
     "graphics/graphics.cpp"
-    "graphics/bufferobject.cpp"
+    
+    "graphics/buffers.h"
     "graphics/shaders.h"
     "graphics/sceneuniforms.cpp"
     "graphics/renderer.cpp"
     "graphics/model.cpp"
     "graphics/attribute.h"
-)
+ "components/debugsphere.cpp"
+ )
 
 add_library (fieldplotter ${LIBFIELDPLOTTER_SOURCES})
 target_precompile_headers(fieldplotter PUBLIC "fieldplotter_pch.h")

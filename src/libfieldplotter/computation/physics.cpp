@@ -25,8 +25,9 @@ namespace {
     }
 }
 
-void compute_field_lines(ChargeSystem* system, FieldLines* p_lines, ReaderWriterQueue<Point>* vertex_queue, ReaderWriterQueue<int>* index_queue) {
-    FieldLines::FieldLinesConfig configuration = p_lines->getConfiguration();
+
+void compute_field_lines(FieldLines::Configuration const& configuration, std::vector<PointCharge> const& charges, ReaderWriterQueue<Point>* vertex_queue, ReaderWriterQueue<int>* index_queue) {
+//void compute_field_lines(ChargeSystem* system, FieldLines* p_lines, ReaderWriterQueue<Point>* vertex_queue, ReaderWriterQueue<int>* index_queue) {
 
     const float line_density = configuration.line_density;
     const float radius = 0.1f;//TODO: SET THIS!!!
@@ -35,8 +36,6 @@ void compute_field_lines(ChargeSystem* system, FieldLines* p_lines, ReaderWriter
     const float range = configuration.range;
     const float ds = configuration.ds;
     const float ds_visible = configuration.visible_ds;
-
-    std::vector<PointCharge> charges = system->getCharges();
     
     //std::vector<Point>& vertices = p_lines->getVertices();
     //std::vector<int>& p_lines_index = p_lines->getLinesIndex();
