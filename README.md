@@ -23,14 +23,9 @@ This project is created with:
 
 ## Setup
 ---
-To build the project simply run
-```sh
-$ cmake . .
-```
-in the root directory of this repo.
+Currently the project is undergoing a very large refactoring as the code has decayed over time. The build system is being switched to meson.
 
-### Usage
+### Gallery
 ---
-The prototype frontend currently displays a hard-coded electric field around two point charges that can be adjusted in the `main.cpp` source file within `fieldplotter`. It won't be like this for too long as these parameters will later be changeable by the user.
 ![Screenshot](https://i.imgur.com/ALwgeFy.png)
 ![Screenshot2](https://i.imgur.com/vSQkmAr.png)
