@@ -1,0 +1,176 @@
+[
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/libfieldplotter/libfieldplotter.so.p -Isrc/libfieldplotter -I../src/libfieldplotter -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fPIC -MD -MQ src/libfieldplotter/libfieldplotter.so.p/graphics_drawable.cpp.o -MF src/libfieldplotter/libfieldplotter.so.p/graphics_drawable.cpp.o.d -o src/libfieldplotter/libfieldplotter.so.p/graphics_drawable.cpp.o -c ../src/libfieldplotter/graphics/drawable.cpp",
+    "file": "../src/libfieldplotter/graphics/drawable.cpp",
+    "output": "src/libfieldplotter/libfieldplotter.so.p/graphics_drawable.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/libfieldplotter/libfieldplotter.so.p -Isrc/libfieldplotter -I../src/libfieldplotter -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fPIC -MD -MQ src/libfieldplotter/libfieldplotter.so.p/graphics_line.cpp.o -MF src/libfieldplotter/libfieldplotter.so.p/graphics_line.cpp.o.d -o src/libfieldplotter/libfieldplotter.so.p/graphics_line.cpp.o -c ../src/libfieldplotter/graphics/line.cpp",
+    "file": "../src/libfieldplotter/graphics/line.cpp",
+    "output": "src/libfieldplotter/libfieldplotter.so.p/graphics_line.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "/usr/bin/meson --internal symbolextractor /home/john/Desktop/projects/Field-Plotter/build src/libfieldplotter/libfieldplotter.so src/libfieldplotter/libfieldplotter.so src/libfieldplotter/libfieldplotter.so.p/libfieldplotter.so.symbols ",
+    "file": "src/libfieldplotter/libfieldplotter.so",
+    "output": "src/libfieldplotter/libfieldplotter.so.p/libfieldplotter.so.symbols"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++  -o src/libfieldplotter/libfieldplotter.so src/libfieldplotter/libfieldplotter.so.p/graphics_drawable.cpp.o src/libfieldplotter/libfieldplotter.so.p/graphics_line.cpp.o -Wl,--as-needed -Wl,--no-undefined -shared -fPIC -Wl,--start-group -Wl,-soname,libfieldplotter.so /usr/lib/libGLEW.so /usr/lib/libX11.so /usr/lib/libGLU.so /usr/lib/libGL.so /usr/lib/libglfw.so -Wl,--end-group",
+    "file": "src/libfieldplotter/libfieldplotter.so.p/graphics_drawable.cpp.o",
+    "output": "src/libfieldplotter/libfieldplotter.so"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Itest/libfieldplotter/gtest-all.p -Itest/libfieldplotter -I../test/libfieldplotter -I../src/libfieldplotter/graphics -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -pthread -isystem../subprojects/googletest-release-1.10.0/googlemock -isystemsubprojects/googletest-release-1.10.0/googlemock -isystem../subprojects/googletest-release-1.10.0/googlemock/include -isystem../subprojects/googletest-release-1.10.0/googletest -isystemsubprojects/googletest-release-1.10.0/googletest -isystem../subprojects/googletest-release-1.10.0/googletest/include -MD -MQ test/libfieldplotter/gtest-all.p/test.cpp.o -MF test/libfieldplotter/gtest-all.p/test.cpp.o.d -o test/libfieldplotter/gtest-all.p/test.cpp.o -c ../test/libfieldplotter/test.cpp",
+    "file": "../test/libfieldplotter/test.cpp",
+    "output": "test/libfieldplotter/gtest-all.p/test.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Itest/libfieldplotter/gtest-all.p -Itest/libfieldplotter -I../test/libfieldplotter -I../src/libfieldplotter/graphics -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -pthread -isystem../subprojects/googletest-release-1.10.0/googlemock -isystemsubprojects/googletest-release-1.10.0/googlemock -isystem../subprojects/googletest-release-1.10.0/googlemock/include -isystem../subprojects/googletest-release-1.10.0/googletest -isystemsubprojects/googletest-release-1.10.0/googletest -isystem../subprojects/googletest-release-1.10.0/googletest/include -MD -MQ test/libfieldplotter/gtest-all.p/test2.cpp.o -MF test/libfieldplotter/gtest-all.p/test2.cpp.o.d -o test/libfieldplotter/gtest-all.p/test2.cpp.o -c ../test/libfieldplotter/test2.cpp",
+    "file": "../test/libfieldplotter/test2.cpp",
+    "output": "test/libfieldplotter/gtest-all.p/test2.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Itest/libfieldplotter/gtest-all.p -Itest/libfieldplotter -I../test/libfieldplotter -I../src/libfieldplotter/graphics -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -pthread -isystem../subprojects/googletest-release-1.10.0/googlemock -isystemsubprojects/googletest-release-1.10.0/googlemock -isystem../subprojects/googletest-release-1.10.0/googlemock/include -isystem../subprojects/googletest-release-1.10.0/googletest -isystemsubprojects/googletest-release-1.10.0/googletest -isystem../subprojects/googletest-release-1.10.0/googletest/include -MD -MQ test/libfieldplotter/gtest-all.p/graphics_line.test.cpp.o -MF test/libfieldplotter/gtest-all.p/graphics_line.test.cpp.o.d -o test/libfieldplotter/gtest-all.p/graphics_line.test.cpp.o -c ../test/libfieldplotter/graphics/line.test.cpp",
+    "file": "../test/libfieldplotter/graphics/line.test.cpp",
+    "output": "test/libfieldplotter/gtest-all.p/graphics_line.test.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Itest/libfieldplotter/gtest-all.p -Itest/libfieldplotter -I../test/libfieldplotter -I../src/libfieldplotter/graphics -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -pthread -isystem../subprojects/googletest-release-1.10.0/googlemock -isystemsubprojects/googletest-release-1.10.0/googlemock -isystem../subprojects/googletest-release-1.10.0/googlemock/include -isystem../subprojects/googletest-release-1.10.0/googletest -isystemsubprojects/googletest-release-1.10.0/googletest -isystem../subprojects/googletest-release-1.10.0/googletest/include -MD -MQ test/libfieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.10.0_googletest_src_gtest-all.cc.o -MF test/libfieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.10.0_googletest_src_gtest-all.cc.o.d -o test/libfieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.10.0_googletest_src_gtest-all.cc.o -c ../subprojects/googletest-release-1.10.0/googletest/src/gtest-all.cc",
+    "file": "../subprojects/googletest-release-1.10.0/googletest/src/gtest-all.cc",
+    "output": "test/libfieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.10.0_googletest_src_gtest-all.cc.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Itest/libfieldplotter/gtest-all.p -Itest/libfieldplotter -I../test/libfieldplotter -I../src/libfieldplotter/graphics -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -pthread -isystem../subprojects/googletest-release-1.10.0/googlemock -isystemsubprojects/googletest-release-1.10.0/googlemock -isystem../subprojects/googletest-release-1.10.0/googlemock/include -isystem../subprojects/googletest-release-1.10.0/googletest -isystemsubprojects/googletest-release-1.10.0/googletest -isystem../subprojects/googletest-release-1.10.0/googletest/include -MD -MQ test/libfieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.10.0_googlemock_src_gmock-all.cc.o -MF test/libfieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.10.0_googlemock_src_gmock-all.cc.o.d -o test/libfieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.10.0_googlemock_src_gmock-all.cc.o -c ../subprojects/googletest-release-1.10.0/googlemock/src/gmock-all.cc",
+    "file": "../subprojects/googletest-release-1.10.0/googlemock/src/gmock-all.cc",
+    "output": "test/libfieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.10.0_googlemock_src_gmock-all.cc.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++  -o test/libfieldplotter/gtest-all test/libfieldplotter/gtest-all.p/test.cpp.o test/libfieldplotter/gtest-all.p/test2.cpp.o test/libfieldplotter/gtest-all.p/graphics_line.test.cpp.o test/libfieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.10.0_googletest_src_gtest-all.cc.o test/libfieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.10.0_googlemock_src_gmock-all.cc.o -Wl,--as-needed -Wl,--no-undefined '-Wl,-rpath,$ORIGIN/../../src/libfieldplotter' -Wl,-rpath-link,/home/john/Desktop/projects/Field-Plotter/build/src/libfieldplotter -Wl,--start-group src/libfieldplotter/libfieldplotter.so /usr/lib/libGLEW.so /usr/lib/libX11.so /usr/lib/libGLU.so /usr/lib/libGL.so /usr/lib/libglfw.so -Wl,--end-group -pthread",
+    "file": "test/libfieldplotter/gtest-all.p/test.cpp.o",
+    "output": "test/libfieldplotter/gtest-all"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "/usr/bin/meson test --no-rebuild --print-errorlogs",
+    "file": "all",
+    "output": "meson-test"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "",
+    "file": "meson-test",
+    "output": "test"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "/usr/bin/meson test --benchmark --logbase benchmarklog --num-processes=1 --no-rebuild",
+    "file": "all",
+    "output": "meson-benchmark"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "",
+    "file": "meson-benchmark",
+    "output": "benchmark"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "/usr/bin/meson install --no-rebuild",
+    "file": "PHONY",
+    "output": "meson-install"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "",
+    "file": "meson-install",
+    "output": "install"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "/usr/bin/meson dist",
+    "file": "PHONY",
+    "output": "meson-dist"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "",
+    "file": "meson-dist",
+    "output": "dist"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "/usr/bin/meson --internal scanbuild /home/john/Desktop/projects/Field-Plotter /home/john/Desktop/projects/Field-Plotter/build /usr/bin/meson -Dauto_features=auto -Db_asneeded=true -Db_colorout=always -Db_coverage=false -Db_lto=false -Db_lto_threads=0 -Db_lundef=true -Db_ndebug=false -Db_pch=true -Db_pgo=off -Db_pie=false -Db_sanitize=none -Db_staticpic=true -Dbackend=ninja -Dbackend_max_links=0 -Dbindir=bin '-Dbuild.cmake_prefix_path=[]' '-Dbuild.cpp_args=[]' -Dbuild.cpp_debugstl=false -Dbuild.cpp_eh=default '-Dbuild.cpp_link_args=[]' -Dbuild.cpp_rtti=true -Dbuild.cpp_std=none '-Dbuild.pkg_config_path=[]' -Dbuildtype=debug '-Dcmake_prefix_path=[]' '-Dcpp_args=[]' -Dcpp_debugstl=false -Dcpp_eh=default '-Dcpp_link_args=[]' -Dcpp_rtti=true -Dcpp_std=none -Ddatadir=share -Ddebug=true -Ddefault_library=shared -Derrorlogs=true '-Dforce_fallback_for=[]' -Dgtest:default_library=shared -Dgtest:warning_level=1 -Dgtest:werror=false -Dincludedir=include -Dinfodir=share/info -Dinstall_umask=0o22 -Dlayout=mirror -Dlibdir=lib -Dlibexecdir=libexec -Dlocaledir=share/locale -Dlocalstatedir=/var/local -Dmandir=share/man -Doptimization=0 '-Dpkg_config_path=[]' -Dprefix=/usr/local -Dsbindir=sbin -Dsharedstatedir=/var/local/lib -Dstdsplit=true -Dstrip=false -Dsysconfdir=etc -Dunity=off -Dunity_size=4 -Dwarning_level=1 -Dwerror=false -Dwrap_mode=default",
+    "file": "PHONY",
+    "output": "meson-scan-build"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "",
+    "file": "meson-scan-build",
+    "output": "scan-build"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "/usr/bin/meson --internal tags etags /home/john/Desktop/projects/Field-Plotter",
+    "file": "PHONY",
+    "output": "meson-TAGS"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "",
+    "file": "meson-TAGS",
+    "output": "TAGS"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "/usr/bin/meson --internal uninstall",
+    "file": "PHONY",
+    "output": "meson-uninstall"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "",
+    "file": "meson-uninstall",
+    "output": "uninstall"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "",
+    "file": "src/libfieldplotter/libfieldplotter.so",
+    "output": "all"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "",
+    "file": "meson-clean",
+    "output": "clean"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "/usr/bin/ninja -t clean",
+    "file": "PHONY",
+    "output": "meson-clean"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "/usr/bin/meson --internal regenerate /home/john/Desktop/projects/Field-Plotter /home/john/Desktop/projects/Field-Plotter/build --backend ninja",
+    "file": "../subprojects/googletest-release-1.10.0/googlemock/meson.build",
+    "output": "build.ninja"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "/usr/bin/meson --internal regenerate /home/john/Desktop/projects/Field-Plotter /home/john/Desktop/projects/Field-Plotter/build --backend ninja",
+    "file": "PHONY",
+    "output": "reconfigure"
+  }
+]
