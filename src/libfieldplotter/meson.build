@@ -2,6 +2,10 @@ fieldplotter_sources = [
 'graphics/drawable.cpp',
 'graphics/line.cpp',
 'graphics/curve.cpp',
+'rendering/context.h',
+'rendering/frame.cpp',
+'vendor/graphics/api.h',
+'vendor/graphics/opengl/frame.cpp',
 ]
 
 fieldplotter = library('fieldplotter',
