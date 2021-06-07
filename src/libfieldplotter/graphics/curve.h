@@ -9,7 +9,7 @@
 ** using some method
 */
 
-//TODO Make Line a subclass of this
+//TODO Possibly make the Line class a special case of Curve
 //TODO Refactor for this to use the data types instead of vec3
 class Curve : public Drawable {
     public:
