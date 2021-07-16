@@ -3,3 +3,5 @@ build/
 out/
 .vscode/
 subprojects/
+.cache/
+.ccls-cache/
