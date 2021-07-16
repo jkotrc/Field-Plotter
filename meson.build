@@ -21,8 +21,8 @@ gl_dep = dependency('gl', main: true, required: true)
 
 
 # subdir('include')
-subdir('src/libfieldplotter')
-subdir('test/libfieldplotter')
+subdir('src/fieldplotter')
+subdir('test/fieldplotter')
 
 test('gtest tests', fieldplotter_test)
 # pkg_mod = import('pkgconfig')
