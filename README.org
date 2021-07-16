@@ -1,0 +1,5 @@
+#+TITLE: Readme
+* Field-Plotter
+
+** Compilation
+To compile field plotter, the google test wrapper needs to be installed. to do so, issue the command `meson wrap install gtest` and ensure that the subprojects directory exists
