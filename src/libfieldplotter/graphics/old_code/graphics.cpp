@@ -1,18 +1,21 @@
-#include "model.h"
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <fieldplotter/graphics.h>
+
+using namespace glm;
+
+
+//www.songho.ca/opengl/gl_sphere.html
+
 #define SPHERE_DEFINITION 10
 #define PI 3.1415926f
 
-#include <vector>
-#include "../computation/plottermath.h"
-using namespace glm;
-
-void loadSphereModel(Model& model, float radius) {
+Model loadSphereModel() {
+	const float radius = 0.1f;
+	Model model;
 	std::vector<vec3>& vertices = model.vertices;
 	std::vector<vec3>& normals = model.normals;
-	std::vector<uint32_t>& indices = model.indices;
-	vertices.clear();
-	normals.clear();
-	indices.clear();
+	std::vector<unsigned int>& indices = model.indices;
 	float x, y, z, xy;                              // vertex position
 	float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normal
 
@@ -66,7 +69,7 @@ void loadSphereModel(Model& model, float radius) {
 			}
 		}
 	}
-	model.update();
+	return model;
 }
 
 #define SCALE 0.6f
@@ -76,7 +79,8 @@ void loadSphereModel(Model& model, float radius) {
 #define CYLINDER_HEIGHT 0.15*SCALE
 #define CYLINDER_RADIUS 0.004*SCALE
 #define CONE_RADIUS 0.01*SCALE
-Model loadArrowModel(Model& model) {
+Model loadArrowModel() {
+	Model model;
 	int i;
 	const glm::vec3 baseNormal = { 0, 0, -1 };
 	float l = sqrt(CONE_RADIUS * CONE_RADIUS + CONE_HEIGHT * CONE_HEIGHT);
@@ -136,4 +140,50 @@ Model loadArrowModel(Model& model) {
 		model.indices.push_back(LEVEL_OF_DETAIL * 4 + 1 + (i + 1) % LEVEL_OF_DETAIL);
 	}
 	return model;
+}
+
+GLuint loadShadersFromSource(std::string vertex_source, std::string fragment_source) {
+	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+	GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+	GLint Result = GL_FALSE;
+	int InfoLogLength;
+	char const* VertexSourcePointer = vertex_source.c_str();
+	glShaderSource(VertexShaderID, 1, &VertexSourcePointer, NULL);
+	glCompileShader(VertexShaderID);
+	glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
+	glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	if (InfoLogLength > 0) {
+		std::vector<char> VertexShaderErrorMessage(InfoLogLength + 1);
+		glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
+		printf("ERROR COMPILING SHADER! %s\n", &VertexShaderErrorMessage[0]);
+	}
+
+	char const* FragmentSourcePointer = fragment_source.c_str();
+	glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer, NULL);
+	glCompileShader(FragmentShaderID);
+	glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
+	glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	if (InfoLogLength > 0) {
+		std::vector<char> FragmentShaderErrorMessage(InfoLogLength + 1);
+		glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
+		printf("ERROR COMPILING SHADER! %s\n", &FragmentShaderErrorMessage[0]);
+	}
+
+	GLuint ProgramID = glCreateProgram();
+	glAttachShader(ProgramID, VertexShaderID);
+	glAttachShader(ProgramID, FragmentShaderID);
+	glLinkProgram(ProgramID);
+	glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
+	glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	if (InfoLogLength > 0) {
+		std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
+		glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
+	}
+
+	glDetachShader(ProgramID, VertexShaderID);
+	glDetachShader(ProgramID, FragmentShaderID);
+	glDeleteShader(VertexShaderID);
+	glDeleteShader(FragmentShaderID);
+
+	return ProgramID;
 }

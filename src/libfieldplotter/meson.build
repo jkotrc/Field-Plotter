@@ -1,8 +1,10 @@
 fieldplotter_sources = [
-'main.cpp'
+'graphics/drawable.cpp',
+'graphics/line.cpp',
+'graphics/curve.cpp',
 ]
 
-fieldplotter = executable('fieldplotter',
+fieldplotter = library('fieldplotter',
 fieldplotter_sources, dependencies: [
                       glew_dep,gl_dep,glfw_dep
 ]
@@ -14,3 +16,7 @@ fieldplotter_sources, dependencies: [
 #                         include_directories : inc,
 #                         dependencies : glib_dep,
 #                         install : true)
+
+fp_inc = include_directories([
+'graphics'
+])

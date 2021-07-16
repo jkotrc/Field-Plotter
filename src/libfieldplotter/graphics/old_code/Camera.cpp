@@ -1,10 +1,11 @@
-#include "camera.h"
-
+#include <fieldplotter/commonheaders.h>
+#include <fieldplotter/scene.h>
 
 using namespace glm;
 Camera::Camera()
     :
     cameraPosition(vec3(4, 0, 0)),
+    radius(0.0f),
     origin(vec3(0,0,0)),
     angle(0.0f),
     phi(0.0f),
@@ -17,6 +18,7 @@ vec3 Camera::getPos() {
 }
 
 void Camera::scroll(float amount) {
+    radius += amount;    
     const float dx = cameraPosition.x * amount;
     const float dy = cameraPosition.y * amount;
     const float dz = cameraPosition.z * amount;
