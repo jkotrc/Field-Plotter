@@ -1,10 +1,9 @@
 #include <gtest/gtest.h>
 
 
-TEST(BuildSystem, GtestDepCorrect) {
+TEST(BuildSystem, TestSetupCorrectly) {
     ASSERT_EQ(1,1);
 }
-
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc,argv);

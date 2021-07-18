@@ -2,29 +2,25 @@ project('fieldplotter', 'cpp',
                         version: '2.0',
                         license: 'MIT')
 
-#add_global_arguments('-DSOME_TOKEN=value', language: 'cpp')
 
 toplevel_inc = include_directories('include')
-
+project_inc = include_directories('src/fieldplotter')
+cxx = meson.get_compiler('cpp')
 
 ###DEPENDENCIES###
-# gtest_dep = dependency('gtest', main: true, required: true)
-# gmock_dep = dependency('gmock', main: true, required: true)
-
 gtest_proj = subproject('gtest')
 gtest_dep = gtest_proj.get_variable('gtest_dep')
 gmock_dep = gtest_proj.get_variable('gmock_dep')
-
 glfw_dep = dependency('glfw3')
-glew_dep = dependency('glew')
-gl_dep = dependency('gl', main: true, required: true)
+glew_dep = subproject('glew').get_variable('glew_dep')
+gl_dep = dependency('GL', method: 'auto')
+boost_dep = dependency('boost', modules: ['log'])
 
+thread_dep = dependency('threads')
 
-# subdir('include')
 subdir('src/fieldplotter')
-subdir('test/fieldplotter')
 
-test('gtest tests', fieldplotter_test)
+#TODO package stuff
 # pkg_mod = import('pkgconfig')
 # pkg_mod.generate(
 # libraries: fieldplotter,
