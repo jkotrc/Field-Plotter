@@ -9,23 +9,20 @@
 
 ## About Project
 ---
-Field Plotter is a learning tool for AP and IB Physics made as my computer science IA. It plots a customizable interactive 3D plot of the electric field around any user-specified static point charges. The project is divided into two sub-modules: a statically linked library, `libfieldplotter`, and a frontend that uses the library. `libfieldplotter` is platform independent, potentially useful outside the scope of the program and `frontend` will depend on whatever GUI library is used (e.g. Qt, GTK+,...). So far, `frontend` is nothing but a GLFW window for debugging purposes.
+Field Plotter is a learning tool for AP and IB Physics. It plots a customizable interactive 3D plot of the electric field around any user-specified static point charges. It should feature a plot that the user can navigate around, using pop up windows to specify the charges, plotted in either 2D or 3D space.
+
+The short term usefulness of this project lies in Physics classrooms where it can be used to build intuition on the shape of electric fields. Long term, the project is intended to develop into a flexible plotting tool for various applications. 
 	
-## Technologies
----
-This project is created with:
-* GLEW: 2.2.0
-* GLFW: 3.3.2 (just the testing frontend)
-* Qt5: TBA (Windows version)
-* GTK+: TBA (Linux version)
-* CUDA: TBA
 
 
-## Setup
+## Status
 ---
-Currently the project is undergoing a very large refactoring as the code has decayed over time. The build system is being switched to meson.
+This project had to meet deadlines so it ended up suffering from heavy code smells. It is currently being overhauled in favor of switching to the meson build system and establishing a solid foundation to application-level processes (input and window events) as well as a better abstraction of the rendering API. 
 
 ### Gallery
 ---
+
+This is what the old project produced in the experimental build thereof:
+
 ![Screenshot](https://i.imgur.com/ALwgeFy.png)
 ![Screenshot2](https://i.imgur.com/vSQkmAr.png)
