@@ -11,4 +11,6 @@
 # define DEBUG_MSG(X)
 #endif
 
+#define BIT(X) (1<<X)
+
 #endif // CORE_H_

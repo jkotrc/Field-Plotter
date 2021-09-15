@@ -4,6 +4,8 @@
 #include "glcontext.h"
 #include <GLFW/glfw3.h>
 
+#include "windowevent.h"
+
 #include <string>
 #include <algorithm>
 
@@ -35,11 +37,14 @@ namespace fieldplotter {
             void hide();
             void update();
             void close();
+            void setEventCallback(EventCallback callback) { m_onEvent = callback; }
+            void onEvent(Event const& event) { m_onEvent(event); }
             int getWidth() const;
             int getHeight() const;
             bool isClosed() const;
             OpenGLContext getContext() const;
         private:
+            EventCallback m_onEvent;
             GLFWwindow* m_handle;
             int m_width;
             int m_height;

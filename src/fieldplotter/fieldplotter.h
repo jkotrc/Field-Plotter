@@ -3,12 +3,8 @@
 
 #include "glcontext.h"
 #include "window.h"
+#include "event.h"
 #include "renderer.h"
-//#include "inputdispatcher.h"
-
-/*
-** TODO implement runtime checks for OpenGL support
-*/
 
 namespace fieldplotter {
     class FieldPlotter {
@@ -16,12 +12,11 @@ namespace fieldplotter {
             FieldPlotter();
             ~FieldPlotter();
             void run();
-            //onEvent(Event& e)
+            void onEvent(Event const& e);
             void close();
         private:
             bool m_running;
             bool m_minimized;
-
     };
 
 }

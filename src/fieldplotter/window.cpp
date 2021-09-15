@@ -23,9 +23,36 @@ Window::Window(WindowOptions const& options, int width, int height)
     glfwSetWindowAttrib(m_handle, GLFW_CONTEXT_VERSION_MINOR, options.openGLVersion.first);
     glfwSetWindowAttrib(m_handle, GLFW_CONTEXT_VERSION_MAJOR, options.openGLVersion.second);
     glfwSetWindowAttrib(m_handle, GLFW_OPENGL_PROFILE, options.openGLProfile);
+
+    glfwSetWindowUserPointer(m_handle, reinterpret_cast<void*>(this));
 #ifdef debug
     glfwSetWindowAttrib(m_handle, GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 #endif
+
+    glfwSetKeyCallback(m_handle, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+        Window* instance = (Window*) glfwGetWindowUserPointer(window);
+        switch(action) {
+            case GLFW_PRESS:
+                instance->onEvent(KeyPressEvent{key,mods}); //does KeyPressEvent go out of scope?
+                break;
+            case GLFW_RELEASE:
+                instance->onEvent(KeyReleaseEvent{key,mods});
+                break;
+            case GLFW_REPEAT:
+                instance->onEvent(KeyReleaseEvent{key,mods});
+                break;
+            default:
+                throw "GLFW gave an unknown keycode...";
+                break;
+        }
+    });
+
+    glfwSetWindowCloseCallback(m_handle, [](GLFWwindow* window) {
+        Window* instance = (Window*) glfwGetWindowUserPointer(window);
+        instance->onEvent(WindowCloseEvent{});
+    });
+
+    //TODO implement the rest of the event callbacks
 }
 
 Window::~Window() {

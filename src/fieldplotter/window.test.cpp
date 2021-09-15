@@ -42,24 +42,9 @@ TEST(WindowTest, WindowCloses) {
 //     ASSERT_E
 // }
 
-//TODO Integration test
 TEST(WindowTest, ValidRenderingSurface) {
     Window win;
     Renderer ren(win.getContext());
     ren.render();
     win.update();
 }
-
-/*
-** Event system:
-** The window needs to have its onEvent callback set. This will be done by the application.
-** The onEvent callback will point to a function that handles every single possible event
-** in the program.
-**
-** This function takes events and spawns an event dispatcher to give it to the layers.
-**
-** Actual window callbacks create events and spawn OnEvent() with them.
-**
-** TODO implement an event queue that will be processed in another thread
-*/
-

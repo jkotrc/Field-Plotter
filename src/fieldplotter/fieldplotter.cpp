@@ -13,9 +13,24 @@ FieldPlotter::~FieldPlotter() {
     m_running=false;
 }
 
+void FieldPlotter::onEvent(Event const& e) {
+    //TODO propagate event into its respective layers using a dispatcher
+    if (e.getName() == "KeyPressEvent") {
+        std::cout << "You have pressed the key with code: " << static_cast<KeyPressEvent const&>(e).key << "\n";
+    } else if (e.getName() == "WindowCloseEvent") {
+        m_running = false;
+    }
+}
+
 void FieldPlotter::run() {
-    std::cout << "There is still an event system needed for a first run\n";
-    // Window win;
-    // win.show();
-    m_running = false;
+    Window win;
+    Renderer ren(win.getContext());
+
+    win.setEventCallback(std::bind(&FieldPlotter::onEvent, this, std::placeholders::_1));
+
+    while (m_running) {
+        ren.render();
+        win.update();
+    }
+    std::cout << "Goodbye\n";
 }
