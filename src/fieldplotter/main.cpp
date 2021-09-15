@@ -28,6 +28,7 @@ using namespace std;
 // }
 
 int main() {
-    fieldplotter::FieldPlotter* fp = new fieldplotter::FieldPlotter(800,600);
-    return fp->begin();
+    fieldplotter::FieldPlotter fp;
+    fp.run();
+    return 0;
 }

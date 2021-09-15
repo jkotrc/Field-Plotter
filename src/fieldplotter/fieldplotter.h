@@ -1,25 +1,22 @@
 #ifndef FIELDPLOTTER_H_
 #define FIELDPLOTTER_H_
 
-#include "glcontext.h"
+#include "graphics/glcontext.h"
+#include "graphics/renderer.h"
+#include "event/event.h"
 #include "window.h"
-//#include "inputdispatcher.h"
-
-/*
-** TODO implement runtime checks for OpenGL support
-*/
-
-static const fieldplotter::GLVersion FP_OPENGL_VERSION = {4,6};
 
 namespace fieldplotter {
     class FieldPlotter {
         public:
-            FieldPlotter(int window_width, int window_height);
-            int begin();
+            FieldPlotter();
+            ~FieldPlotter();
+            void run();
+            void onEvent(Event const& e);
+            void close();
         private:
-            OpenGLContext* m_context;
-            Window* m_window;
-            //InputDispatcher* m_dispatcher;
+            bool m_running;
+            bool m_minimized;
     };
 
 }

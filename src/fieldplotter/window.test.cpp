@@ -1,15 +1,51 @@
 #include "window.h"
+#include "graphics/renderer.h"
+
 #include <gtest/gtest.h>
+#include <iostream>
 
-class WindowTest : public ::testing::Test {
-    protected:
-        void SetUp() override {
-            win = new fieldplotter::Window(300, 200, "test");
-        }
-        void TearDown() override {
-            delete win;
-        }
+using namespace fieldplotter;
 
-        fieldplotter::Window* win;
+TEST(WindowTest, CreatesSuccessfully) {
+    Window win;
+    ASSERT_NO_THROW(win.show());
+}
 
-};
+TEST(WindowTest, DimensionsAreCorrect) {
+    Window win(800, 600);
+    ASSERT_EQ(win.getWidth(), 800);
+    ASSERT_EQ(win.getHeight(), 600);
+}
+
+TEST(WindowTest, WindowCloses) {
+    Window win;
+    win.close();
+    ASSERT_TRUE(win.isClosed());
+}
+
+//TODO Version setting does not work so far
+// TEST(WindowTest, OpenGLVersionSet) {
+//     Window::WindowOptions winopt;
+//     winopt.openGLVersion.first = 2;
+//     winopt.openGLVersion.second = 6;
+//     Window win(winopt, 800, 600);
+//     OpenGLContext ctx = win.getContext();
+//     ASSERT_EQ(ctx.getVersion().first, 2);
+//     ASSERT_EQ(ctx.getVersion().second, 6);
+// }
+
+// TODO Worry about profiles later
+// TEST(WindowTest, OpenGLProfileSet) {
+//     Window::WindowOptions winopt;
+//     winopt.openGLProfile = Window::CORE_PROFILE;
+//     Window win(winopt, 800, 600);
+//     OpenGLContext ctx = win.getContext();
+//     ASSERT_E
+// }
+
+TEST(WindowTest, ValidRenderingSurface) {
+    Window win;
+    Renderer ren(win.getContext());
+    ren.render();
+    win.update();
+}

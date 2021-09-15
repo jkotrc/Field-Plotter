@@ -4,28 +4,33 @@
 
 using namespace fieldplotter;
 
-FieldPlotter::FieldPlotter(int window_width, int window_height) {
-    m_window = new Window(window_width, window_height, "Field Plotter");
-    m_context = new OpenGLContext(FP_OPENGL_VERSION);
+FieldPlotter::FieldPlotter() {
+    m_running = true;
+    m_minimized = false;
 }
 
-int FieldPlotter::begin() {
-    // if (!glewIsSupported("GL_VERSION_4_6")) {
-    //     std::cerr << "GL Version 4.6 not supported!\n";
-    //     return 1;
-    // }
-    m_window->setOpenGLVersion(FP_OPENGL_VERSION);
-    if (!m_window->create()) {
-        std::cerr << "Window failed to create!\n";
-        return 1;
+FieldPlotter::~FieldPlotter() {
+    m_running=false;
+}
+
+void FieldPlotter::onEvent(Event const& e) {
+    //TODO propagate event into its respective layers using a dispatcher
+    if (e.getName() == "KeyPressEvent") {
+        std::cout << "You have pressed the key with code: " << static_cast<KeyPressEvent const&>(e).key << "\n";
+    } else if (e.getName() == "WindowCloseEvent") {
+        m_running = false;
     }
-    if (!m_context->initialize()) {
-        std::cerr << "GLEW failed to initialize!\n";
-        return 1;
+}
+
+void FieldPlotter::run() {
+    Window win;
+    Renderer ren(win.getContext());
+
+    win.setEventCallback(std::bind(&FieldPlotter::onEvent, this, std::placeholders::_1));
+
+    while (m_running) {
+        ren.render();
+        win.update();
     }
-    while (!m_window->shouldClose()) {
-        //TODO add event dispatching here
-        m_window->update();
-    }
-    return 0;
+    std::cout << "Goodbye\n";
 }
