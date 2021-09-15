@@ -3,6 +3,9 @@
 
 #include <iostream>
 
+//TODO make this a build system option instead
+#define DEBUG
+
 #ifdef DEBUG
 # define DEBUG_ERR(X) std::cerr << X << "\n";
 # define DEBUG_MSG(X) std::cout << X << "\n";
