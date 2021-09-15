@@ -21,15 +21,6 @@
 ** TODO implement an event queue that will be processed in another thread
 */
 namespace fieldplotter {
-
-
-    // enum class EventType {
-    //     WindowEvent,
-    //     KeyPressedEvent,
-    //     KeyTypedEvent,
-    //     KeyReleasedEvent
-    // };
-
     enum EventCategory {
         None=0,
         ApplicationEvent=BIT(0),
@@ -38,13 +29,6 @@ namespace fieldplotter {
         MouseEvent=BIT(3),
         MouseButtonEvent=BIT(4)
     };
-
-    // template <typename Name>
-    // struct EventType {
-    //     static constexpr const char* getName() {
-    //         return "NoneType";
-    //     }
-    // };
 
     class Event {
     public:
@@ -59,21 +43,6 @@ namespace fieldplotter {
 
     using EventCallback = std::function<void(Event const&)>;
 
-    class EventDispatcher {
-    public:
-        EventDispatcher(Event& event) : m_event(event) {}
-        template <typename T, typename F>
-            bool dispatch(F const& func) {
-            if (m_event.getName() == T::getStaticName()) {
-                m_event.handled |= func(static_cast<T&>(m_event));
-                return true;
-            }
-            return false;
-        }
-
-    private:
-        Event& m_event;
-    };
 
     class KeyPressEvent;
     class KeyReleaseEvent;
