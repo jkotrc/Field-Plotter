@@ -1,12 +1,13 @@
 fieldplotter_sources = [
+                      'fieldplotter.cpp',
                       'glcontext.cpp',
                       'window.cpp',
-                      'fieldplotter.cpp'
+                      'renderer.cpp'
 ]
 
 test_sources = [
                       'test.test.cpp',
-                      'glcontext.test.cpp',
+                      # 'glcontext.test.cpp',
                       'window.test.cpp',
 ]
 

@@ -1,3 +1,4 @@
+#include "core.h"
 #include "glcontext.h"
 #include "window.h"
 
@@ -5,65 +6,66 @@
 
 using namespace fieldplotter;
 
-namespace {
-    void error_callback(int error, const char* description) {
-        BOOST_LOG_TRIVIAL(error) << "error code " << error << "\ndescription:" << description;
+Window::Window(WindowOptions const& options, int width, int height)
+    : m_width(width), m_height(height), m_title(options.title) {
+    if (glfwInit() != GLFW_TRUE) {
+        DEBUG_ERR("Failed to create GLFW");
+        throw "Failed to create GLFW Instance";
     }
+    m_handle = glfwCreateWindow(width, height, options.title.c_str(), NULL, NULL);
+    if (m_handle == nullptr) {
+        DEBUG_ERR("Failed to create window!");
+        throw "Failed to create window!";
+    }
+    DEBUG_MSG("Setting version to:")
+    DEBUG_MSG(options.openGLVersion.first)
+    DEBUG_MSG(options.openGLVersion.second)
+    glfwSetWindowAttrib(m_handle, GLFW_CONTEXT_VERSION_MINOR, options.openGLVersion.first);
+    glfwSetWindowAttrib(m_handle, GLFW_CONTEXT_VERSION_MAJOR, options.openGLVersion.second);
+    glfwSetWindowAttrib(m_handle, GLFW_OPENGL_PROFILE, options.openGLProfile);
+#ifdef debug
+    glfwSetWindowAttrib(m_handle, GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+#endif
 }
 
-Window::Window(int width, int height, std::string title) : m_width(width), m_height(height), m_hidden(false), m_exists(false), m_title(title) {}
-
 Window::~Window() {
+    this->close();
     glfwDestroyWindow(m_handle);
     glfwTerminate();
 }
 
-bool Window::create() {
-    if (!glfwInit()) {
-        return false;
-    }
-    m_handle = glfwCreateWindow(m_width, m_height, m_title.c_str(), NULL, NULL);
-    if (m_handle == NULL) {
-        return false;
-    }
-    if (m_hidden) hide();
-    glfwMakeContextCurrent(m_handle);
-    return true;
-}
-
 void Window::show() {
-    m_hidden=true;
+    //TODO onShowEvent
     glfwShowWindow(m_handle);
 }
 
 void Window::hide() {
-    m_hidden=false;
+    //TODO onHideEvent
     glfwHideWindow(m_handle);
 }
 
-void Window::setOpenGLVersion(GLVersion version) {
-    glfwWindowHint(GL_MINOR_VERSION, version.minor);
-    glfwWindowHint(GL_MAJOR_VERSION, version.major);
-}
-
-bool Window::shouldClose() {
-    return glfwWindowShouldClose(m_handle);
-}
-
-bool Window::exists() {
-    return m_exists;
-}
-
 void Window::update() {
-    glClear(GL_COLOR_BUFFER_BIT);
     glfwSwapBuffers(m_handle);
     glfwPollEvents();
 }
 
-int Window::getWidth() {
+void Window::close() {
+    glfwSetWindowShouldClose(m_handle, GLFW_TRUE);
+}
+
+int Window::getWidth() const {
     return m_width;
 }
 
-int Window::getHeight() {
+int Window::getHeight() const {
     return m_height;
+}
+
+bool Window::isClosed() const {
+    return m_closed;
+}
+
+OpenGLContext Window::getContext() const {
+    glfwMakeContextCurrent(m_handle);
+    return {};
 }

@@ -3,23 +3,25 @@
 
 #include "glcontext.h"
 #include "window.h"
+#include "renderer.h"
 //#include "inputdispatcher.h"
 
 /*
 ** TODO implement runtime checks for OpenGL support
 */
 
-static const fieldplotter::GLVersion FP_OPENGL_VERSION = {4,6};
-
 namespace fieldplotter {
     class FieldPlotter {
         public:
-            FieldPlotter(int window_width, int window_height);
-            int begin();
+            FieldPlotter();
+            ~FieldPlotter();
+            void run();
+            //onEvent(Event& e)
+            void close();
         private:
-            OpenGLContext* m_context;
-            Window* m_window;
-            //InputDispatcher* m_dispatcher;
+            bool m_running;
+            bool m_minimized;
+
     };
 
 }
