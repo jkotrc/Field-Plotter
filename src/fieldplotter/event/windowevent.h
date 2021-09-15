@@ -2,7 +2,7 @@
 #define WINDOWEVENT_H_
 
 #include "core.h"
-#include "event.h"
+#include "event/event.h"
 
 namespace fieldplotter {
     class KeyPressEvent : public Event {

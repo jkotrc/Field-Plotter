@@ -1,10 +1,10 @@
 #ifndef WINDOW_H_
 #define WINDOW_H_
 
-#include "glcontext.h"
+#include "graphics/glcontext.h"
 #include <GLFW/glfw3.h>
 
-#include "windowevent.h"
+#include "event/windowevent.h"
 
 #include <string>
 #include <algorithm>

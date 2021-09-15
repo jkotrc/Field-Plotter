@@ -1,6 +1,7 @@
 #include "core.h"
-#include "glcontext.h"
 #include "window.h"
+
+#include "graphics/glcontext.h"
 
 #include <boost/log/trivial.hpp>
 

@@ -1,5 +1,6 @@
 #include "window.h"
-#include "renderer.h"
+#include "graphics/renderer.h"
+
 #include <gtest/gtest.h>
 #include <iostream>
 

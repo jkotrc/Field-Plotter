@@ -1,10 +1,10 @@
 #ifndef FIELDPLOTTER_H_
 #define FIELDPLOTTER_H_
 
-#include "glcontext.h"
+#include "graphics/glcontext.h"
+#include "graphics/renderer.h"
+#include "event/event.h"
 #include "window.h"
-#include "event.h"
-#include "renderer.h"
 
 namespace fieldplotter {
     class FieldPlotter {
