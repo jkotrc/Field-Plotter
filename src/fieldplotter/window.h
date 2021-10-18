@@ -1,15 +1,14 @@
 #ifndef WINDOW_H_
 #define WINDOW_H_
 
-#include "graphics/glcontext.h"
 #include <GLFW/glfw3.h>
 
 #include "event/windowevent.h"
 
 #include <string>
 #include <algorithm>
+#include <memory>
 
-struct GLVersion;
 namespace fieldplotter {
     class Window {
         public:
@@ -42,7 +41,6 @@ namespace fieldplotter {
             int getWidth() const;
             int getHeight() const;
             bool isClosed() const;
-            OpenGLContext getContext() const;
         private:
             EventCallback m_onEvent;
             GLFWwindow* m_handle;

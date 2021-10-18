@@ -1,8 +1,6 @@
 #include "core.h"
 #include "window.h"
 
-#include "graphics/glcontext.h"
-
 #include <boost/log/trivial.hpp>
 
 using namespace fieldplotter;
@@ -53,6 +51,8 @@ Window::Window(WindowOptions const& options, int width, int height)
         instance->onEvent(WindowCloseEvent{});
     });
 
+    glfwMakeContextCurrent(m_handle);
+
     //TODO implement the rest of the event callbacks
 }
 
@@ -93,7 +93,3 @@ bool Window::isClosed() const {
     return m_closed;
 }
 
-OpenGLContext Window::getContext() const {
-    glfwMakeContextCurrent(m_handle);
-    return {};
-}

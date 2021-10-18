@@ -1,14 +1,8 @@
 fieldplotter_sources = [
                       'fieldplotter.cpp',
+                      'graphics/renderer.cpp',
+                      'graphics/graphics.cpp',
                       'window.cpp',
-                      'graphics/glcontext.cpp',
-                      'graphics/renderer.cpp'
-]
-
-test_sources = [
-                      'test.test.cpp',
-                      # 'glcontext.test.cpp',
-                      'window.test.cpp',
 ]
 
 fp_deps = [
@@ -20,13 +14,13 @@ fp_deps = [
 ]
 
 fieldplotter = executable('fieldplotter',
-                          ['main.cpp',fieldplotter_sources],
+                          ['./debug/main-mandelbrot.cpp',fieldplotter_sources],
                           dependencies: fp_deps,
                           include_directories : [toplevel_inc, project_inc]
                          )
 
 fp_test = executable('gtest-all',
-                     [fieldplotter_sources,test_sources],
+                     ['test.test.cpp',fieldplotter_sources],
                      dependencies: [fp_deps,gtest_dep],
                     )
 

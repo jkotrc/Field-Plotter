@@ -1,0 +1,80 @@
+[
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "cc -Isubprojects/glew-2.1.0/libGLEW.so.2.1.0.p -Isubprojects/glew-2.1.0 -I../subprojects/glew-2.1.0 -I../subprojects/glew-2.1.0/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -g -fPIC -ansi -W -Wcast-qual -fno-stack-protector -MD -MQ subprojects/glew-2.1.0/libGLEW.so.2.1.0.p/src_glew.c.o -MF subprojects/glew-2.1.0/libGLEW.so.2.1.0.p/src_glew.c.o.d -o subprojects/glew-2.1.0/libGLEW.so.2.1.0.p/src_glew.c.o -c ../subprojects/glew-2.1.0/src/glew.c",
+    "file": "../subprojects/glew-2.1.0/src/glew.c",
+    "output": "subprojects/glew-2.1.0/libGLEW.so.2.1.0.p/src_glew.c.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/fieldplotter/fieldplotter.p -Isrc/fieldplotter -I../src/fieldplotter -I../include -I../subprojects/glew-2.1.0/include -I/usr/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -DBOOST_LOG_DYN_LINK=1 -DBOOST_ALL_NO_LIB -pthread -MD -MQ src/fieldplotter/fieldplotter.p/debug_main-mandelbrot.cpp.o -MF src/fieldplotter/fieldplotter.p/debug_main-mandelbrot.cpp.o.d -o src/fieldplotter/fieldplotter.p/debug_main-mandelbrot.cpp.o -c ../src/fieldplotter/debug/main-mandelbrot.cpp",
+    "file": "../src/fieldplotter/debug/main-mandelbrot.cpp",
+    "output": "src/fieldplotter/fieldplotter.p/debug_main-mandelbrot.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/fieldplotter/fieldplotter.p -Isrc/fieldplotter -I../src/fieldplotter -I../include -I../subprojects/glew-2.1.0/include -I/usr/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -DBOOST_LOG_DYN_LINK=1 -DBOOST_ALL_NO_LIB -pthread -MD -MQ src/fieldplotter/fieldplotter.p/fieldplotter.cpp.o -MF src/fieldplotter/fieldplotter.p/fieldplotter.cpp.o.d -o src/fieldplotter/fieldplotter.p/fieldplotter.cpp.o -c ../src/fieldplotter/fieldplotter.cpp",
+    "file": "../src/fieldplotter/fieldplotter.cpp",
+    "output": "src/fieldplotter/fieldplotter.p/fieldplotter.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/fieldplotter/fieldplotter.p -Isrc/fieldplotter -I../src/fieldplotter -I../include -I../subprojects/glew-2.1.0/include -I/usr/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -DBOOST_LOG_DYN_LINK=1 -DBOOST_ALL_NO_LIB -pthread -MD -MQ src/fieldplotter/fieldplotter.p/graphics_renderer.cpp.o -MF src/fieldplotter/fieldplotter.p/graphics_renderer.cpp.o.d -o src/fieldplotter/fieldplotter.p/graphics_renderer.cpp.o -c ../src/fieldplotter/graphics/renderer.cpp",
+    "file": "../src/fieldplotter/graphics/renderer.cpp",
+    "output": "src/fieldplotter/fieldplotter.p/graphics_renderer.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/fieldplotter/fieldplotter.p -Isrc/fieldplotter -I../src/fieldplotter -I../include -I../subprojects/glew-2.1.0/include -I/usr/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -DBOOST_LOG_DYN_LINK=1 -DBOOST_ALL_NO_LIB -pthread -MD -MQ src/fieldplotter/fieldplotter.p/graphics_graphics.cpp.o -MF src/fieldplotter/fieldplotter.p/graphics_graphics.cpp.o.d -o src/fieldplotter/fieldplotter.p/graphics_graphics.cpp.o -c ../src/fieldplotter/graphics/graphics.cpp",
+    "file": "../src/fieldplotter/graphics/graphics.cpp",
+    "output": "src/fieldplotter/fieldplotter.p/graphics_graphics.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/fieldplotter/fieldplotter.p -Isrc/fieldplotter -I../src/fieldplotter -I../include -I../subprojects/glew-2.1.0/include -I/usr/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -DBOOST_LOG_DYN_LINK=1 -DBOOST_ALL_NO_LIB -pthread -MD -MQ src/fieldplotter/fieldplotter.p/window.cpp.o -MF src/fieldplotter/fieldplotter.p/window.cpp.o.d -o src/fieldplotter/fieldplotter.p/window.cpp.o -c ../src/fieldplotter/window.cpp",
+    "file": "../src/fieldplotter/window.cpp",
+    "output": "src/fieldplotter/fieldplotter.p/window.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/fieldplotter/gtest-all.p -Isrc/fieldplotter -I../src/fieldplotter -I../subprojects/glew-2.1.0/include -I/usr/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -DBOOST_LOG_DYN_LINK=1 -DBOOST_ALL_NO_LIB -pthread -isystem../subprojects/googletest-release-1.11.0/googletest -isystemsubprojects/googletest-release-1.11.0/googletest -isystem../subprojects/googletest-release-1.11.0/googletest/include -MD -MQ src/fieldplotter/gtest-all.p/fieldplotter.cpp.o -MF src/fieldplotter/gtest-all.p/fieldplotter.cpp.o.d -o src/fieldplotter/gtest-all.p/fieldplotter.cpp.o -c ../src/fieldplotter/fieldplotter.cpp",
+    "file": "../src/fieldplotter/fieldplotter.cpp",
+    "output": "src/fieldplotter/gtest-all.p/fieldplotter.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/fieldplotter/gtest-all.p -Isrc/fieldplotter -I../src/fieldplotter -I../subprojects/glew-2.1.0/include -I/usr/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -DBOOST_LOG_DYN_LINK=1 -DBOOST_ALL_NO_LIB -pthread -isystem../subprojects/googletest-release-1.11.0/googletest -isystemsubprojects/googletest-release-1.11.0/googletest -isystem../subprojects/googletest-release-1.11.0/googletest/include -MD -MQ src/fieldplotter/gtest-all.p/graphics_renderer.cpp.o -MF src/fieldplotter/gtest-all.p/graphics_renderer.cpp.o.d -o src/fieldplotter/gtest-all.p/graphics_renderer.cpp.o -c ../src/fieldplotter/graphics/renderer.cpp",
+    "file": "../src/fieldplotter/graphics/renderer.cpp",
+    "output": "src/fieldplotter/gtest-all.p/graphics_renderer.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/fieldplotter/gtest-all.p -Isrc/fieldplotter -I../src/fieldplotter -I../subprojects/glew-2.1.0/include -I/usr/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -DBOOST_LOG_DYN_LINK=1 -DBOOST_ALL_NO_LIB -pthread -isystem../subprojects/googletest-release-1.11.0/googletest -isystemsubprojects/googletest-release-1.11.0/googletest -isystem../subprojects/googletest-release-1.11.0/googletest/include -MD -MQ src/fieldplotter/gtest-all.p/graphics_graphics.cpp.o -MF src/fieldplotter/gtest-all.p/graphics_graphics.cpp.o.d -o src/fieldplotter/gtest-all.p/graphics_graphics.cpp.o -c ../src/fieldplotter/graphics/graphics.cpp",
+    "file": "../src/fieldplotter/graphics/graphics.cpp",
+    "output": "src/fieldplotter/gtest-all.p/graphics_graphics.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/fieldplotter/gtest-all.p -Isrc/fieldplotter -I../src/fieldplotter -I../subprojects/glew-2.1.0/include -I/usr/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -DBOOST_LOG_DYN_LINK=1 -DBOOST_ALL_NO_LIB -pthread -isystem../subprojects/googletest-release-1.11.0/googletest -isystemsubprojects/googletest-release-1.11.0/googletest -isystem../subprojects/googletest-release-1.11.0/googletest/include -MD -MQ src/fieldplotter/gtest-all.p/window.cpp.o -MF src/fieldplotter/gtest-all.p/window.cpp.o.d -o src/fieldplotter/gtest-all.p/window.cpp.o -c ../src/fieldplotter/window.cpp",
+    "file": "../src/fieldplotter/window.cpp",
+    "output": "src/fieldplotter/gtest-all.p/window.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/fieldplotter/gtest-all.p -Isrc/fieldplotter -I../src/fieldplotter -I../subprojects/glew-2.1.0/include -I/usr/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -DBOOST_LOG_DYN_LINK=1 -DBOOST_ALL_NO_LIB -pthread -isystem../subprojects/googletest-release-1.11.0/googletest -isystemsubprojects/googletest-release-1.11.0/googletest -isystem../subprojects/googletest-release-1.11.0/googletest/include -MD -MQ src/fieldplotter/gtest-all.p/test.test.cpp.o -MF src/fieldplotter/gtest-all.p/test.test.cpp.o.d -o src/fieldplotter/gtest-all.p/test.test.cpp.o -c ../src/fieldplotter/test.test.cpp",
+    "file": "../src/fieldplotter/test.test.cpp",
+    "output": "src/fieldplotter/gtest-all.p/test.test.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/fieldplotter/gtest-all.p -Isrc/fieldplotter -I../src/fieldplotter -I../subprojects/glew-2.1.0/include -I/usr/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -DBOOST_LOG_DYN_LINK=1 -DBOOST_ALL_NO_LIB -pthread -isystem../subprojects/googletest-release-1.11.0/googletest -isystemsubprojects/googletest-release-1.11.0/googletest -isystem../subprojects/googletest-release-1.11.0/googletest/include -MD -MQ src/fieldplotter/gtest-all.p/window.test.cpp.o -MF src/fieldplotter/gtest-all.p/window.test.cpp.o.d -o src/fieldplotter/gtest-all.p/window.test.cpp.o -c ../src/fieldplotter/window.test.cpp",
+    "file": "../src/fieldplotter/window.test.cpp",
+    "output": "src/fieldplotter/gtest-all.p/window.test.cpp.o"
+  },
+  {
+    "directory": "/home/john/Desktop/projects/Field-Plotter/build",
+    "command": "c++ -Isrc/fieldplotter/gtest-all.p -Isrc/fieldplotter -I../src/fieldplotter -I../subprojects/glew-2.1.0/include -I/usr/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -DBOOST_LOG_DYN_LINK=1 -DBOOST_ALL_NO_LIB -pthread -isystem../subprojects/googletest-release-1.11.0/googletest -isystemsubprojects/googletest-release-1.11.0/googletest -isystem../subprojects/googletest-release-1.11.0/googletest/include -MD -MQ src/fieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.11.0_googletest_src_gtest-all.cc.o -MF src/fieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.11.0_googletest_src_gtest-all.cc.o.d -o src/fieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.11.0_googletest_src_gtest-all.cc.o -c ../subprojects/googletest-release-1.11.0/googletest/src/gtest-all.cc",
+    "file": "../subprojects/googletest-release-1.11.0/googletest/src/gtest-all.cc",
+    "output": "src/fieldplotter/gtest-all.p/.._.._subprojects_googletest-release-1.11.0_googletest_src_gtest-all.cc.o"
+  }
+]

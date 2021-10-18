@@ -1,8 +1,10 @@
 #include "window.h"
-#include "graphics/renderer.h"
+
+#include "graphics/glcontext.h"
 
 #include <gtest/gtest.h>
 #include <iostream>
+#include <memory>
 
 using namespace fieldplotter;
 
@@ -45,7 +47,8 @@ TEST(WindowTest, WindowCloses) {
 
 TEST(WindowTest, ValidRenderingSurface) {
     Window win;
-    Renderer ren(win.getContext());
-    ren.render();
+    OpenGLContext ctx(win);
+    std::weak_ptr<Graphics> g = ctx.getGraphics();
+    g->clear();
     win.update();
 }

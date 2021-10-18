@@ -1,14 +1,15 @@
 #ifndef RENDERER_H_
 #define RENDERER_H_
 
-#include "glcontext.h"
+#define GLEW_STATIC
+#include <GL/glew.h>
 
 namespace fieldplotter{
     class Renderer {
         public:
-            Renderer(OpenGLContext const& context);
+            Renderer();
             ~Renderer();
-            void render();
+            void clear();
     };
 }
 
