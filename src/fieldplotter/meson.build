@@ -1,14 +1,25 @@
 fieldplotter_sources = [
                       'fieldplotter.cpp',
                       'window.cpp',
-                      'graphics/glcontext.cpp',
-                      'graphics/renderer.cpp'
+                      'linalg.h',
+                      'components/fieldlines.cpp',
+                      'components/charge.h',
+                      'graphics/program.cpp',
+                      'graphics/shaders.h',
+                      # 'graphics/buffer.cpp',
+                      # 'graphics/vao.cpp',
+                      # 'graphics/lines.cpp',
+                      # 'graphics/renderer.cpp',
+                      # 'simulation/simulation.cpp',
+                      'util/vectors.h', #make this a cpp eventually
+                      'util/logging.cpp',
+                      'thread.cpp',
 ]
 
 test_sources = [
                       'test.test.cpp',
                       # 'glcontext.test.cpp',
-                      'window.test.cpp',
+                      # 'window.test.cpp',
 ]
 
 fp_deps = [
@@ -20,7 +31,7 @@ fp_deps = [
 ]
 
 fieldplotter = executable('fieldplotter',
-                          ['main.cpp',fieldplotter_sources],
+                          ['main-test.cpp',fieldplotter_sources],
                           dependencies: fp_deps,
                           include_directories : [toplevel_inc, project_inc]
                          )
@@ -28,6 +39,7 @@ fieldplotter = executable('fieldplotter',
 fp_test = executable('gtest-all',
                      [fieldplotter_sources,test_sources],
                      dependencies: [fp_deps,gtest_dep],
+                      include_directories : [toplevel_inc, project_inc]
                     )
 
 test('gtest test', fp_test)

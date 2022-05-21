@@ -1,16 +1,18 @@
 #include "fieldplotter.h"
 
+#include <GL/glew.h>
 #include <iostream>
 
 using namespace fieldplotter;
 
 FieldPlotter::FieldPlotter() {
-    m_running = true;
-    m_minimized = false;
+    running = true;
+    minimized = false;
+    INSTANCE = this;
 }
 
 FieldPlotter::~FieldPlotter() {
-    m_running=false;
+    running=false;
 }
 
 void FieldPlotter::onEvent(Event const& e) {
@@ -18,19 +20,25 @@ void FieldPlotter::onEvent(Event const& e) {
     if (e.getName() == "KeyPressEvent") {
         std::cout << "You have pressed the key with code: " << static_cast<KeyPressEvent const&>(e).key << "\n";
     } else if (e.getName() == "WindowCloseEvent") {
-        m_running = false;
+        INSTANCE->running = false;
+    } else if (e.getName() == "WindowErrorEvent") {
+        WindowErrorEvent* event = (WindowErrorEvent*) &e;
+        INSTANCE->running = false;
+        std::cout << "Window error occured. Error Code " << event->getErrorCode() << ", message:\n" << event->getDescription();
     }
 }
 
-void FieldPlotter::run() {
+int FieldPlotter::run() {
     Window win;
-    Renderer ren(win.getContext());
 
-    win.setEventCallback(std::bind(&FieldPlotter::onEvent, this, std::placeholders::_1));
+    // win.setEventCallback(std::bind(&FieldPlotter::onEvent, this, std::placeholders::_1));
+    win.setEventCallback(boost::bind(&FieldPlotter::onEvent, boost::placeholders::_1));
 
-    while (m_running) {
-        ren.render();
+    while (running) {
+        glClear(GL_COLOR_BUFFER_BIT);
+
         win.update();
     }
-    std::cout << "Goodbye\n";
+
+    return 0;
 }

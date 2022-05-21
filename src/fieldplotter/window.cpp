@@ -1,36 +1,50 @@
 #include "core.h"
 #include "window.h"
 
-#include "graphics/glcontext.h"
-
 #include <boost/log/trivial.hpp>
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
 
 using namespace fieldplotter;
 
-Window::Window(WindowOptions const& options, int width, int height)
-    : m_width(width), m_height(height), m_title(options.title) {
+
+void epicCallback(int code, const char* desc) {
+        std::cout << "Window Error: Error Code " << code << ", message:\n" << desc;
+}
+
+Window::Window() {
+    WindowOptions options;
+    width = options.width;
+    height = options.height;
+    title = options.title;
+
+
     if (glfwInit() != GLFW_TRUE) {
         DEBUG_ERR("Failed to create GLFW");
         throw "Failed to create GLFW Instance";
     }
-    m_handle = glfwCreateWindow(width, height, options.title.c_str(), NULL, NULL);
-    if (m_handle == nullptr) {
+
+    //this shit does not work
+    // boost::function<void(int, const char*)> callback = boost::bind(&Window::errorCallback, this, _1, _2);
+    // glfwSetErrorCallback(*callback.target<GLFWerrorfun>());
+    glfwSetErrorCallback(epicCallback);
+
+    handle = glfwCreateWindow(width, height, options.title.c_str(), NULL, NULL);
+
+    if (handle == nullptr) {
         DEBUG_ERR("Failed to create window!");
         throw "Failed to create window!";
     }
-    DEBUG_MSG("Setting version to:")
-    DEBUG_MSG(options.openGLVersion.first)
-    DEBUG_MSG(options.openGLVersion.second)
-    glfwSetWindowAttrib(m_handle, GLFW_CONTEXT_VERSION_MINOR, options.openGLVersion.first);
-    glfwSetWindowAttrib(m_handle, GLFW_CONTEXT_VERSION_MAJOR, options.openGLVersion.second);
-    glfwSetWindowAttrib(m_handle, GLFW_OPENGL_PROFILE, options.openGLProfile);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 5);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    glfwSetWindowUserPointer(m_handle, reinterpret_cast<void*>(this));
-#ifdef debug
-    glfwSetWindowAttrib(m_handle, GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-#endif
+    glfwSetWindowUserPointer(handle, reinterpret_cast<void*>(this));
+// #ifdef debug
+    // glfwSetWindowAttrib(handle, GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+// #endif
 
-    glfwSetKeyCallback(m_handle, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+    glfwSetKeyCallback(handle, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
         Window* instance = (Window*) glfwGetWindowUserPointer(window);
         switch(action) {
             case GLFW_PRESS:
@@ -48,52 +62,67 @@ Window::Window(WindowOptions const& options, int width, int height)
         }
     });
 
-    glfwSetWindowCloseCallback(m_handle, [](GLFWwindow* window) {
+    glfwSetWindowCloseCallback(handle, [](GLFWwindow* window) {
         Window* instance = (Window*) glfwGetWindowUserPointer(window);
         instance->onEvent(WindowCloseEvent{});
     });
 
-    //TODO implement the rest of the event callbacks
+    glfwMakeContextCurrent(handle);
+
+    glewExperimental = true;
+
+    GLenum status = glewInit();
+    if (status != GLEW_OK) {
+        DEBUG_ERR("Glew init failed");
+        printf("Code: %d\n", status);
+        //some sort of crash event?
+    }
+
+}
+
+void Window::errorCallback(int code, const char* desc) {
+        std::cout << "EVENT\n";
+        this->onEvent(WindowErrorEvent{code, std::string(desc)});
 }
 
 Window::~Window() {
     this->close();
-    glfwDestroyWindow(m_handle);
+    glfwDestroyWindow(handle);
     glfwTerminate();
 }
 
 void Window::show() {
     //TODO onShowEvent
-    glfwShowWindow(m_handle);
+    glfwShowWindow(handle);
 }
 
 void Window::hide() {
     //TODO onHideEvent
-    glfwHideWindow(m_handle);
+    glfwHideWindow(handle);
 }
 
 void Window::update() {
-    glfwSwapBuffers(m_handle);
+    draw();
     glfwPollEvents();
 }
 
 void Window::close() {
-    glfwSetWindowShouldClose(m_handle, GLFW_TRUE);
+    glfwSetWindowShouldClose(handle, GLFW_TRUE);
+}
+
+void Window::draw() {
+    glfwSwapBuffers(handle);
 }
 
 int Window::getWidth() const {
-    return m_width;
+    return width;
 }
 
 int Window::getHeight() const {
-    return m_height;
+    return height;
 }
 
 bool Window::isClosed() const {
-    return m_closed;
+    return closed;
 }
 
-OpenGLContext Window::getContext() const {
-    glfwMakeContextCurrent(m_handle);
-    return {};
-}
