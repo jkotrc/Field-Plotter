@@ -5,40 +5,11 @@ using namespace fieldplotter;
 using namespace glm;
 
 #define PI 3.14159
-#define CONST 4*PI
-
-//how many segments to compute at once
-#define BATCH 2
-//permittivity = 8.854*10^-12
-
-float magnitude(vec2 x) {
-    return glm::length(x);
-}
-
-float magnitude2(vec2 x) {
-    return magnitude(x) * magnitude(x);
-}
-
-void printVec(const char* msg, vec2 val) {
-    printf("%s {%f,%f}\n", msg, val);
-}
-
-// #define CAP 1000.0f
-vec2 forceAt(vec2 const& point, std::vector<Charge> const& charges) {
-    vec2 force = {0.0f,0.0f};
-    for (const auto charge : charges) {
-        vec2 direction = point - charge.pos;
-        float mag3 = magnitude2(direction) * magnitude(direction);
-        force += (charge.q / mag3) * direction;
-    }
-    return force;
-}
 
 Lyne::Lyne(FieldLines* parent, vec2 const& initial) {
     line_queue = new boost::sync_queue<glm::vec2>;
     line_queue->push(initial);
     line.push_back(initial);
-    // printf("INITIAL: %f;%f", line.at(0).x, line.at(0).y);
     dt = parent->dt;
     step = parent->step;
     charges = parent->charges;
@@ -51,7 +22,6 @@ bool Lyne::popSegment(vec2* dest) {
         line.push_back(val);
         dest->x = val.x;
         dest->y = val.y;
-        // printf("VAL: %f %f", dest->x, dest->y);
         return true;
     }
     return false;
@@ -62,7 +32,6 @@ void Lyne::append(vec2 num) {
     line.push_back(num);
 }
 
-#include <assert.h>
 void Lyne::compute() {
     std::vector<Charge> sinks;
     for (Charge c : charges) {
@@ -72,9 +41,7 @@ void Lyne::compute() {
         }
     }
 
-    // printf("INITIAL FROM THREAD: %f;%f\n", line.at(0).x, line.at(0).y);
     vec2 pos = line.at(0);
-    // vec2 vel = vec2(0.0f, 0.0f);
 
     bool inBounds = true;
     float t = 0.0f;
@@ -85,20 +52,17 @@ void Lyne::compute() {
     int stuck = 0;
     while (inBounds && !finished && stuck < 1000) {
         i++;
-        // printf("Iteration %d:\n-----\npos={%f,%f}\nvel={%f,%f}\n",i,pos.x,pos.y,vel.x,vel.y);
-        if (abs(magnitude(pos)) > 10.0f) {
+        if (abs(glm::length(pos)) > 10.0f) {
             inBounds = false;
             printf("Leaving bounds\n");
         }
         for (Charge s : sinks) {
-            if (magnitude(s.pos - pos) <= s.size) {
+            if (glm::length(s.pos - pos) <= s.size) {
                 inBounds = false;
                 printf("Entered sink\n");
             }
         }
 
-        // vec2 force = forceAt(pos,charges);
-        // printf("Force: %f,%f", force.x, force.y);
         vec2 dF1 = forceAt(pos, charges) * dt;
         vec2 dF2 = forceAt(pos + dF1 * (dt / 2), charges) * dt;
         vec2 dF3 = forceAt(pos + dF2 * (dt / 2), charges) * dt;
@@ -109,10 +73,10 @@ void Lyne::compute() {
         pos += dF;
         t += dt;
 
-        cumulator += magnitude(dF);
+        cumulator += glm::length(dF);
         // printf("Cum: %f\nT: %f,%f\n",cumulator,pos.x, pos.y);
         if (cumulator > step) {
-            line_queue->push(pos);
+            line_queue->wait_push(pos);
             cumulator = 0.0f;
             stuck = 0;
         }
@@ -120,7 +84,6 @@ void Lyne::compute() {
 
     }
         finished = true;
-        printf("Finished. Pushed %d vertices\n", i);
 }
 
 bool Lyne::isFinished() {
@@ -142,7 +105,6 @@ FieldLines::~FieldLines() {
 
 }
 
-#include <assert.h>
 void FieldLines::compute(std::vector<Charge> const& charges) {
     this->charges = charges;
     std::vector<Charge> sources;

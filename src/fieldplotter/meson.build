@@ -3,7 +3,6 @@ fieldplotter_sources = [
                       'window.cpp',
                       'linalg.h',
                       'components/fieldlines.cpp',
-                      'components/charge.h',
                       'graphics/program.cpp',
                       'graphics/shaders.h',
                       # 'graphics/buffer.cpp',
@@ -11,6 +10,7 @@ fieldplotter_sources = [
                       # 'graphics/lines.cpp',
                       # 'graphics/renderer.cpp',
                       # 'simulation/simulation.cpp',
+                      'physics/electrostatics.cpp',
                       'util/vectors.h', #make this a cpp eventually
                       'util/logging.cpp',
                       'thread.cpp',
@@ -31,7 +31,7 @@ fp_deps = [
 ]
 
 fieldplotter = executable('fieldplotter',
-                          ['main-test.cpp',fieldplotter_sources],
+                          ['main.cpp',fieldplotter_sources],
                           dependencies: fp_deps,
                           include_directories : [toplevel_inc, project_inc]
                          )

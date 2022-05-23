@@ -14,7 +14,7 @@ gmock_dep = gtest_proj.get_variable('gmock_dep')
 glfw_dep = dependency('glfw3')
 glew_dep = subproject('glew').get_variable('glew_dep')
 gl_dep = dependency('GL', method: 'auto')
-boost_dep = dependency('boost', modules: ['log'])
+boost_dep = dependency('boost', modules: ['log', 'thread', 'chrono'])
 
 thread_dep = dependency('threads')
 

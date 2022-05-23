@@ -16,15 +16,12 @@ namespace fieldplotter {
             FieldPlotter();
             ~FieldPlotter();
             int run();
-            static void onEvent(Event const& e);
+            void onEvent(Event const& e);
             void close();
         private:
+            Window* win;
             bool running;
             bool minimized;
     };
-
-    //TODO support for instanced running
-    static FieldPlotter* INSTANCE = nullptr;
-
 }
 #endif // FIELDPLOTTER_H_

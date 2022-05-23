@@ -1,35 +1,21 @@
 #include <iostream>
 
+#define PI 3.141592653
+
 #include "fieldplotter.h"
-#include "thread.h"
 
-#include <boost/log/trivial.hpp>
-#include <boost/chrono.hpp>
-#include <boost/thread/thread.hpp>
-#include <util/logging.h>
+using namespace fieldplotter;
 
-using namespace std;
+bool running = true;
 
-
-
-int main() {
-    fieldplotter::FieldPlotter* fp = new fieldplotter::FieldPlotter();
-
-    fieldplotter::Thread thread(
-        boost::bind(
-            &fieldplotter::FieldPlotter::run, fp)
-            );
-
-    thread.run();
-
-    while (thread.is_running()) {
-        std::cout << "Still Running\n";
-        boost::this_thread::sleep_for(boost::chrono::milliseconds(1000));
+void onEvent(Event const& e) {
+    if (e.getName() == "WindowCloseEvent") {
+        running = false;
     }
+}
 
-    thread.join();
-
-    std::cout << "Bye\n";
-
-    return 0;
+//density is 3 globally
+int main() {
+    FieldPlotter fp;
+    return fp.run();
 }
