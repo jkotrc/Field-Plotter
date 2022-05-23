@@ -3,10 +3,7 @@
 
 using namespace fieldplotter;
 
-Renderer::Renderer(OpenGLContext const& context) {
-    if (!context.isValid()) {
-        DEBUG_ERR("Renderer not made due to invalid context")
-    }
+Renderer::Renderer() {
     glClearColor(0.0f,0.0f,1.0f,0.5f);
 }
 

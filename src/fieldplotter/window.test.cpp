@@ -12,7 +12,7 @@ TEST(WindowTest, CreatesSuccessfully) {
 }
 
 TEST(WindowTest, DimensionsAreCorrect) {
-    Window win(800, 600);
+    Window win;
     ASSERT_EQ(win.getWidth(), 800);
     ASSERT_EQ(win.getHeight(), 600);
 }
@@ -43,9 +43,9 @@ TEST(WindowTest, WindowCloses) {
 //     ASSERT_E
 // }
 
-TEST(WindowTest, ValidRenderingSurface) {
-    Window win;
-    Renderer ren(win.getContext());
-    ren.render();
-    win.update();
-}
+// TEST(WindowTest, ValidRenderingSurface) {
+//     Window win;
+//     Renderer ren(win.getContext());
+//     ren.render();
+//     win.update();
+// }

@@ -44,41 +44,6 @@ namespace fieldplotter {
     using EventCallback = std::function<void(Event const&)>;
 
 
-    class KeyPressEvent;
-    class KeyReleaseEvent;
-    class KeyRepeatEvent;
-    class WindowCloseEvent;
-
-    template <typename>
-    struct EventType;
-
-    template<>
-    struct EventType<KeyPressEvent> {
-        static constexpr const char* getName() {
-            return "KeyPressEvent";
-        }
-    };
-
-    template<>
-    struct EventType<KeyReleaseEvent> {
-        static constexpr const char* getName() {
-            return "KeyReleaseEvent";
-        }
-    };
-
-    template<>
-    struct EventType<KeyRepeatEvent> {
-        static constexpr const char* getName() {
-            return "KeyRepeatEvent";
-        }
-    };
-
-    template<>
-    struct EventType<WindowCloseEvent> {
-        static constexpr const char* getName() {
-            return "WindowCloseEvent";
-        }
-    };
 
 } //namespace fieldplotter
 #endif // EVENT_H_

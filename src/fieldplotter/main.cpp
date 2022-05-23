@@ -1,34 +1,21 @@
 #include <iostream>
 
+#define PI 3.141592653
+
 #include "fieldplotter.h"
-#include <boost/log/trivial.hpp>
 
-using namespace std;
+using namespace fieldplotter;
 
-// int main(int argc, char *argv[]) {
-//     fieldplotter::Window* win = new fieldplotter::Window(800, 600, "Debug");
-//     fieldplotter::OpenGLContext* ctx = new fieldplotter::OpenGLContext({4,6});
-//     win->setOpenGLVersion(ctx->getVersion());
-//     if (!win->create()) {
-//         cout << "window didn't create\n";
-//         return 1;
-//     }
-//     if (!ctx->initialize()) {
-//         cout << "OpenGL context didn't create\n";
-//         return 1;
-//     }
+bool running = true;
 
-//     while (!win->shouldClose()) {
-//         win->update();
-//     }
-//     delete win;
+void onEvent(Event const& e) {
+    if (e.getName() == "WindowCloseEvent") {
+        running = false;
+    }
+}
 
-//     cout << "Build system works\n";
-//     return 0;
-// }
-
+//density is 3 globally
 int main() {
-    fieldplotter::FieldPlotter fp;
-    fp.run();
-    return 0;
+    FieldPlotter fp;
+    return fp.run();
 }
