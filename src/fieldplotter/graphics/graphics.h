@@ -38,7 +38,7 @@ public:
   virtual ~Graphics(){}
   virtual void drawArrow(glm::vec3 &position, glm::vec3 &val) = 0;
 
-  virtual void drawLines(std::vector<std::pair<glm::vec3,glm::vec3>> const &segments) = 0;
+  virtual void drawLines(std::vector<glm::vec3> const &segments) = 0;
   virtual void drawCurve(std::vector<glm::vec3> const &pieces) = 0;
   virtual void drawPoint(std::vector<glm::vec3> const &pieces) = 0;
   virtual void update() = 0;

@@ -9,7 +9,6 @@
 #include <boost/thread.hpp>
 #include <boost/thread/concurrent_queues/sync_queue.hpp>
 
-
 namespace fieldplotter {
     class FieldPlotter {
         public:

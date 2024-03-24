@@ -2,6 +2,7 @@
 #include "extern/imgui/backends/imgui_impl_opengl3.h"
 #include "extern/imgui/imgui.h"
 
+#include <GLFW/glfw3.h>
 #include <physics/electrostatics.h>
 #include <components/fieldlines.h>
 
@@ -27,7 +28,6 @@ void FieldPlotter::onEvent(Event const& e) {
     //TODO propagate event into its respective layers using a dispatcher
     if (e.getName() == "KeyPressEvent") {
         auto ev = static_cast<KeyPressEvent const&>(e);
-        std::cout << "You have pressed the key with code: " << ev.key << "\n";
         switch(ev.key) {
             case GLFW_KEY_W:
                 win->getGraphics().camera.moveCamera(0.1, 0);
@@ -59,7 +59,11 @@ int FieldPlotter::run() {
     win->show();
     Graphics& g = win->getGraphics();
     g.drawPoint({{0,0.1,0},{0.5,0,0},{0,0.5,0},{0,0,0.5}});
-     g.drawPoint({{0.6, -0.5, 0}});
+    g.drawPoint({{0.6, -0.5, 0}});
+    g.drawLines({{{0.0,0.0,0.0},{0.3,0.0,0.0}}});
+    g.drawLines({{{0.0,0.0,0.0},{0.0,0.3,0.0}}});
+    g.drawLines({{{0.0,0.0,0.0},{0.0,0.0,0.3}}});
+    g.drawCurve({{0.0,0.0,0.0}, {0.4,0.4,0.4}, {-0.4,0.4,0.4}, {0.0,0.0,0.0}});
 
 
     bool open = true;
@@ -70,17 +74,16 @@ int FieldPlotter::run() {
 
         ImGui::ShowDemoWindow(&open);
 
-        char buf[1024];
-        float f;
-ImGui::Text("Hello, world %d", 123);
-if (ImGui::Button("Save")){
+        glm::vec2 vel = win->getMouseVelocity();
+        glm::vec2 pos = win->getMousePosition();
+        printf("Mouse vel %f %f\n", vel[0], vel[1]);
+        printf("Mouse pos %f %f\n", pos[0], pos[1]);
+        printf("Buttons %d %d\n", win->leftMbtnDown(), win->rightMbtnDown());
 
-}
-ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
-ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        if (win->leftMbtnDown()) {
+            // glm::vec2 vel = win->getMouseVelocity();
+            win->getGraphics().camera.moveCamera(vel[0]/10, vel[1]/10);
+        }
 
         win->update();
     }

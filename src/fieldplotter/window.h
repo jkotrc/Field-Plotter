@@ -9,9 +9,13 @@
 #include <string>
 #include <algorithm>
 #include <memory>
+#include <set>
 
 struct GLVersion;
 namespace fieldplotter {
+
+using vec2d = glm::vec<2, double>;
+
     class Window {
         public:
             struct WindowOptions {
@@ -34,12 +38,16 @@ namespace fieldplotter {
             void draw();
 
             void setEventCallback(EventCallback callback) { event_callback = callback; }
-            void onEvent(Event const& event) { event_callback(event); }
+            void onEvent(Event const& event);
 
             int getWidth() const;
             int getHeight() const;
             bool isClosed() const;
             Graphics& getGraphics() const { return *graphics;}
+            glm::vec<2, double> getMousePosition() const;
+            glm::vec<2, double> getMouseVelocity() const;
+            bool leftMbtnDown() const {return mousebuttons.find(GLFW_MOUSE_BUTTON_LEFT) != mousebuttons.end();}
+            bool rightMbtnDown() const {return mousebuttons.find(GLFW_MOUSE_BUTTON_RIGHT) != mousebuttons.end();}
         private:
             void errorCallback(int code, const char* desc);
             EventCallback event_callback;
@@ -49,6 +57,9 @@ namespace fieldplotter {
             int height;
             bool closed; //TODO will be set by the windowshouldclose callback
             std::string title;
+            std::set<unsigned int> mousebuttons;
+            vec2d mousepos = {0, 0};
+            vec2d mousevel = {0, 0};
     };
 }
 #endif // WINDOW_H_

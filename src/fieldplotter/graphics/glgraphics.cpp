@@ -39,7 +39,8 @@ void OpenGLGraphics::drawArrow(glm::vec3 &position, glm::vec3 &val) {
 
 }
 
-void OpenGLGraphics::drawLines(std::vector<std::pair<glm::vec3,glm::vec3>> const &segments) {
+void OpenGLGraphics::drawLines(std::vector<glm::vec3> const &segments) {
+    if (segments.size() <= 1) return;
     primitives.addLines(segments);
 }
 
@@ -58,16 +59,6 @@ void OpenGLGraphics::update() {
     glUniformMatrix4fv(primitives.getUniform("VP"), 1, false, glm::value_ptr(vp));
     primitives.render();
     tmpval += 0.01f;
-
-    // for (Program prgm : programs) {
-    //     prgm.bind();
-    //     GLint vpID = prgm.getUniform("VP");
-    //     if (vpID != -1) {
-    //         glm::mat4 vp = perspMatrix * camera.getViewMatrix();
-    //         glUniformMatrix4fv(vpID,1,false,glm::value_ptr(vp));
-    //     }
-
-    // }
 }
 
 void OpenGLGraphics::setLineWidth(GLuint width) {
@@ -159,18 +150,14 @@ void Program::bind() {
 GLint Program::getUniform(std::string const& name) {
     return glGetUniformLocation(programID, name.c_str());
 }
-
-// GLint getUniform(std::string const& name)
-//
-    glm::vec3 tmpvec2 = {0.1,0.1,0};
 SolidPrimitives::SolidPrimitives() : Program(shaders::VERT_SIMPLE, shaders::FRAG_SOLID) {
     glGenBuffers(N_PRIMITIVES,buffer);
     glBindVertexArray(vao);
     glEnableVertexAttribArray(0);
-        glm::vec3 tmpvec = {0.3,0.1,0};
     for (GLuint buf : buffer) {
         printf("Initializing buffer %u\n", buf);
         glBindBuffer(GL_ARRAY_BUFFER, buf);
+        glBufferData(GL_ARRAY_BUFFER, 50*sizeof(glm::vec3), nullptr, GL_DYNAMIC_DRAW); //FIXME 50 max number of elements
         glVertexAttribPointer(0, //index
                             3, //3d vector (idea: make time displacement in relativity = transparency 4d vector)
                             GL_FLOAT,
@@ -178,43 +165,31 @@ SolidPrimitives::SolidPrimitives() : Program(shaders::VERT_SIMPLE, shaders::FRAG
                             0, //no stride
                             nullptr //no offset
         );
-        glBufferData(GL_ARRAY_BUFFER, 10*sizeof(glm::vec3), nullptr, GL_DYNAMIC_DRAW); //FIXME 50 max number of elements
-        //glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::vec3), &tmpvec2);
-        //glBufferSubData(GL_ARRAY_BUFFER, 12, sizeof(glm::vec3), &tmpvec);
     }
-        glBindBuffer(GL_ARRAY_BUFFER, buffer[POINTS]);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void SolidPrimitives::addPoints(std::vector<glm::vec3> const& points) {
     glBindBuffer(GL_ARRAY_BUFFER, buffer[POINTS]);
     printf("subdata: offset %lu, size %lu, first point %f %f %f\n",number_of[POINTS]*sizeof(glm::vec3), points.size()*sizeof(glm::vec3), points[0][0], points[0][1], points[0][2]);
     glBufferSubData(GL_ARRAY_BUFFER, number_of[POINTS]*sizeof(glm::vec3), points.size()*sizeof(glm::vec3), points.data());
-        glVertexAttribPointer(0, //index
-                            3, //3d vector (idea: make time displacement in relativity = transparency 4d vector)
-                            GL_FLOAT,
-                            GL_FALSE, //no normalizing
-                            0, //no stride
-                            nullptr //no offset
-        );
-    number_of[POINTS]+=points.size();
+     number_of[POINTS]+=points.size();
+    glBindBuffer(GL_ARRAY_BUFFER,0);
 }
-void SolidPrimitives::addLines(std::vector<GLLineSegment> const& segments) {
+void SolidPrimitives::addLines(std::vector<glm::vec3> const& segments) {
     glBindBuffer(GL_ARRAY_BUFFER, buffer[LINES]);
     glBufferSubData(GL_ARRAY_BUFFER, number_of[LINES]*sizeof(glm::vec3), segments.size()*sizeof(glm::vec3), segments.data());
-        glVertexAttribPointer(0, //index
-                            3, //3d vector (idea: make time displacement in relativity = transparency 4d vector)
-                            GL_FLOAT,
-                            GL_FALSE, //no normalizing
-                            0, //no stride
-                            nullptr //no offset
-        );
     number_of[LINES]+=segments.size();
-
+    glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 void SolidPrimitives::addStrip(std::vector<glm::vec3> const& pieces) {
     glBindBuffer(GL_ARRAY_BUFFER, buffer[STRIPS]);
     glBufferSubData(GL_ARRAY_BUFFER, number_of[STRIPS]*sizeof(glm::vec3), pieces.size()*sizeof(glm::vec3), pieces.data());
+    number_of[STRIPS]+=pieces.size();
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+}
+void SolidPrimitives::render() {
+    bind();
+    glBindBuffer(GL_ARRAY_BUFFER, buffer[POINTS]);
         glVertexAttribPointer(0, //index
                             3, //3d vector (idea: make time displacement in relativity = transparency 4d vector)
                             GL_FLOAT,
@@ -222,40 +197,23 @@ void SolidPrimitives::addStrip(std::vector<glm::vec3> const& pieces) {
                             0, //no stride
                             nullptr //no offset
         );
-    number_of[STRIPS]+=pieces.size();
-}
-void SolidPrimitives::render() {
-    bind();
-    glBindBuffer(GL_ARRAY_BUFFER, buffer[POINTS]);
     glDrawArrays(GL_POINTS, 0, number_of[POINTS]);
     glBindBuffer(GL_ARRAY_BUFFER, buffer[LINES]);
+        glVertexAttribPointer(0, //index
+                            3, //3d vector (idea: make time displacement in relativity = transparency 4d vector)
+                            GL_FLOAT,
+                            GL_FALSE, //no normalizing
+                            0, //no stride
+                            nullptr //no offset
+        );
     glDrawArrays(GL_LINES, 0, number_of[LINES]);
     glBindBuffer(GL_ARRAY_BUFFER, buffer[STRIPS]);
+        glVertexAttribPointer(0, //index
+                            3, //3d vector (idea: make time displacement in relativity = transparency 4d vector)
+                            GL_FLOAT,
+                            GL_FALSE, //no normalizing
+                            0, //no stride
+                            nullptr //no offset
+        );
     glDrawArrays(GL_LINE_STRIP, 0, number_of[STRIPS]);
 }
-
-  //FIXME duplication
-  // template <>
-  // void fieldplotter::bufSubData<glm::vec4>(GLenum type, GLint offset, unsigned int count, glm::vec4* data)
-  // {
-  //       glBufferSubData(GL_ARRAY_BUFFER, offset*sizeof(glm::vec4), count*sizeof(glm::vec4), &data);
-  //       glVertexAttribPointer(0, //index
-  //                           4, //3d vector (idea: make time displacement in relativity = transparency 4d vector)
-  //                           GL_FLOAT,
-  //                           GL_FALSE, //no normalizing
-  //                           0, //no stride
-  //                           nullptr //no offset
-  //       );
-  // }
-  // template <>
-  // void fieldplotter::bufSubData<glm::vec3>(GLenum type, GLint offset, unsigned int count, glm::vec3* data)
-  // {
-  //       glBufferSubData(GL_ARRAY_BUFFER, offset*sizeof(glm::vec3), count*sizeof(glm::vec3), &data);
-  //       glVertexAttribPointer(0, //index
-  //                           3, //3d vector (idea: make time displacement in relativity = transparency 4d vector)
-  //                           GL_FLOAT,
-  //                           GL_FALSE, //no normalizing
-  //                           0, //no stride
-  //                           nullptr //no offset
-  //       );
-  // }

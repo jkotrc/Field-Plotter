@@ -9,8 +9,8 @@
 namespace fieldplotter {
     class KeyPressEvent : public Event {
         public:
-            int key, mods; //Is it okay to not encapsulate these?
-            KeyPressEvent(int key, int mods) : key(key), mods(mods) {}
+            int key, action, mods;
+            KeyPressEvent(int key, int action, int mods) : key(key),action(action), mods(mods) {}
             int getCategories() const override {
                 return InputEvent | KeyboardEvent;
             }
@@ -21,7 +21,7 @@ namespace fieldplotter {
 
     class KeyReleaseEvent : public Event {
         public:
-            int key, mods; //Is it okay to not encapsulate these?
+            int key, mods;
             KeyReleaseEvent(int key, int mods) : key(key), mods(mods) {}
             int getCategories() const override {
                 return InputEvent | KeyboardEvent;
@@ -33,13 +33,35 @@ namespace fieldplotter {
 
     class KeyRepeatEvent : public Event {
         public:
-            int key, mods; //Is it okay to not encapsulate these?
+            int key, mods;
             KeyRepeatEvent(int key, int mods) : key(key), mods(mods) {}
             int getCategories() const override {
                 return InputEvent | KeyboardEvent;
             }
             std::string getName() const override {
                 return "KeyRepeatEvent";
+            }
+    };
+    class MouseButtonEvent : public Event {
+        public:
+            int button,action,mods;
+            MouseButtonEvent(int button, int action, int mods) : button(button), action(action), mods(mods) {}
+            int getCategories() const override {
+                return InputEvent | MouseEvent;
+            }
+            std::string getName() const override {
+                return "MouseButtonEvent";
+            }
+    };
+    class MouseMoveEvent : public Event {
+        public:
+            double xpos, ypos;
+            MouseMoveEvent(double xpos, double ypos) : xpos(xpos), ypos(ypos) {}
+            int getCategories() const override {
+                return InputEvent | MouseEvent;
+            }
+            std::string getName() const override {
+                return "MouseMoveEvent";
             }
     };
 

@@ -1,5 +1,8 @@
 #include "core.h"
+#include "event/event.h"
+#include "event/windowevent.h"
 #include "extern/imgui/backends/imgui_impl_glfw.h"
+#include "extern/imgui/imgui.h"
 #include "graphics/glgraphics.h"
 #include "window.h"
 
@@ -23,13 +26,11 @@ Window::Window() {
     height = options.height;
     title = options.title;
 
-IMGUI_CHECKVERSION();
-ImGui::CreateContext();
-ImGuiIO &io = ImGui::GetIO();
-(void)io;
-// io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable
-// Keyboard Controls io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; //
-// Enable Gamepad Controls
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    //(void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable
 
 ImGui::StyleColorsDark();
     if (glfwInit() != GLFW_TRUE) {
@@ -60,26 +61,27 @@ ImGui::StyleColorsDark();
 
     glfwSetKeyCallback(handle, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
         Window* instance = (Window*) glfwGetWindowUserPointer(window);
-        switch(action) {
-            case GLFW_PRESS:
-                instance->onEvent(KeyPressEvent{key,mods}); //does KeyPressEvent go out of scope?
-                break;
-            case GLFW_RELEASE:
-                instance->onEvent(KeyReleaseEvent{key,mods});
-                break;
-            case GLFW_REPEAT:
-                instance->onEvent(KeyReleaseEvent{key,mods});
-                break;
-            default:
-                throw "GLFW gave an unknown keycode...";
-                break;
-        }
+        instance->onEvent(KeyPressEvent{key,action,mods});
     });
     glfwSetCursorPosCallback(handle, [](GLFWwindow* window, double xpos, double ypos){
-
+        Window* instance = (Window*) glfwGetWindowUserPointer(window);
+        vec2d newpos = {xpos, ypos};
+        printf("setpos %f %f\n", xpos, ypos);
+        instance->mousevel = newpos - instance->mousepos;
+        instance->mousepos = newpos;
+        instance->onEvent(MouseMoveEvent(xpos, ypos));
     });
     glfwSetMouseButtonCallback(handle, [](GLFWwindow* window, int button, int action, int mods){
-
+        Window* instance = (Window*) glfwGetWindowUserPointer(window);
+        ImGuiIO& io = ImGui::GetIO();
+        if (!io.WantCaptureMouse) {
+            if (action == GLFW_PRESS) {
+                instance->mousebuttons.insert(button);
+            } else if (action == GLFW_RELEASE) {
+                instance->mousebuttons.erase(button);
+            }
+            instance->onEvent(MouseButtonEvent(button, action, mods));
+        }
     });
 
     glfwSetWindowCloseCallback(handle, [](GLFWwindow* window) {
@@ -99,9 +101,19 @@ ImGui::StyleColorsDark();
         throw std::runtime_error("GLEW failed to initalize");
     }
     graphics = std::unique_ptr<OpenGLGraphics>(new OpenGLGraphics());
-    ImGui_ImplGlfw_InitForOpenGL(handle, false); //TODO false and pass events self
+    ImGui_ImplGlfw_InitForOpenGL(handle, true);
     ImGui_ImplOpenGL3_Init();
 
+}
+
+void Window::onEvent(Event const& event) {
+    ImGuiIO& io = ImGui::GetIO();
+    bool blockAppEvents = ((io.WantCaptureKeyboard || io.WantTextInput) && (event.getCategories() & KeyboardEvent)) \
+                       || (io.WantCaptureMouse && (event.getCategories() & MouseEvent));
+
+    if (!blockAppEvents) { //TODO move check to callbacks
+        event_callback(event);
+    }
 }
 
 void Window::errorCallback(int code, const char* desc) {
@@ -117,6 +129,7 @@ Window::~Window() {
 
 void Window::show() {
     //TODO onShowEvent
+    glfwGetCursorPos(handle, &mousepos[0], &mousepos[1]);
     glfwShowWindow(handle);
 }
 
@@ -127,8 +140,6 @@ void Window::hide() {
 
 void Window::update() {
     glfwPollEvents();
-
-
     draw();
 }
 
@@ -158,3 +169,9 @@ bool Window::isClosed() const {
     return closed;
 }
 
+vec2d Window::getMousePosition() const {
+    return mousepos;
+}
+vec2d Window::getMouseVelocity() const {
+    return mousevel;
+}
