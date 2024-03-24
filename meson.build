@@ -4,7 +4,7 @@ project('fieldplotter', 'cpp',
 
 
 toplevel_inc = include_directories('include')
-project_inc = include_directories('src/fieldplotter')
+project_inc = include_directories('src/fieldplotter', 'src/fieldplotter/extern/imgui')
 cxx = meson.get_compiler('cpp')
 
 ###DEPENDENCIES###

@@ -3,17 +3,21 @@ fieldplotter_sources = [
                       'window.cpp',
                       'linalg.h',
                       'components/fieldlines.cpp',
-                      'graphics/program.cpp',
                       'graphics/shaders.h',
-                      # 'graphics/buffer.cpp',
-                      # 'graphics/vao.cpp',
-                      # 'graphics/lines.cpp',
-                      # 'graphics/renderer.cpp',
-                      # 'simulation/simulation.cpp',
+                      'graphics/graphics.cpp',
+                      'graphics/camera.cpp',
+                      'graphics/glgraphics.cpp',
                       'physics/electrostatics.cpp',
                       'util/vectors.h', #make this a cpp eventually
                       'util/logging.cpp',
                       'thread.cpp',
+                      'extern/imgui/imgui.cpp',
+                      'extern/imgui/imgui_demo.cpp',
+                      'extern/imgui/imgui_draw.cpp',
+                      'extern/imgui/imgui_tables.cpp',
+                      'extern/imgui/imgui_widgets.cpp',
+                      'extern/imgui/backends/imgui_impl_glfw.cpp',
+                      'extern/imgui/backends/imgui_impl_opengl3.cpp',
 ]
 
 test_sources = [

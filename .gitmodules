@@ -1,0 +1,3 @@
+[submodule "src/fieldplotter/extern/imgui"]
+	path = src/fieldplotter/extern/imgui
+	url = https://github.com/ocornut/imgui.git

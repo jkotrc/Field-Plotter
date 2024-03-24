@@ -1,9 +1,14 @@
 #include "core.h"
+#include "extern/imgui/backends/imgui_impl_glfw.h"
+#include "graphics/glgraphics.h"
 #include "window.h"
 
+#include <GLFW/glfw3.h>
 #include <boost/log/trivial.hpp>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
+#include <memory>
+#include <stdexcept>
 
 using namespace fieldplotter;
 
@@ -18,7 +23,15 @@ Window::Window() {
     height = options.height;
     title = options.title;
 
+IMGUI_CHECKVERSION();
+ImGui::CreateContext();
+ImGuiIO &io = ImGui::GetIO();
+(void)io;
+// io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable
+// Keyboard Controls io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; //
+// Enable Gamepad Controls
 
+ImGui::StyleColorsDark();
     if (glfwInit() != GLFW_TRUE) {
         DEBUG_ERR("Failed to create GLFW");
         throw "Failed to create GLFW Instance";
@@ -37,6 +50,7 @@ Window::Window() {
     }
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 5);
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     glfwSetWindowUserPointer(handle, reinterpret_cast<void*>(this));
@@ -61,6 +75,12 @@ Window::Window() {
                 break;
         }
     });
+    glfwSetCursorPosCallback(handle, [](GLFWwindow* window, double xpos, double ypos){
+
+    });
+    glfwSetMouseButtonCallback(handle, [](GLFWwindow* window, int button, int action, int mods){
+
+    });
 
     glfwSetWindowCloseCallback(handle, [](GLFWwindow* window) {
         Window* instance = (Window*) glfwGetWindowUserPointer(window);
@@ -76,7 +96,11 @@ Window::Window() {
         DEBUG_ERR("Glew init failed");
         printf("Code: %d\n", status);
         //some sort of crash event?
+        throw std::runtime_error("GLEW failed to initalize");
     }
+    graphics = std::unique_ptr<OpenGLGraphics>(new OpenGLGraphics());
+    ImGui_ImplGlfw_InitForOpenGL(handle, false); //TODO false and pass events self
+    ImGui_ImplOpenGL3_Init();
 
 }
 
@@ -102,8 +126,10 @@ void Window::hide() {
 }
 
 void Window::update() {
-    draw();
     glfwPollEvents();
+
+
+    draw();
 }
 
 void Window::close() {
@@ -111,6 +137,12 @@ void Window::close() {
 }
 
 void Window::draw() {
+    graphics->update();
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    int w,h;
+    glfwGetFramebufferSize(handle, &w, &h);
+    glViewport(0, 0, w, h);
     glfwSwapBuffers(handle);
 }
 
